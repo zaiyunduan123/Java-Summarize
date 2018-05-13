@@ -462,7 +462,7 @@ l         检查List、MAP等集合对象是否有使用完后，未清除的问
 
 
 ----------
-##讲一下CAS
+### 讲一下CAS
 CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。
 
 JDK文档说cas同时具有volatile读和volatile写的内存语义。
@@ -534,7 +534,7 @@ hread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已�
 
 
 ----------
-##Lock 和synchronized 的区别
+### Lock 和synchronized 的区别
 1）Lock 是一个 接口，而 synchronized 是 Java 中的 关键字，
 synchronized 是 内置的语言实现；
 2）synchronized 在 发生异常时，会 自动释放线程占有的锁，因此 不会导
@@ -695,6 +695,7 @@ keySet（）循环中通过key获取对应的value的时候又会进行循环。
 
 
 ----------
+
 ## Java基础
 
 
@@ -707,7 +708,7 @@ keySet（）循环中通过key获取对应的value的时候又会进行循环。
 
 
 Employee emp2 = (Employee)
-Class.forName("org.programming.mitra.exercises.Employee").newInstance();`
+Class.forName("org.programming.mitra.exercises.Employee").newInstance();
 
 （3）使用Constructor类的newInstance方法	} → 调用了构造函数
 
@@ -792,12 +793,12 @@ public void yichang() throws NumberFormatException{
 3、两者都是消极处理异常的方式（这里的消极并不是说这种方式不好），只是抛出或者可能抛出异常，但是不会由函数去处理异常，真正的处理异常由函数的上层调用处理。
 
 ----------
-### .class 文件是什么类型文件
+###  .class 文件是什么类型文件
 class文件是一种8位字节的二进制流文件
 
 
 ----------
-## java中序列化之子类继承父类序列化
+### java中序列化之子类继承父类序列化
 父类实现了Serializable，子类不需要实现Serializable
 
   相关注意事项
@@ -825,7 +826,7 @@ java中序列化之子类继承父类序列化
 ----------
 
 
-##Integer i=new Integer(127);和Integer i=127;的区别
+### Integer i=new Integer(127);和Integer i=127;的区别
 Integer i = 127的时候,被翻译成-> Integer i5 = Integer.valueOf(127);对于-128到127之间的数，会进行缓存，Integer i5 = 127时，会将127进行缓存，下次再写Integer i6 = 127时，就会直接从缓存中取，就不会new了。所以结果为true,
 ```
 	  int i1=128;
@@ -1096,10 +1097,7 @@ cookie机制：采用的是在客户端保持状态的方案，而session机制�
 
 ----------
 
-
-
 # Linux
-
 
 ----------
 ### Linux中软链接和硬链接的区别
@@ -1141,7 +1139,7 @@ ln     source     dist     #   建立硬连接
 
 
 ----------
-##分布式系统事务一致性解决方案
+### 分布式系统事务一致性解决方案
 分布式系统事务一致性解决方案
 MQ（事务消息）
 
@@ -1156,7 +1154,7 @@ RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二�
 
 
 ----------
-##设计高并发的系统？
+### 设计高并发的系统？
 1.HTML 页面静态化
 访问频率较高但内容变动较小，使用网站 HTML 静态化方案来优化访问速度。将社区
 内的帖子、文章进行实时的静态化，有更新的时候再重新静态化也是大量使用的策略。
