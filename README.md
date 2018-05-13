@@ -1,19 +1,19 @@
 
 总结Java开发技术面试常问的问题，持续更新中~
 
-* [数据库](#数据库)
-    * [MySQL](#MySQL)
-    * [Redis](#Redis)
+* [数据库](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#数据库)
+    * [MySQL](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#MySQL)
+    * [Redis](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#Redis)
 * [Java](#Java)
-    * [Java虚拟机](#Java虚拟机)
-    * [Java并发](#Java并发)
-    * [Java容器](#Java容器)
-    * [Java基础](#Java基础)
-* [计算机网络](#计算机网络)
-* [数据结构与算法](#数据结构与算法)
-* [Linux](#Linux)
-* [设计模式](#设计模式)
-* [场景题和设计题](#场景题和设计题)
+    * [Java虚拟机](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#Java虚拟机)
+    * [Java并发](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#Java并发)
+    * [Java容器](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#Java容器)
+    * [Java基础](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#Java基础)
+* [计算机网络](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#计算机网络)
+* [数据结构与算法](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#数据结构与算法)
+* [Linux](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#Linux)
+* [设计模式](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#设计模式)
+* [场景题和设计题](https://github.com/zaiyunduan123/code-practice/blob/master/README.md#场景题和设计题)
 
 -------------------
 # 数据库
