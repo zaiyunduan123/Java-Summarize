@@ -1,3 +1,4 @@
+
 总结Java开发技术面试常问的问题，持续更新中~
 
 * [数据库](#数据库)
@@ -702,15 +703,15 @@ keySet（）循环中通过key获取对应的value的时候又会进行循环。
 ----------
 ### 创建一个类的几种方法?
 
-（1）使用new关键字	} → 调用了构造函数
+（1）使用new关键字 } → 调用了构造函数
 
-（2）使用Class类的newInstance方法	} → 调用了构造函数
+（2）使用Class类的newInstance方法 } → 调用了构造函数
 
 
 Employee emp2 = (Employee)
 Class.forName("org.programming.mitra.exercises.Employee").newInstance();
 
-（3）使用Constructor类的newInstance方法	} → 调用了构造函数
+（3）使用Constructor类的newInstance方法 } → 调用了构造函数
 
 
 
@@ -719,8 +720,8 @@ Employee emp3 = constructor.newInstance();
 
 
 
-（4）使用clone方法	} → 没有调用构造函数
-（5）使用反序列化	} → 没有调用构造函数
+（4）使用clone方法  } → 没有调用构造函数
+（5）使用反序列化 } → 没有调用构造函数
 
 
 ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.obj"));
@@ -829,25 +830,25 @@ java中序列化之子类继承父类序列化
 ### Integer i=new Integer(127);和Integer i=127;的区别
 Integer i = 127的时候,被翻译成-> Integer i5 = Integer.valueOf(127);对于-128到127之间的数，会进行缓存，Integer i5 = 127时，会将127进行缓存，下次再写Integer i6 = 127时，就会直接从缓存中取，就不会new了。所以结果为true,
 ```
-	  int i1=128;
-	  Integer i2=128;
-	  Integer i3=new Integer(128);//自动拆箱
-	  
-	  System.out.println(i1==i2);//true
-	  System.out.println(i1==i3);//true
-	  
-	  Integer i5=127;
-	  Integer i6=127;
-	  System.out.println(i5==i6);//true
-	  
-	  
-	  Integer i5=127;
-	  Integer ii5=new Integer(127);
-	  System.out.println(i5==ii5);//false
-	  
-	  Integer i7=new Integer(127);
-	  Integer i8=new Integer(127);
-	  System.out.println(i7==i8);//false
+    int i1=128;
+    Integer i2=128;
+    Integer i3=new Integer(128);//自动拆箱
+    
+    System.out.println(i1==i2);//true
+    System.out.println(i1==i3);//true
+    
+    Integer i5=127;
+    Integer i6=127;
+    System.out.println(i5==i6);//true
+    
+    
+    Integer i5=127;
+    Integer ii5=new Integer(127);
+    System.out.println(i5==ii5);//false
+    
+    Integer i7=new Integer(127);
+    Integer i8=new Integer(127);
+    System.out.println(i7==i8);//false
 ```
 
 
@@ -895,17 +896,17 @@ Object方法：equals()、toString()、finalize()、hashCode()、getClass()、cl
 ```
 public class TempTest {
 
-	private void test1(int a) {
-		a = 5;
-		System.out.println("test1方法中的a=" + a);
-	}
+  private void test1(int a) {
+    a = 5;
+    System.out.println("test1方法中的a=" + a);
+  }
 
-	public static void main(String[] args) {
-		TempTest t = new TempTest();
-		int a = 3;
-		t.test1(11);
-		System.out.println("main方法中a=" + a);
-	}
+  public static void main(String[] args) {
+    TempTest t = new TempTest();
+    int a = 3;
+    t.test1(11);
+    System.out.println("main方法中a=" + a);
+  }
 
 }
 ```
@@ -916,22 +917,22 @@ main方法中a=3
 
 ```
 public class TempTest {
-	private void test1(A a) {
-		a.age = 20;
-		System.out.println("test1方法中a=" + a.age);
-	}
+  private void test1(A a) {
+    a.age = 20;
+    System.out.println("test1方法中a=" + a.age);
+  }
 
-	public static void main(String[] args) {
-		TempTest t = new TempTest();
-		A a = new A();
-		a.age = 10;
-		t.test1(a);
-		System.out.println("main方法中a=" + a.age);
-	}
+  public static void main(String[] args) {
+    TempTest t = new TempTest();
+    A a = new A();
+    a.age = 10;
+    t.test1(a);
+    System.out.println("main方法中a=" + a.age);
+  }
 }
 
 class A {
-	public int age = 0;
+  public int age = 0;
 }
 ```
 test1方法中a=20
@@ -953,7 +954,7 @@ netty通过Reactor模型基于多路复用器接收并处理用户请求，内�
 （注：每个线程的处理流程大概都是读取数据、解码、计算处理、编码、发送响应。）
 
 java NIO采用了双向通道（channel）进行数据传输，而不是单向的流（stream），在通道上可以注册我们感兴趣的事件。一共有以下四种事件：
-	 
+   
 服务端和客户端各自维护一个管理通道的对象，我们称之为selector，该对象能检测一个或多个通道 (channel) 上的事件。我们以服务端为例，如果服务端的selector上注册了读事件，某时刻客户端给服务端发送了一些数据，阻塞I/O这时会调用read()方法阻塞地读取数据，而NIO的服务端会在selector中添加一个读事件。服务端的处理线程会轮询地访问selector，如果访问selector时发现有感兴趣的事件到达，则处理这些事件，如果没有感兴趣的事件到达，则处理线程会一直阻塞直到感兴趣的事件到达为止。
 
 ----------
