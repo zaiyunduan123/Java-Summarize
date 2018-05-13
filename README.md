@@ -302,10 +302,10 @@ Redis是基于内存的数据库，同时也提供了若干持久化的方案，
 
 
 ## 可以作为root的对象：
-1.类中的静态变量，当它持有一个指向一个对象的引用时，它就作为root
-2.活动着的线程，可以作为root
- 3.一个Java方法的参数或者该方法中的局部变量，这两种对象可以作为root
-4.JNI方法中的局部变量或者参数，这两种对象可以作为root
+1. 类中的静态变量，当它持有一个指向一个对象的引用时，它就作为root
+2. 活动着的线程，可以作为root
+3. 一个Java方法的参数或者该方法中的局部变量，这两种对象可以作为root
+4. JNI方法中的局部变量或者参数，这两种对象可以作为root
 
 
 例子：下述的Something和Apple都可以作为root对象。
@@ -329,7 +329,7 @@ public void doSomething(Object A){
     }
  }
 ```
-##新生代转移到老年代的触发条件
+## 新生代转移到老年代的触发条件
 1. 长期存活的对象
 2. 大对象直接进入老年代
 3. minor gc后，survivor仍然放不下
@@ -359,7 +359,7 @@ public void doSomething(Object A){
 
 
 
-##双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制
+## 双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制
 1. 双亲委派模型中用到的方法：
 findLoadedClass(),
 loadClass()
@@ -513,7 +513,7 @@ JDK文档说cas同时具有volatile读和volatile写的内存语义。
 
 
 
-## 三．happens-before 原则（先行发生原则）：
+## happens-before 原则（先行发生原则）：
 1.  程序次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在
 后面的操作
 2. 锁定规则：一个 unLock 操作先行发生于后面对同一个锁的 lock 操作
@@ -656,7 +656,7 @@ TreeSet是SortedSet接口的唯一实现类，TreeSet可以确保集合元素处
 
 
 
-## #简单讲一下LinkedHashMap
+## 简单讲一下LinkedHashMap
 LinkedHashMap的实现就是HashMap+LinkedList的实现方式，以HashMap维护数据结构，以LinkList的方式维护数据插入顺序
 
 LinkedHashMap保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的。
