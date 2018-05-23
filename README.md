@@ -954,7 +954,7 @@ java NIO采用了双向通道（channel）进行数据传输，而不是单向�
 
 ## GET 和 POST 区别
 **（GET）**
-请注意，查询字符串（名称/值对）是在 GET 请求的 URL 中发送的：
+查询字符串（名称/值对）是在 GET 请求的 URL 中发送的：
 /test/demo_form.asp?name1=value1&name2=value2
 
 1. GET 请求可被缓存
@@ -963,9 +963,9 @@ java NIO采用了双向通道（channel）进行数据传输，而不是单向�
 4. GET 请求不应在处理敏感数据时使用
 5. GET 请求有长度限制
 6. GET 请求只应当用于取回数据
-POST 方法
+
 **（POST）**
-请注意，查询字符串（名称/值对）是在 POST 请求的 HTTP 消息主体中发送的：
+查询字符串（名称/值对）是在 POST 请求的 HTTP 消息主体中发送的：
 POST /test/demo_form.asp HTTP/1.1
 Host: w3schools.com
 name1=value1&name2=value2
