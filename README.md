@@ -1624,11 +1624,17 @@ RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二�
 
 解决方案
 
-1. 当库存大于0，才能更新库存`update sk_goods_seckill set stock_count = stock_count - 1 where goods_id = #{goodsId} and stock_count > 0`
-2. 添加唯一索引，UNIQUE KEY `u_uid_gid` (`user_id`,`goods_id`) USING BTREE，防止同一用户同一商品下两次订单
-3. 乐观锁，就是在数据库设计一个版本号的字段，每次修改都使其+1，这样在提交时比对提交前的版本号就知道是不是并发提交了，但是有个缺点就是只能是应用中控制，如果有跨应用修改同一条数据乐观锁就没办法了，这个时候可以考虑悲观锁。
-4. 悲观锁，就是直接在数据库层面将数据锁死，类似于oralce中使用select xxxxx from xxxx where xx=xx for update，这样其他线程将无法提交数据。
-5. 使用消息队列异步下单
+1. 使用redis预减库存
+2. 当库存大于0，才能更新库存`update sk_goods_seckill set stock_count = stock_count - 1 where goods_id = #{goodsId} and stock_count > 0`
+3. 添加唯一索引，UNIQUE KEY `u_uid_gid` (`user_id`,`goods_id`) USING BTREE，防止同一用户同一商品下两次订单
+4. 乐观锁，就是在数据库设计一个版本号的字段，每次修改都使其+1，这样在提交时比对提交前的版本号就知道是不是并发提交了，但是有个缺点就是只能是应用中控制，如果有跨应用修改同一条数据乐观锁就没办法了，这个时候可以考虑悲观锁。
+5. 悲观锁，就是直接在数据库层面将数据锁死，类似于oralce中使用select xxxxx from xxxx where xx=xx for update，这样其他线程将无法提交数据。
+6. 使用消息队列异步下单
+
+
+## mq异步调用失败，如何保证数据一致性？
+1. 按你的使用场景，推送数据必须得在数据创建事务成功之后执行，这里必须有个先后。你可以将推送这个操作异步执行，消息队列有一搬有ack机制，确保消息没丢失。这时候监听消息队列的程序会执行推送，如果推送成功做标记。如果推送失败也标记记录时间，也可以推到另一个消息队列约定多少分钟重试。实在不行就彻底标记失败，或者回滚之前创建的数据。这个才是最终一致性。
+2. 如果是并行的操作，就得使用消息队列的confirm机制了。
 
 # 流行框架
 
