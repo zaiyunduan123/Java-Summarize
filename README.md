@@ -29,10 +29,10 @@
 
 ## B树和B+树的区别
 1. B树，每个节点都存储key和data，所有节点组成这棵树，并且叶子节点指针为nul，叶子结点不包含任何关键字信息。
-![这里写图片描述](https://img-blog.csdn.net/20180522130359282?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180522130359282)
 2. B+树，所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接，所有的非终端结点可以看成是索引部分，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B 树的非终节点也包含需要查找的有效信息)
 
-![这里写图片描述](https://img-blog.csdn.net/20180522130408305?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180522130408305)
 
 
 ## 为什么说B+比B树更适合实际应用中操作系统的文件索引和数据库索引？
@@ -397,7 +397,7 @@ public void doSomething(Object A){
 
 ## G1和CMS的区别
 1. G1同时回收老年代和年轻代，而CMS只能回收老年代，需要配合一个年轻代收集器。另外G1的分代更多是逻辑上的概念，G1将内存分成多个等大小的region，Eden/ Survivor/Old分别是一部分region的逻辑集合，物理上内存地址并不连续。
-![这里写图片描述](https://img-blog.csdn.net/20180529175931502?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180529175931502)
 2. CMS在old gc的时候会回收整个Old区，对G1来说没有old gc的概念，而是区分Fully young gc和Mixed gc，前者对应年轻代的垃圾回收，后者混合了年轻代和部分老年代的收集，因此每次收集肯定会回收年轻代，老年代根据内存情况可以不回收或者回收部分或者全部(这种情况应该是可能出现)。
 
 
@@ -501,7 +501,7 @@ public void doSomething(Object A){
 
 ## java并发
 ## JAVA 线程状态转换图示
-![这里写图片描述](https://img-blog.csdn.net/2018052719494496?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/2018052719494496)
 ## synchronized 的底层怎么实现
 1. **同步代码块**(Synchronization)基于进入和退出管程(Monitor)对象实现。每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：
 
@@ -754,7 +754,7 @@ LinkedHashMap保存了记录的插入顺序，在用Iterator遍历LinkedHashMap�
 
 **元素在重新计算hash之后，因为n变为2倍，那么n-1的mask范围在高位多1bit(红色)，因此新的index就会发生这样的变化：**
 hashMap 1.8 哈希算法例图2
-![这里写图片描述](http://img.blog.csdn.net/20170930102913241?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvanl4bXVzdA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![这里写图片描述](http://img.blog.csdn.net/20170930102913241)
 **因此，我们在扩充HashMap的时候，不需要像JDK1.7的实现那样重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成“原索引+oldCap”**
 
 
@@ -1087,7 +1087,7 @@ netty通过Reactor模型基于多路复用器接收并处理用户请求，内�
 一个读事件。服务端的处理线程会轮询地访问 selector，如果访问 selector 时发
 现有感兴趣的事件到达，则处理这些事件，如果没有感兴趣的事件到达，则处
 理线程会一直阻塞直到感兴趣的事件到达为止。
-![这里写图片描述](https://img-blog.csdn.net/20180527191300194?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180527191300194)
 
 ## 缓冲区Buffer、通道Channel、选择器Selector 
 缓冲区Buffer
@@ -1317,7 +1317,7 @@ https实际就是在TCP层与http层之间加入了SSL/TLS来为上层的安全�
 1. 认证用户和服务器，确保数据发送到正确的客户机和服务器；
 2. 加密数据以防止数据中途被窃取；
 3. 维护数据的完整性，确保数据在传输过程中不被改变。
-![这里写图片描述](https://img-blog.csdn.net/20180515231434528?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180515231434528)
 # 数据结构与算法
 
 
@@ -1388,7 +1388,7 @@ linkList reverse(linkList head){
 1. 运行态：进程占用CPU，并在CPU上运行
 2. 就绪态：进程已经具备运行条件，但是CPU还没有分配过来
 3. 阻塞态：进程因等待某件事发生而暂时不能运行
-![这里写图片描述](https://img-blog.csdn.net/20180525161734395?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180525161734395)
 
 当然理论上上述三种状态之间转换分为六种情况；
 
@@ -1500,7 +1500,7 @@ MQ（事务消息）
 下面以阿里巴巴的RocketMQ中间件为例，分析下其设计和实现思路。
 
 RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二阶段执行本地事物，第三阶段通过第一阶段拿到的地址去访问消息，并修改状态。细心的读者可能又发现问题了，如果确认消息发送失败了怎么办？RocketMQ会定期扫描消息集群中的事物消息，这时候发现了Prepared消息，它会向消息发送者确认，Bob的钱到底是减了还是没减呢？如果减了是回滚还是继续发送确认消息呢？RocketMQ会根据发送端设置的策略来决定是回滚还是继续发送确认消息。这样就保证了消息发送与本地事务同时成功或同时失败。如下图：
-![这里写图片描述](http://img.blog.csdn.net/20171006210237011?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvanl4bXVzdA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![这里写图片描述](http://img.blog.csdn.net/20171006210237011)
 
 
 
@@ -1620,7 +1620,7 @@ RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二�
 4. CGLIB缺点：对于final方法，无法进行代理
 
 ## SpringMVC的工作原理
-![这里写图片描述](https://img-blog.csdn.net/20180528172548697?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180528172548697)
 SpringMVC流程
 1.  用户发送请求至前端控制器DispatcherServlet。
 2.  DispatcherServlet收到请求调用HandlerMapping处理器映射器。
@@ -1656,7 +1656,7 @@ SpringMVC流程
 10. BoundSql              表示动态生成的SQL语句以及相应的参数信息
 
 
-![这里写图片描述](https://img-blog.csdn.net/20180529092914118?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2p5eG11c3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+![这里写图片描述](https://img-blog.csdn.net/20180529092914118)
 
 
 ## MyBatis缓存
