@@ -74,14 +74,36 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
+    //增加工作者线程
     @Override
     public void addWorkers(int num) {
-
+        //加速，防止该线程还没增加完成而下一个线程继续增加导致工作者线程超过最大值
+        synchronized (jobs) {
+            if (num + this.workerNum > MAX_WORKER_NUM) {
+                num = MAX_WORKER_NUM - this.workerNum;
+            }
+            initializeWorkers(num);
+            this.workerNum += num;
+        }
     }
 
+    //减少工作者线程
     @Override
     public void removeWorker(int num) {
-
+        synchronized (jobs) {
+            if (num >= this.workerNum) {
+                throw new IllegalArgumentException("超过了已有的线程数量");
+            }
+            for (int i = 0; i < num; i++) {
+                Worker worker = workers.get(i);
+                if (worker != null) {
+                    //关闭该线程并从列表移除
+                    worker.shutdown();
+                    workers.remove(i);
+                }
+            }
+        }
+        this.workerNum -= num;
     }
 
     @Override
