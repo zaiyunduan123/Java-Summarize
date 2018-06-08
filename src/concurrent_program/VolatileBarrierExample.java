@@ -1,4 +1,4 @@
-package 并发编程;
+package concurrent_program;
 
 /**
  * Created by jiangyunxiong on 2018/5/2.

@@ -1,4 +1,4 @@
-package JDK源码分析;
+package jdk_source;
 
 import java.util.ArrayList;
 import java.util.Collections;
