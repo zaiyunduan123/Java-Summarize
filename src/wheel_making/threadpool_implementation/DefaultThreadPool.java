@@ -43,7 +43,12 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         initializeWorkers(this.workerNum);
     }
 
-    //初始化每个工作者线程
+    /**
+     * 初始化每个工作者线程
+     * <p>
+     * 1、根据线程数初始化每个工作者线程，加入工作者线程列表
+     * 2、启动工作者线程
+     */
     private void initializeWorkers(int num) {
         for (int i = 0; i < num; i++) {
             Worker worker = new Worker();
@@ -55,18 +60,24 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
+    /**
+     * 把任务加入任务队列中，并通知任务该执行
+     *
+     * @param job
+     */
     @Override
     public void execute(Job job) {
         if (job != null) {
             //根据线程的等待/通知 这里需要对jobs加锁
             synchronized (jobs) {
-                jobs.addLast(job);
-                job.notifyAll();
+                jobs.addLast(job);//追加任务
+                jobs.notifyAll();//提醒任务该执行
             }
         }
 
     }
 
+    //全部关闭工作
     @Override
     public void shutdown() {
         for (Worker w : workers) {
@@ -74,7 +85,13 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
-    //增加工作者线程
+    /**
+     * 增加工作者线程
+     * <p>
+     * 1、如果加入工作线程数+当前工作线程数大于最大线程数，就设置加入工作线程数等于最大-当前
+     * 2、初始化工作者线程
+     */
+
     @Override
     public void addWorkers(int num) {
         //加速，防止该线程还没增加完成而下一个线程继续增加导致工作者线程超过最大值
@@ -87,7 +104,14 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
-    //减少工作者线程
+    /**
+     * 减少工作者线程
+     * <p>
+     * 1、先判断需要删除的工作线程数是否大于当前工作线程数，大于就抛异常
+     * 2、然后从工作者列表从头关闭线程并移除
+     * 3、最后，当前工作线程数-已删除的线程数
+     */
+
     @Override
     public void removeWorker(int num) {
         synchronized (jobs) {
@@ -111,7 +135,11 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         return workers.size();
     }
 
-
+    /**
+     * 1、先判断该工作线程是否在运行
+     * 2、再判断任务列表是否为空，为空就等待唤醒、否则从任务队列逐个取出任务，任务不为空就执行该任务
+     * 3、注意加锁，保证线程安全
+     */
     class Worker implements Runnable {
         //表示是否运行该worker
         private volatile boolean running = true;
@@ -130,9 +158,11 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
                         }
                     }
                     //取出一个job
-                    if (job != null) {
-                        job.run();
-                    }
+                    job = jobs.removeFirst();
+
+                }
+                if (job != null) {
+                    job.run();
                 }
             }
         }
