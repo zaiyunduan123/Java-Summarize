@@ -1,4 +1,4 @@
-package 设计模式.工厂模式;
+package design_patterns.factory;
 
 /**
  * Created by jiangyunxiong on 2018/4/27.
