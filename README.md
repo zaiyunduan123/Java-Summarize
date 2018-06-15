@@ -139,6 +139,16 @@ have_partintioning 的值为YES，表示支持分区。
 4. Read uncommitted (读未提交)：最低级别，任何情况都无法保证。
 
 
+## 关于MVVC
+MySQL InnoDB存储引擎，实现的是基于多版本的并发控制协议——MVCC (Multi-Version Concurrency Control) (注：与MVCC相对的，是基于锁的并发控制，Lock-Based Concurrency Control)。MVCC最大的好处：读不加锁，读写不冲突。在读多写少的OLTP应用中，读写不冲突是非常重要的，极大的增加了系统的并发性能，现阶段几乎所有的RDBMS，都支持了MVCC。
+
+1. LBCC：Lock-Based Concurrency Control，基于锁的并发控制。
+2. MVCC：Multi-Version Concurrency Control，基于多版本的并发控制协议。纯粹基于锁的并发机制并发量低，MVCC是在基于锁的并发控制上的改进，主要是在读操作上提高了并发量。
+
+在MVCC并发控制中，读操作可以分成两类：
+
+1. 快照读 (snapshot read)：读取的是记录的可见版本 (有可能是历史版本)，不用加锁（共享读锁s锁也不加，所以不会阻塞其他事务的写）。
+2. 当前读 (current read)：读取的是记录的最新版本，并且，当前读返回的记录，都会加上锁，保证其他事务不会再并发修改这条记录。
 
 
 
@@ -1764,6 +1774,29 @@ RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二�
 4. 基于Zookeeper
 
 - 每个客户端对某个方法加锁时，在zookeeper上的与该方法对应的指定节点的目录下，生成一个唯一的瞬时有序节点。 判断是否获取锁的方式很简单，只需要判断有序节点中序号最小的一个。 当释放锁的时候，只需将这个瞬时节点删除即可。同时，其可以避免服务宕机导致的锁无法释放，而产生的死锁问题。
+
+## 消息队列
+### 四种MQ区别
+![这里写图片描述](https://img-blog.csdn.net/20180615084609135)
+
+### 如何保证消息队列是高可用的
+1. 集群，以rcoketMQ为例，有多master 模式、多master多slave异步复制模式、多 master多slave同步双写模式。
+
+![这里写图片描述](https://img-blog.csdn.net/20180615092656423)
+Producer 与 NameServer集群中的其中一个节点（随机选择）建立长连接，定期从 NameServer 获取 Topic 路由信息，并向提供 Topic 服务的 Broker Master 建立长连接，且定时向 Broker 发送心跳。Producer 只能将消息发送到 Broker master，但是 Consumer 则不一样，它同时和提供 Topic 服务的 Master 和 Slave建立长连接，既可以从 Broker Master 订阅消息，也可以从 Broker Slave 订阅消息。
+
+### 如何保证消息不被重复消费
+原因：
+
+- 消费者在消费后，会发送一个确认信息给消息队列，消息队列收到后会将该消息从消息队列中删除，例如RabbitMQ是发送一个ACK确认消息，RocketMQ是返回一个CONSUME_SUCCESS成功标志，kafka每一个消息都有一个offset，kafka消费过消息后，需要提交offset，让消息队列知道自己已经消费过了。因为网络传输等等故障，确认信息没有传送到消息队列，导致消息队列不知道自己已经消费过该消息了，再次将该消息分发给其他的消费者。
+
+解决方法：
+
+1. 消息可以使用唯一id标识
+2.  如果拿到这个消息做数据库的insert操作。给这个消息做一个唯一主键，那么就算出现重复消费的情况，就会导致主键冲突，避免数据库出现脏数据。
+3. 如果拿到这个消息做redis的set的操作，无论set几次结果都是一样的，set操作是算幂等操作。
+4. 使用第三方介质做消费记录。以redis为例，给消息分配一个全局id，只要消费过该消息，将< id,message>以K-V形式写入redis。那消费者开始消费前，先去redis中查询有没消费记录即可。
+
 # 流行框架
 
 ## JDK中的动态代理和CGLIB
