@@ -55,7 +55,7 @@ B+树是一个平衡的多叉树，从根节点到每个叶子节点的高度差
 通常，B+树索引结构适用于绝大多数场景，像下面这种场景用哈希索引才更有优势：
 
 在HEAP表中，如果存储的数据重复度很低（也就是说基数很大），对该列数据以等值查询为主，没有范围查询、没有排序的时候，特别适合采用哈希索引，例如这种SQL：
-```
+```mysql
 select id,name from table where name='李明'; — 仅等值查询
 ```
 而常用的InnoDB引擎中默认使用的是B+树索引，它会实时监控表上索引的使用情况，如果认为建立哈希索引可以提高查询效率，则自动在内存中的“自适应哈希索引缓冲区”建立哈希索引（在InnoDB中默认开启自适应哈希索引），通过观察搜索模式，MySQL会利用index key的前缀建立哈希索引，如果一个表几乎大部分都在缓冲池中，那么建立一个哈希索引能够加快等值查询。
@@ -189,7 +189,7 @@ ps:存储过程跟触发器有点类似，都是一组SQL集，但是存储过�
 2. 函数的普遍特性：模块化，封装，代码复用；
 3. 速度快，只有首次执行需经过编译和优化步骤，后续被调用可以直接执行，省去以上步骤；
 
-```
+```mysql
 DROP PROCEDURE IF EXISTS `proc_adder`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_adder`(IN a int, IN b int, OUT sum int)
@@ -443,7 +443,7 @@ redis实际上是采用了线程封闭的观念，把任务封闭在一个线程
 
 例子：下述的Something和Apple都可以作为root对象。
 
-```
+```java
 public AClass{
  
   public static Something;
@@ -454,7 +454,7 @@ public AClass{
 
  Java方法的参数和方法中的局部变量，可以作为root.
 
-```
+```java
 public Aclass{
 
 public void doSomething(Object A){
@@ -753,7 +753,7 @@ JVM内部的实现是如果运行的程序只剩下守护线程的话，程序�
 1. 使用退出标志，使线程正常退出，也就是当run方法完成后线程终止。
 在定义退出标志exit时，使用了一个Java关键字volatile，这个关键字的目的是使exit同步，也就是说在同一时刻只能由一个线程来修改exit的值， 
 
-```
+```java
   thread.exit = true;  // 终止线程thread 
 ```
 
@@ -835,14 +835,14 @@ hashMap 1.8 哈希算法例图2
 
 ##  Map遍历的keySet()和entrySet()性能差异原因
 
-```
+```java
 Set<Entry<String, String>> entrySet = map.entrySet();
 Set<String> set = map.keySet();` 
 ```
 1. keySet（）循环中通过key获取对应的value的时候又会调用getEntry（）进行循环。循环两次
 2. entrySet（）直接使用getEntry（）方法获取结果，循环一次
 2. 所以 keySet（）的性能会比entrySet（）差点。所以遍历map的话还是用entrySet()来遍历
-```
+```java
  public V get(Object key) {
         if (key == null)
             return getForNullKey();
@@ -852,7 +852,7 @@ Set<String> set = map.keySet();`
     }    
 ```
 
-```
+```java
 final Entry<K,V> getEntry(Object key) {
         if (size == 0) {
             return null;
@@ -895,18 +895,18 @@ final Entry<K,V> getEntry(Object key) {
 
 1. 使用new关键字 → 调用了构造函数
 2. 使用Class类的newInstance方法  → 调用了构造函数
-```
+```java
 Employee emp2 = (Employee)Class.forName("org.programming.mitra.exercises.Employee").newInstance();
 ```
 3. 使用Constructor类的newInstance方法  → 调用了构造函数
-```
+```java
 Constructor<Employee> constructor = Employee.class.getConstructor();
 Employee emp3 = constructor.newInstance();
 ```
 4. 使用clone方法   → 没有调用构造函数
 5. 使用反序列化 }→ 没有调用构造函数
 
-```
+```java
 ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.obj"));
 Employee emp5 = (Employee) in.readObject();
 ```
@@ -966,7 +966,7 @@ Exception类表示程序可以处理的异常，可以捕获且可能恢复。�
  抛出一个异常，可以是系统定义的，也可以是自己定义的
  
 
-```
+```java
 public void yichang(){
     NumberFormatException e = new NumberFormatException();
     throw e;
@@ -975,7 +975,7 @@ public void yichang(){
 **throws：（针对一个方法抛出的异常）**
 抛出一个异常，可以是系统定义的，也可以是自己定义的。
 
-```
+```java
 public void yichang() throws NumberFormatException{
     int a = Integer.parseInt("10L");
 }
@@ -1021,7 +1021,7 @@ java中序列化之子类继承父类序列化
 ## Integer i=new Integer(127);和Integer i=127;的区别
 Integer i = 127的时候，使用Java常量池技术，是为了方便快捷地创建某些对象，当你需要一个对象时候，就去这个池子里面找，找不到就在池子里面创建一个。但是必须注意 如果对象是用new 创建的。那么不管是什么对像，它是不会放到池子里的，而是向堆申请新的空间存储。Byte,Short,Integer,Long,Character这5种整型的包装类也只是在对应值在-128到127之间的数时才可使用对象池。超过了就要申请空间创建对象了
 
-```
+```java
     int i1=128;
     Integer i2=128;
     Integer i3=new Integer(128);//自动拆箱
@@ -1047,7 +1047,7 @@ Integer i = 127的时候，使用Java常量池技术，是为了方便快捷地�
 
 ## 手写单例模式
 最好的单例模式是静态内部类，不要写双重检验
-```
+```java
 private static class LazySomethingHolder {
   public static Something something = new Something();
 }
@@ -1096,7 +1096,7 @@ Object方法：equals()、toString()、finalize()、hashCode()、getClass()、cl
 
 ## 什么是值传递和引用传递
 值传递
-```
+```java
 public class TempTest {
 
   private void test1(int a) {
@@ -1118,7 +1118,7 @@ main方法中a=3
 值传递：传递的是值的拷贝，传递后就互不相关了
 引用传递：传递的是变量所对应的内存空间的地址
 
-```
+```java
 public class TempTest {
   private void test1(A a) {
     a.age = 20;
@@ -1482,7 +1482,7 @@ https实际就是在TCP层与http层之间加入了SSL/TLS来为上层的安全�
 2. 让第二个元素节点的指针从指向第三个元素节点变为指向第一个元素节点，以此类推，直至指针p指向原链表最后一个元素。
 3. p指针指向NULL时，让原头节点的指针域指向原来最后一个元素节点。此时链表倒置已完成。
 
-```
+```java
 linkList reverse(linkList head){
   linkList p,q,pr;
   p = head->next;
@@ -1610,7 +1610,22 @@ select, poll, epoll 都是I/O多路复用的具体的实现
 3. 静态代理通常只代理一个类，动态代理是代理一个接口下的多个实现类。
 4. 静态代理事先知道要代理的是什么，而动态代理不知道要代理什么东西，只有在运行时才知道。
 
+## JDK中的动态代理和CGLIB
+**动态代理**
 
+1. JDK中的动态代理： 通过反射类Proxy以及InvocationHandler回调接口实现的，
+
+2. 动态代理缺点： JDK中所要进行动态代理的类必须要实现一个接口，也就是说只能对该类所实现接口中定义的方法进行代理，这在实际编程中具有一定的局限性，而且使用反射的效率也并不是很高。
+
+**CGLIB**
+
+1. CGLIB原理：动态生成一个要代理类的子类，子类重写要代理的类的所有不是final的方法。在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势织入横切逻辑。它比使用java反射的JDK动态代理要快。
+
+2. CGLIB底层：使用字节码处理框架ASM，来转换字节码并生成新的类。不鼓励直接使用ASM，因为它要求你必须对JVM内部结构包括class文件的格式和指令集都很熟悉。
+
+3. CGLIB优点：它为没有实现接口的类提供代理，为JDK的动态代理提供了很好的补充。通常可以使用Java的动态代理创建代理，但当要代理的类没有实现接口或者为了更好的性能，CGLIB是一个好的选择。
+
+4. CGLIB缺点：对于final方法，无法进行代理
 
 # 场景题和设计题
 
@@ -1799,22 +1814,7 @@ Producer 与 NameServer集群中的其中一个节点（随机选择）建立长
 
 # 流行框架
 
-## JDK中的动态代理和CGLIB
-**动态代理**
 
-1. JDK中的动态代理： 通过反射类Proxy以及InvocationHandler回调接口实现的，
-
-2. 动态代理缺点： JDK中所要进行动态代理的类必须要实现一个接口，也就是说只能对该类所实现接口中定义的方法进行代理，这在实际编程中具有一定的局限性，而且使用反射的效率也并不是很高。
-
-**CGLIB**
-
-1. CGLIB原理：动态生成一个要代理类的子类，子类重写要代理的类的所有不是final的方法。在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势织入横切逻辑。它比使用java反射的JDK动态代理要快。
-
-2. CGLIB底层：使用字节码处理框架ASM，来转换字节码并生成新的类。不鼓励直接使用ASM，因为它要求你必须对JVM内部结构包括class文件的格式和指令集都很熟悉。
-
-3. CGLIB优点：它为没有实现接口的类提供代理，为JDK的动态代理提供了很好的补充。通常可以使用Java的动态代理创建代理，但当要代理的类没有实现接口或者为了更好的性能，CGLIB是一个好的选择。
-
-4. CGLIB缺点：对于final方法，无法进行代理
 
 ## SpringMVC的工作原理
 ![这里写图片描述](https://img-blog.csdn.net/20180528172548697)
@@ -1864,7 +1864,7 @@ MyBatis提供查询缓存，用于减轻数据库压力，提高性能。MyBatis
 1. 一级缓存是SqlSession级别的缓存，每个SqlSession对象都有一个哈希表用于缓存数据，不同SqlSession对象之间缓存不共享。同一个SqlSession对象对象执行2遍相同的SQL查询，在第一次查询执行完毕后将结果缓存起来，这样第二遍查询就不用向数据库查询了，直接返回缓存结果即可。一级缓存是MyBatis内部实现的一个特性，用户不能配置，默认情况下自动支持的缓存，用户没有定制它的权利
 
 2.  二级缓存是Application应用级别的缓存，它的是生命周期很长，跟Application的声明周期一样，也就是说它的作用范围是整个Application应用。MyBatis默认是不开启二级缓存的，可以在配置文件中使用如下配置来开启二级缓存
-```
+```xml
 <settings>
     <setting name="cacheEnabled" value="true"/>
 </settings>
