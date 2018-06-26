@@ -1,4 +1,4 @@
-package concurrent_program;
+package concurrent;
 
 /**
  * Created by jiangyunxiong on 2018/5/2.

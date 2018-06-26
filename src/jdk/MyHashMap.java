@@ -1,4 +1,4 @@
-package jdk_source;
+package jdk;
 
 import java.util.HashMap;
 
