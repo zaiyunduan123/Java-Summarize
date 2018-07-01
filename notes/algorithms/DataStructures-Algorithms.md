@@ -40,18 +40,18 @@
 3. p指针指向NULL时，让原头节点的指针域指向原来最后一个元素节点。此时链表倒置已完成。
 
 ```java
-linkList reverse(linkList head){
-  linkList p,q,pr;
-  p = head->next;
-  q = NULL;
-  head->next = NULL;
-  while(p){
-    pr = p->next;
-    p->next = q;
-    q = p;
-    p = pr;
-  }
-  head->next = q;
-  return head;
+    // 反转单向链表
+	public static Node reverseList(Node head) {
+		Node next = null;
+		Node pre = null;
+		while (head != null) {
+			next = head.next;// 备份
+			head.next = pre;// 将头节点的下一个节点指向空（pre）
+			pre = head;// pre指向原来的头节点
+			head = next;// 头节点变为了它的下一节点（向下移动了一位）
+		}
+		return pre;// 因为head是在为空的时候退出的循环，所以应该返回他的上一节点
+	}
+
 }
 ```
