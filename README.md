@@ -1,6 +1,3 @@
-![](https://img.shields.io/badge/update-every%20day-blue.svg) ![](https://img.shields.io/badge/gitbook-making-lightgrey.svg)
-
-
 总结Java开发技术面试常问的问题，持续更新中~
 
 * 数据库
