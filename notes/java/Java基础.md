@@ -32,9 +32,6 @@ ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.obj"));
 Employee emp5 = (Employee) in.readObject();
 ```
 
-
-
-
 ## Redirect和forward
 
 1. 上图所示的间接转发请求的过程如下：
