@@ -1,7 +1,25 @@
 
-## JVM内存模型
-![这里写图片描述](https://img-blog.csdn.net/20180606233000885)
-图片来源(Hollis微信公众号)
+## JVM内存结构 VS Java内存模型 VS Java对象模型
+### JVM内存结构
+Java代码是要运行在虚拟机上的，而虚拟机在执行Java程序的过程中会把所管理的内存划分为若干个不同的数据区域，这些区域都有各自的用途，其中有些区域随着虚拟机进程的启动而存在。
+![](https://img-blog.csdn.net/20150720152805765)
+
+### Java内存模型
+Java内存模型是根据英文Java Memory Model（JMM）翻译过来的。其实JMM并不像JVM内存结构一样是真实存在的。他只是一个抽象的概念，JMM是和多线程相关的，这个规范定义了一个线程对共享变量的写入时对另一个线程是可见的。
+
+在JMM中，我们把多个线程间通信的共享内存称之为主内存，而在并发编程中多个线程都维护了一个自己的本地内存（这是个抽象概念），其中保存的数据是主内存中的数据拷贝。而JMM主要是控制本地内存和主内存之间的数据交互的。
+![](https://img-blog.csdn.net/20170608221857890)
+
+### Java对象模型
+Java是一种面向对象的语言，而Java对象在JVM中的存储也是有一定的结构的。而这个关于Java对象自身的存储模型称之为Java对象模型。
+
+每一个Java类，在被JVM加载的时候，JVM会给这个类创建一个instanceKlass，保存在方法区，用来在JVM层表示该Java类。当我们在Java代码中，使用new创建一个对象的时候，JVM会创建一个instanceOopDesc对象，这个对象中包含了对象头以及实例数据。
+
+![](https://mmbiz.qpic.cn/mmbiz_jpg/6fuT3emWI5IUn7IK1IHXbPncn0qUVqFDqcEAdRUkia8yax6Ijr8Q8f0omsf7Eq0HcibyUQXViaDydhXiaIicvbTfJ4g/640)
+### 三者区别
+1. JVM内存结构，和Java虚拟机的运行时区域有关。
+2. Java内存模型，和Java的并发编程有关。
+3. Java对象模型，和Java对象在虚拟机中的表现形式有关。
 
 ## 什么时候会触发full gc
 1. System.gc()方法的调用

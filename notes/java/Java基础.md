@@ -25,7 +25,7 @@ Constructor<Employee> constructor = Employee.class.getConstructor();
 Employee emp3 = constructor.newInstance();
 ```
 4. 使用clone方法   → 没有调用构造函数
-5. 使用反序列化 }→ 没有调用构造函数
+5. 使用反序列化  → 没有调用构造函数
 
 ```java
 ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.obj"));
@@ -73,15 +73,19 @@ Object是所有类的根类，任何类的对象都可以设置给该Object引�
 
 
 
-## Error类和Exception类区别
-1. Error类和Exception类的父类都是throwable类，他们的区别是：
-Error类一般是指与虚拟机相关的问题，如系统崩溃，虚拟机错误，内存空间不足，方法调用栈溢等。对于这类错误的导致的应用程序中断，仅靠程序本身无法恢复和和预防，遇到这样的错误，建议让程序终止。
-Exception类表示程序可以处理的异常，可以捕获且可能恢复。遇到这类异常，应该尽可能处理异常，使程序恢复运行，
-而不应该随意终止异常。
-2. Exception类又分为运行时异常（Runtime Exception）和受检查的异常(Checked Exception )，运行时异常;ArithmaticException,IllegalArgumentException，编译能通过，但是一运行就终止了，程序不会处理运行时异常，出现这类异常，程序会终止。**而受检查的异常，要么用try。。。catch捕获，要么用throws字句声明抛出，交给它的父类处理，否则编译不会通过。**
+## Java 异常的体系结构
+Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。
+
+在Java API中已经定义了许多异常类，这些异常类分为两大类，错误Error和异常Exception。
+
+Java异常层次结构图如下图所示：
+
+![](https://img-blog.csdn.net/20180701100641621)
 
 
+Error：Error类对象由 Java 虚拟机生成并抛出，Error表示编译时和系统错误，通常不能预期和恢复，比如硬件故障、JVM崩溃、内存不足等 。例如，Java虚拟机运行错误（Virtual MachineError），当JVM不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java虚拟机（JVM）一般会选择线程终止；还有发生在虚拟机试图执行应用时，如类定义错误（NoClassDefFoundError）、链接错误（LinkageError）。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在Java中，错误通常是使用Error的子类描述。
 
+Exception：在Exception分支中有一个重要的子类RuntimeException（运行时异常），该类型的异常自动为你所编写的程序定义ArrayIndexOutOfBoundsException（数组下标越界）、NullPointerException（空指针异常）、ArithmeticException（算术异常）、MissingResourceException（丢失资源）、ClassNotFoundException（找不到类）等异常，这些异常是不检查异常，程序中可以选择捕获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的，程序应该从逻辑角度尽可能避免这类异常的发生；而RuntimeException之外的异常我们统称为非运行时异常，类型上属于Exception类及其子类，从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。如IOException、SQLException等以及用户自定义的Exception异常，一般情况下不自定义检查异常。
 ## throw和throws区别
 **throw：（针对对象的做法）**
  抛出一个异常，可以是系统定义的，也可以是自己定义的
