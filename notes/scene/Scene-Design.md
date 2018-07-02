@@ -31,7 +31,7 @@ MQ（事务消息）
 下面以阿里巴巴的RocketMQ中间件为例，分析下其设计和实现思路。
 
 RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二阶段执行本地事物，第三阶段通过第一阶段拿到的地址去访问消息，并修改状态。细心的读者可能又发现问题了，如果确认消息发送失败了怎么办？RocketMQ会定期扫描消息集群中的事物消息，这时候发现了Prepared消息，它会向消息发送者确认，Bob的钱到底是减了还是没减呢？如果减了是回滚还是继续发送确认消息呢？RocketMQ会根据发送端设置的策略来决定是回滚还是继续发送确认消息。这样就保证了消息发送与本地事务同时成功或同时失败。如下图：
-![这里写图片描述](http://img.blog.csdn.net/20171006210237011)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/scene-1.jpg)
 
 
 
@@ -161,12 +161,12 @@ RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二�
 
 ## 消息队列
 ### 四种MQ区别
-![这里写图片描述](https://img-blog.csdn.net/20180615084609135)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/scene-2.jpg)
 
 ### 如何保证消息队列是高可用的
 1. 集群，以rcoketMQ为例，有多master 模式、多master多slave异步复制模式、多 master多slave同步双写模式。
 
-![这里写图片描述](https://img-blog.csdn.net/20180615092656423)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/scene-3.jpg)
 Producer 与 NameServer集群中的其中一个节点（随机选择）建立长连接，定期从 NameServer 获取 Topic 路由信息，并向提供 Topic 服务的 Broker Master 建立长连接，且定时向 Broker 发送心跳。Producer 只能将消息发送到 Broker master，但是 Consumer 则不一样，它同时和提供 Topic 服务的 Master 和 Slave建立长连接，既可以从 Broker Master 订阅消息，也可以从 Broker Slave 订阅消息。
 
 ### 如何保证消息不被重复消费

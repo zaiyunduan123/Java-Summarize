@@ -5,7 +5,7 @@
 1. 运行态：进程占用CPU，并在CPU上运行
 2. 就绪态：进程已经具备运行条件，但是CPU还没有分配过来
 3. 阻塞态：进程因等待某件事发生而暂时不能运行
-![这里写图片描述](https://img-blog.csdn.net/20180525161734395)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/os-1.jpg)
 
 当然理论上上述三种状态之间转换分为六种情况；
 

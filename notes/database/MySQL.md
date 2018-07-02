@@ -16,9 +16,9 @@
 
 ## B+树索引和哈希索引的区别
 B+树是一个平衡的多叉树，从根节点到每个叶子节点的高度差值不超过1，而且同层级的节点间有指针相互链接，是有序的
-![](https://images2015.cnblogs.com/blog/99941/201607/99941-20160706162343639-644872932.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-1.jpg)
 哈希索引就是采用一定的哈希算法，把键值换算成新的哈希值，检索时不需要类似B+树那样从根节点到叶子节点逐级查找，只需一次哈希算法即可,是无序的
-![](https://images2015.cnblogs.com/blog/99941/201607/99941-20160706162359874-1132773212.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-2.jpg)
 
 **哈希索引的优势：**
 
@@ -45,10 +45,10 @@ select id,name from table where name='李明'; — 仅等值查询
 
 ## B树和B+树的区别
 1. B树，每个节点都存储key和data，所有节点组成这棵树，并且叶子节点指针为nul，叶子结点不包含任何关键字信息。
-![这里写图片描述](https://img-blog.csdn.net/20180522130359282)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-3.jpg)
 2. B+树，所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接，所有的非终端结点可以看成是索引部分，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B 树的非终节点也包含需要查找的有效信息)
 
-![这里写图片描述](https://img-blog.csdn.net/20180522130408305)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-4.jpg)
 
 
 ## 为什么说B+比B树更适合实际应用中操作系统的文件索引和数据库索引？

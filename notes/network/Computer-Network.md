@@ -232,4 +232,4 @@ https实际就是在TCP层与http层之间加入了SSL/TLS来为上层的安全�
 1. 认证用户和服务器，确保数据发送到正确的客户机和服务器；
 2. 加密数据以防止数据中途被窃取；
 3. 维护数据的完整性，确保数据在传输过程中不被改变。
-![这里写图片描述](https://img-blog.csdn.net/20180515231434528)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/network-1.jpg)

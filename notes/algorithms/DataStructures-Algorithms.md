@@ -26,8 +26,7 @@
 
 
 ## 字典树
-<img class="thumbimage" src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Trie_example.svg/375px-Trie_example.svg.png" alt="" width="250" height="234" data-file-width="400" data-file-height="375">
- 
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/algorithms-1.jpg) 
 字典树主要有如下三点性质：
 1. 根节点不包含字符，除根节点意外每个节点只包含一个字符。
 2. 从根节点到某一个节点，路径上经过的字符连接起来，为该节点对应的字符串。
