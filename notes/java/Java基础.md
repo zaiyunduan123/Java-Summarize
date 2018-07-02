@@ -76,7 +76,7 @@ Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作
 
 Java异常层次结构图如下图所示：
 
-![](https://github.com/zaiyunduan123/Java-Interview/tree/master/image/Java-1.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-1.jpg)
 
 
 Error：Error类对象由 Java 虚拟机生成并抛出，Error表示编译时和系统错误，通常不能预期和恢复，比如硬件故障、JVM崩溃、内存不足等 。例如，Java虚拟机运行错误（Virtual MachineError），当JVM不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java虚拟机（JVM）一般会选择线程终止；还有发生在虚拟机试图执行应用时，如类定义错误（NoClassDefFoundError）、链接错误（LinkageError）。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在Java中，错误通常是使用Error的子类描述。
