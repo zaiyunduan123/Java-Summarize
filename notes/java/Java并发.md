@@ -1,6 +1,6 @@
 
 ## JAVA 线程状态转换图示
-![这里写图片描述](https://img-blog.csdn.net/2018052719494496)
+![](https://github.com/zaiyunduan123/Java-Interview/tree/master/image/Java-3.jpg)
 ## synchronized 的底层怎么实现
 1. **同步代码块**(Synchronization)基于进入和退出管程(Monitor)对象实现。每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：
 
@@ -225,7 +225,7 @@ netty通过Reactor模型基于多路复用器接收并处理用户请求，内�
 一个读事件。服务端的处理线程会轮询地访问 selector，如果访问 selector 时发
 现有感兴趣的事件到达，则处理这些事件，如果没有感兴趣的事件到达，则处
 理线程会一直阻塞直到感兴趣的事件到达为止。
-![这里写图片描述](https://img-blog.csdn.net/20180527191300194)
+![](https://github.com/zaiyunduan123/Java-Interview/tree/master/image/Java-3.jpg)
 
 ## 缓冲区Buffer、通道Channel、选择器Selector 
 缓冲区Buffer
