@@ -79,3 +79,15 @@ final Entry<K,V> getEntry(Object key) {
         return null;
 }
 ```
+## HashMap中的indexFor方法
+在HashMap的工作原理，发现它调用了 indexFor(int h, int length) 方法来计算Entry对象保存在 table中的数组索引值：
+
+```
+static int indexFor(int h, int length) {
+    return h & (length-1);
+}
+```
+HashMap的初始容量和扩容都是以2的次方来进行的，那么length-1换算成二进制的话肯定所有位都为1，就比如2的3次方为8，length-1的二进制表示就是111， 而按位与计算的原则是两位同时为“1”，结果才为“1”，否则为“0”。所以h& (length-1)运算从数值上来讲其实等价于对length取模，也就是h%length。
+
+
+只有当数组长度为2的n次方时，那么length-1换算成二进制的话肯定所有位都为1,不同的key计算得出的index索引相同的几率才会较小，数据在数组上分布也比较均匀，碰撞的几率也小，相对的，查询的时候就不用遍历某个位置上的链表，这样查询效率也就较高了。
