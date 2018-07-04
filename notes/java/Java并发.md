@@ -225,7 +225,7 @@ netty通过Reactor模型基于多路复用器接收并处理用户请求，内�
 一个读事件。服务端的处理线程会轮询地访问 selector，如果访问 selector 时发
 现有感兴趣的事件到达，则处理这些事件，如果没有感兴趣的事件到达，则处
 理线程会一直阻塞直到感兴趣的事件到达为止。
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-3.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-4.jpg)
 
 ## 缓冲区Buffer、通道Channel、选择器Selector 
 缓冲区Buffer
