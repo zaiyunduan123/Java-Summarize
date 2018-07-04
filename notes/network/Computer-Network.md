@@ -10,8 +10,9 @@
 2. GET 请求保留在浏览器历史记录中
 3. GET 请求可被收藏为书签
 4. GET 请求不应在处理敏感数据时使用
-5. GET 请求有长度限制
+5. GET 请求有长度限制（浏览器通常都会限制url长度在2K个字节，而(大多数)服务器最多处理64K大小的url）
 6. GET 请求只应当用于取回数据
+7. GET产生一个TCP数据包（对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200(返回数据)）
 
 ### **（POST）**
 请注意，查询字符串（名称/值对）是在 POST 请求的 HTTP 消息主体中发送的：
@@ -20,11 +21,14 @@ POST /test/demo_form.asp HTTP/1.1
 Host: w3schools.com
 name1=value1&name2=value2
 ```
-
 1. POST 请求不会被缓存
 2. POST 请求不会保留在浏览器历史记录中
 3. POST 不能被收藏为书签
 4. POST 请求对数据长度没有要求
+5. POST产生两个TCP数据包（对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok(返回数据)）
+
+### 相同点
+HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。
 
 ## dns使用的协议
 既使用TCP又使用UDP 
