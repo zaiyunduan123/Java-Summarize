@@ -41,6 +41,19 @@ IOC容器的初始化过程，一般不包含bean的依赖注入的实现，在s
 12. Transactions 事务管理  
 
 
+## Spring @Transactional工作原理
+1. 当spring遍历容器中所有的切面，查找与当前实例化bean匹配的切面，这里就是获取事务属性切面，查找@Transactional注解及其属性值，然后根据得到的切面进入createProxy方法，创建一个AOP代理。
+2. 默认是使用JDK动态代理创建代理，如果目标类是接口，则使用JDK动态代理，否则使用Cglib。
+3. 获取的是当前目标方法对应的拦截器，里面是根据之前获取到的切面来获取相对应拦截器，这时候会得到TransactionInterceptor实例。如果获取不到拦截器，则不会创建MethodInvocation，直接调用目标方法。
+4. 在需要进行事务操作的时候，Spring会在调用目标类的目标方法之前进行开启事务、调用异常回滚事务、调用完成会提交事务。是否需要开启新事务，是根据@Transactional注解上配置的参数值来判断的。如果需要开启新事务，获取Connection连接，然后将连接的自动提交事务改为false，改为手动提交
+5. Spring并不会对所有类型异常都进行事务回滚操作，默认是只对Unchecked Exception(Error和RuntimeException)进行事务回滚操作。
+
+从上面的分析可以看到，Spring使用AOP实现事务的统一管理,基本都是下面这两种情况：
+1. A类的a1方法没有标注@Transactional，a2方法标注@Transactional，在a1里面调用a2。a1方法是目标类A的原生方法，调用a1的时候即直接进入目标类A进行调用，在目标类A里面只有a2的原生方法，在a1里调用a2，即直接执行a2的原生方法，并不通过创建代理对象进行调用，所以并不会进入TransactionInterceptor的invoke方法，不会开启事务。
+2. 将@Transactional注解标注在非public方法上。内部使用AOP，所以必须是public修饰的方法才可以被代理
+
+
+
 ## SpringMVC的工作原理
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-1.jpg)
 SpringMVC流程

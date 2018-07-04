@@ -171,47 +171,6 @@ ps:存储过程跟触发器有点类似，都是一组SQL集，但是存储过�
 2. 函数的普遍特性：模块化，封装，代码复用；
 3. 速度快，只有首次执行需经过编译和优化步骤，后续被调用可以直接执行，省去以上步骤；
 
-```mysql
-DROP PROCEDURE IF EXISTS `proc_adder`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_adder`(IN a int, IN b int, OUT sum int)
-BEGIN
-    #Routine body goes here...
-
-    DECLARE c int;
-    if a is null then set a = 0; 
-    end if;
-  
-    if b is null then set b = 0;
-    end if;
-
-    set sum  = a + b;
-END
-;;
-DELIMITER ;
-
-set @b=5;
-call proc_adder(0,@b,@s);
-SELECT @s as sum;
-
-
-
-create table tab2(
-   tab2_id varchar(11)
-);
-
-DROP TRIGGER if EXISTS t_ai_on_tab1;
-create TRAILING t_ai_on_tab1
-AFTER INSERT ON tab1
-for EACH ROW
-BEGIN
-   INSERT INTO tab2(tab2_id) values(new.tab1_id);
-end;
-
-INSERT INTO tab1(tab1_id) values('0001');
-
-SELECT * FROM tab2;
-```
 
 
 
@@ -329,3 +288,40 @@ Prepared Statements很像存储过程，是一种运行在后台的SQL语句集�
 
 从库的io线程会实时依据master.info信息的去主库的binlog日志里面读取更新的内容，将更新的内容取回到自己的中继日志中，同时会更新master.info信息，此时sql线程实时会从中继日志中读取并执行里面的sql语句。
 
+
+## MySQL事务原理
+ACID是通过redo 和 undo 日志文件实现的，不管是redo还是undo文件都会有一个缓存我们称之为redo_buf和undo_buf。同样，数据库文件也会有缓存称之为data_buf。
+
+### undo 日志文件
+undo记录了数据在事务开始之前的值，当事务执行失败或者ROLLBACK时可以通过undo记录的值来恢复数据。例如 AA和BB的初始值分别为3，5。
+```
+A 事务开始
+B 记录AA=3到undo_buf
+C 修改AA=1
+D 记录BB=5到undo_buf
+E 修改BB=7
+F 将undo_buf写到undo(磁盘)
+G 将data_buf写到datafile(磁盘)
+H 事务提交
+```
+1. 如果事务在F之前崩溃由于数据还没写入磁盘，所以数据不会被破坏。
+2. 如果事务在G之前崩溃或者回滚则可以根据undo恢复到初始状态。 
+
+但是单纯使用undo保证原子性和持久性需要在事务提交之前将数据写到磁盘，浪费大量I/O。
+
+## redo/undo 日志文件
+引入redo日志记录数据修改后的值，可以避免数据在事务提交之前必须写入到磁盘的需求，减少I/O。
+```
+A 事务开始
+B 记录AA=3到undo_buf
+C 修改AA=1 记录redo_buf
+D 记录BB=5到undo_buf
+E 修改BB=7 记录redo_buf
+F 将redo_buf写到redo（磁盘）
+G 事务提交
+```
+通过undo保证事务的原子性，redo保证持久性。 
+
+1. F之前崩溃由于所有数据都在内存，恢复后重新冲磁盘载入之前的数据，数据没有被破坏。 
+2. FG之间的崩溃可以使用redo来恢复。 
+3. G之前的回滚都可以使用undo来完成。
