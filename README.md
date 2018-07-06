@@ -12,25 +12,19 @@
 > ## 正文
 ## :coffee: Java
 
--   ### Java基础
-    [JAVA基础](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%9F%BA%E7%A1%80.md)
+-  [JAVA基础](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%9F%BA%E7%A1%80.md)
 
--  ### JAVA虚拟机
-    [JAVA虚拟机](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
+-  [JAVA虚拟机](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
 
 
-- ### JAVA并发编程
-   [JAVA并发](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%B9%B6%E5%8F%91.md)
+-  [JAVA并发](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%B9%B6%E5%8F%91.md)
 
--  ### JAVA容器
-   [JAVA容器](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%AE%B9%E5%99%A8.md)
+-  [JAVA容器](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%AE%B9%E5%99%A8.md)
 
 
 ## :open_file_folder: 数据库
--   ### MySQL
-    [MySQL](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/MySQL.md)
--   ### Redis
-    [Redis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/Redis.md)
+-  [MySQL](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/MySQL.md)
+-  [Redis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/Redis.md)
 
 ## :computer: 计算机网络
 -  [计算机网络](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/network/Computer-Network.md)
@@ -48,11 +42,9 @@
 -   [场景题和设计题](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/scene/Scene-Design.md)
 
 ## :punch: 框架和中间件底层原理
--   ### SSM实现原理
-    [SSM实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Framework.md)
-    
--   ### Solr实现原理
-    [Solr实现](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md)
+-   [SSM实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Framework.md)
+   
+-   [Solr实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md)
 
 
 
