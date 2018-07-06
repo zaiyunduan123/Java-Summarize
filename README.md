@@ -7,7 +7,7 @@
 ### 5. :iphone: [操作系统](#iphone-操作系统)
 ### 6. :pencil2: [设计模式](#pencil2-设计模式)
 ### 7. :floppy_disk: [场景题和设计题](#floppy_disk-场景题和设计题)
-### 8. :punch: [流行框架](#punch-流行框架)
+### 8. :punch: [框架和中间件底层原理](#punch-框架和中间件底层原理)
 
 > ## 正文
 ## :coffee: Java
@@ -24,6 +24,7 @@
 
 -  ### JAVA容器
    [JAVA容器](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%AE%B9%E5%99%A8.md)
+
 
 ## :open_file_folder: 数据库
 -   ### MySQL
@@ -46,8 +47,13 @@
 ## :floppy_disk: 场景题和设计题
 -   [场景题和设计题](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/scene/Scene-Design.md)
 
-## :punch: 流行框架
--   [流行框架](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Framework.md)
+## :punch: 框架和中间件底层原理
+-   ### SSM实现原理
+    [SSM实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Framework.md)
+    
+-   ### Solr实现原理
+    [Solr实现](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md)
+
 
 
 
@@ -73,16 +79,14 @@
 - [垃圾回收器比较: G1 vs CMS](https://www.jianshu.com/p/bdd6f03923d1)
 ### 6、架构
 - [什么是高并发 ，详细讲解](https://blog.csdn.net/DreamWeaver_zhou/article/details/78587580)
-- [RabbitMQ的应用场景以及基本原理介绍](https://blog.csdn.net/whoamiyang/article/details/54954780)
 - [缓存淘汰算法--LRU算法(java代码实现)](https://blog.csdn.net/wangxilong1991/article/details/70172302)
 - [从输入URL到浏览器显示页面发生了什么](https://blog.csdn.net/jeffleo/article/details/77151646)
 - [分布式缓存中的一致性Hash 算法](https://blog.csdn.net/jeffleo/article/details/68060506)
-- [基于Solr的空间搜索](https://www.cnblogs.com/luxiaoxun/p/4477591.html)
+
 ### 7、计算机网络
 - [https是如何保证数据传输的安全](https://blog.csdn.net/jasonjwl/article/details/50985271)
 ### 8、算法
 - [关于链表的面试问题（判断一个单链表中是否有环）](https://www.cnblogs.com/ghimtim/p/4882916.html)
-### 9、设计模式
-- [23种设计模式总结](https://www.cnblogs.com/tongkey/p/7170826.html)
-
-
+### 9、各大框架和中间件底层原理
+- [基于Solr的空间搜索](https://www.cnblogs.com/luxiaoxun/p/4477591.html)
+- [RabbitMQ的应用场景以及基本原理介绍](https://blog.csdn.net/whoamiyang/article/details/54954780)
