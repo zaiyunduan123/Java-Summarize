@@ -275,7 +275,7 @@ main方法中a=20
 5. python有很多虚拟机实现，如cython,Pyston,pypy,jython, IronPython等等，适合用于业务语言，或插件语言，或面向领域语言，而java因为虚拟机巨大，很少用于插件语言，发布也不方便。
 6. java主要用于商业逻辑强的领域，如商城系统，erp，oa,金融，保险等传统数据库事务领域，通过类似ssh框架事务代码，对商业数据库，如oralce,db2,sql server等支持较好，软件工程理念较强，适合软件工程式的多人开发模式。python主要用于web数据分析，科学计算，金融分析，信号分析，图像算法，数学计算，统计分析，算法建模，服务器运维，自动化操作，快速开发理念强，适合快速开发团队或个人敏捷模式。
 7. python用途最多的是脚本，java用途最多的是web，pyhotn是胶水，可以把各类不相关的东西粘在一起用，java是基佬，可以通过软件工程组成几百个人的团队和你pk，商业化气息重。不过我认为还是python强大，因为可以方便调用c或c++的库，但软件工程和商业化运作没有java好，适合快捷开发。
-8. java和python，都可以运行于linux操作系统，但很多linux可以原生支持python,java需要自行安装。java和python强于c#的原因大于支持linux，支持osx，支持unix，支持arm。java和python比c++受欢迎的原因在于不需要指针。
+8. java和python，都可以运行于linux操作系统，但很多linux可以原生支持python,java需要自行安装。java和python强于c#的原因在于支持linux，支持osx，支持unix，支持arm。java和python比c++受欢迎的原因在于不需要指针。
 9. 对于移动互联网，python只能通过运行库运行于安卓或ios，java原生支持安卓开发，但不能用ios中。
 10. 对于大数据，hadoop用java开的, spark用Scala开发，用python调用spark再分析更方便。
 
