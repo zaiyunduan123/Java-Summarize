@@ -91,3 +91,30 @@ HashMap的初始容量和扩容都是以2的次方来进行的，那么length-1�
 
 
 只有当数组长度为2的n次方时，那么length-1换算成二进制的话肯定所有位都为1,不同的key计算得出的index索引相同的几率才会较小，数据在数组上分布也比较均匀，碰撞的几率也小，相对的，查询的时候就不用遍历某个位置上的链表，这样查询效率也就较高了。
+
+
+## 如何删除ArrayList里面的元素
+使用以下for循环使用remove()删除是有问题的，因为每次删除一个元素，后面元素往前移，数组大小也变小，会到数组下标越界异常
+```java
+for (int i = 0;i< list1.size();i++){
+            list1.remove(i);
+        }
+```
+推荐两种方法：
+
+1. 根据长度，不断删除第一个元素，
+```java
+for (int i = 0;i< list1.size();i++){
+            list1.remove(0);
+        }
+```
+2. 使用迭代器(推荐)，不会导致数组长度变化而抛异常
+```java
+   Iterator<Integer> iter = list1.iterator();
+        while(iter.hasNext()){
+            Integer s = iter.next();
+            if(s.equals("1")){
+                iter.remove();
+            }
+        }
+```

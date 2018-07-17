@@ -12,6 +12,54 @@
 |添加新方法	|如果你往抽象类中添加新的方法，你可以给它提供默认的实现。因此你不需要改变你现在的代码。|	如果你往接口中添加方法，那么你必须改变实现该接口的类。|
 
 
+## equals()
+1. Obejct的equals()源码
+```java
+public boolean equals(Object obj) {
+        return (this == obj);
+    }
+
+```
+从代码可知，Object类的equals方法是比较的地址，所以最初的equals方法和==的作用是一致的
+
+像String、Double、Integer、Date、Point这些不变类都重写了equals()，重写都是为判断的根据是值，而不地址
+
+比如Integer的equals()源码
+```java
+public boolean equals(Object obj) {
+        if (obj instanceof Integer) {
+            return value == ((Integer)obj).intValue();
+        }
+        return false;
+    }
+```
+String的equals()源码
+```java
+public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
+        if (anObject instanceof String) {
+            String anotherString = (String)anObject;
+            int n = value.length;
+            if (n == anotherString.value.length) {
+                char v1[] = value;
+                char v2[] = anotherString.value;
+                int i = 0;
+                while (n-- != 0) {
+                    if (v1[i] != v2[i])
+                        return false;
+                    i++;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+```
+
+
+
 ## 创建一个类的几种方法?
 
 1. 使用new关键字 → 调用了构造函数
@@ -207,9 +255,61 @@ Java的每个对象中都有一个锁(monitor，也可以成为监视器) 并且
 如果equals方法得到的结果为false，则两个对象的hashcode值不一定不同；
 如果两个对象的hashcode值不等，则equals方法得到的结果必定为false；
 如果两个对象的hashcode值相等，则equals方法得到的结果未知。
-## Object类中有哪些方法，列举3个以上（可以引导）
-Object方法：equals()、toString()、finalize()、hashCode()、getClass()、clone()、wait()、notify()、notifyAll()
 
+## Object类中有哪些方法
+Object是所有类的父类，它有很多类对象会用到的方法
+
+Object方法：equals()、toString()、finalize()、hashCode()、getClass()、clone()、wait()、notify()、notifyAll()
+```java
+package java.lang;
+public class Object {
+
+    private static native void registerNatives();
+    static {
+        registerNatives();
+    }
+    // 返回一个对象的运行时类,获得类型的信息。
+    public final native Class<?> getClass();
+    // 该方法将对象的内存地址进行哈希运算,返回一个int类型的哈希值,是相等对象拥有相同的哈希码,尽量让不等的对象具有不同的哈希码。
+    public native int hashCode();
+    //指示某个其他对象是否与此对象"相等"。
+    public boolean equals(Object obj) {
+        return (this == obj);
+    }
+    //创建并返回此对象的一个副本(复制对象)
+    protected native Object clone() throws CloneNotSupportedException;
+    //返回该对象的字符串表示。以便用户能够获得一些有关对象状态的基本信息。简单说就是利用字符串来表示对象。
+    public String toString() {
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+    }
+    //唤醒在此对象监视器上等待的单个线程。
+    public final native void notify();
+    //唤醒在次对象监视器上等待的所有线程。
+    public final native void notifyAll();
+    //导致当前的线程等待,直到其他线程调用此对象的notify()方法或notifyAll()方法,或者超过指定的时间量。
+    public final native void wait(long timeout) throws InterruptedException;
+    //导致当前的线程等待,直到其他线程调用此对象的notify()方法或notifyAll方法,或者其他某个线程中断当前线程,或者已超过某个实际时间量。
+    public final void wait(long timeout, int nanos) throws InterruptedException {
+        if (timeout < 0) {
+            throw new IllegalArgumentException("timeout value is negative");
+        }
+        if (nanos < 0 || nanos > 999999) {
+            throw new IllegalArgumentException(
+                                "nanosecond timeout value out of range");
+        }
+        if (nanos > 0) {
+            timeout++;
+        }
+        wait(timeout);
+    }
+    //导致当前的线程等待,直到其他线程调用此对象的notify()方法或notifyAll()方法。
+    public final void wait() throws InterruptedException {
+        wait(0);
+    }
+    //当垃圾回收器确定不存在对该对象的更多引用时，对象的垃圾回收器调用该方法。
+    protected void finalize() throws Throwable { }
+}
+```
 
 ## String s=new String("xyz")究竟创建String Object分为两种情况：
 1. 如果String常理池中，已经创建"xyz"，则不会继续创建，此时只创建了一个对象new String("xyz")；
@@ -278,6 +378,9 @@ main方法中a=20
 8. java和python，都可以运行于linux操作系统，但很多linux可以原生支持python,java需要自行安装。java和python强于c#的原因在于支持linux，支持osx，支持unix，支持arm。java和python比c++受欢迎的原因在于不需要指针。
 9. 对于移动互联网，python只能通过运行库运行于安卓或ios，java原生支持安卓开发，但不能用ios中。
 10. 对于大数据，hadoop用java开的, spark用Scala开发，用python调用spark再分析更方便。
+
+
+
 
 
 

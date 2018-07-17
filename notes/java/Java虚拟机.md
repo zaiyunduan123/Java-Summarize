@@ -53,6 +53,17 @@ Java是一种面向对象的语言，而Java对象在JVM中的存储也是有一
 2. Java内存模型，和Java的并发编程有关。
 3. Java对象模型，和Java对象在虚拟机中的表现形式有关。
 
+## Major GC和Full GC的区别是什么？触发条件呢？
+
+针对HotSpot VM的实现，它里面的GC其实准确分类只有两大种：
+Partial GC：并不收集整个GC堆的模式
+ - Young GC：只收集young gen的GC
+ - Old GC：只收集old gen的GC。只有CMS的concurrent collection是这个模式
+ - Mixed GC：收集整个young gen以及部分old gen的GC。只有G1有这个模式
+ 
+Full GC：收集整个堆，包括young gen、old gen、perm gen（如果存在的话）等所有部分的模式。
+
+
 ## 什么时候会触发full gc
 1. System.gc()方法的调用
 2. 老年代空间不足
