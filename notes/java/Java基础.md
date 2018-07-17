@@ -24,16 +24,7 @@ public boolean equals(Object obj) {
 
 像String、Double、Integer、Date、Point这些不变类都重写了equals()，重写都是为判断的根据是值，而不地址
 
-比如Integer的equals()源码
-```java
-public boolean equals(Object obj) {
-        if (obj instanceof Integer) {
-            return value == ((Integer)obj).intValue();
-        }
-        return false;
-    }
-```
-String的equals()源码
+比如String的equals()源码
 ```java
 public boolean equals(Object anObject) {
         if (this == anObject) {
@@ -57,7 +48,54 @@ public boolean equals(Object anObject) {
         return false;
     }
 ```
+比如Integer的equals()源码
+```java
+public boolean equals(Object obj) {
+        if (obj instanceof Integer) {
+            return value == ((Integer)obj).intValue();
+        }
+        return false;
+    }
+```
+compareTo()
+```java
+  public int compareTo(Integer anotherInteger) {
+        return compare(this.value, anotherInteger.value);
+    }
 
+   public static int compare(int x, int y) {
+        return (x < y) ? -1 : ((x == y) ? 0 : 1);
+   }
+```
+
+## 浮点型数据的精度,怎么解决精度丢失
+浮点型数据的类型有两种，一是单精度浮点数，二是双精度浮点数。
+
+浮点型数据的精度取决于浮点小数结构：
+
+32位单精度浮点型数的二进制位的第0-22位为2进制小数尾值，决定了它的精度在2的负23次方，1/(2^23)=0.0000001
+
+64位双精度浮点型数的二进制位的第0-52位为2进制小数尾值，决定了它的精度在2的负52次方，1/(2^52)=2.2e-16
+
+在文本框输出时
+
+32位浮点型数有7位小数精度（十进制）           .3333333
+
+64位浮点型数有15位小数精度（十进制）         .333333333333333
+
+使用BigDecimal解决精度丢失
+```java
+BigDecimal a = new BigDecimal();
+BigDecimal一共有4个构造方法
+
+BigDecimal(int) 创建一个具有参数所指定整数值的对象。
+
+BigDecimal(double) 创建一个具有参数所指定双精度值的对象。
+
+BigDecimal(long) 创建一个具有参数所指定长整数值的对象。
+
+BigDecimal(String) 创建一个具有参数所指定以字符串表示的数值的对象。
+```
 
 
 ## 创建一个类的几种方法?
