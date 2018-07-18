@@ -71,6 +71,46 @@ SpringMVC流程
 
 请求 ---> DispatcherServlet（前端控制器）---> 调用HandlerMapping（处理器映射器）---> DispatcherServlet调用 HandlerAdapter（处理器适配器）---> 适配调用具体的Controller ---> 返回ModelAndView  --->  传给ViewReslover视图解析器  --->  解析后返回具体View ---> 根据View进行渲染视图响应用户
 
+
+## SpringMVC拦截器
+### 常见应用场景
+1. 日志记录：记录请求信息的日志，以便进行信息监控、信息统计、计算PV（Page View）等
+2. 权限检查：如登录检测，进入处理器检测检测是否登录，如果没有直接返回到登录页面
+3. 性能监控：有时候系统在某段时间莫名其妙的慢，可以通过拦截器在进入处理器之前记录开始时间，在处理完后记录结束时间，从而得到该请求的处理时间（如果有反向代理，如apache可以自动记录）
+4. 通用行为：读取cookie得到用户信息并将用户对象放入请求，从而方便后续流程使用，还有如提取Locale、Theme信息等，只要是多个处理器都需要的即可使用拦截器实现。
+5. OpenSessionInView：如Hibernate，在进入处理器打开Session，在完成后关闭Session。
+
+### 拦截器接口
+```java
+public interface HandlerInterceptor {  
+    /**
+    * 预处理回调方法，实现处理器的预处理（如登录检查），第三个参数为响应的处理器（如我们上一章的Controller实现）
+    * 返回值：true表示继续流程（如调用下一个拦截器或处理器）；
+    * false表示流程中断（如登录检查失败），不会继续调用其他的拦截器或处理器，此时我们需要通过response来产生响应
+    */
+    boolean preHandle(  
+            HttpServletRequest request, HttpServletResponse response,   
+            Object handler)   
+            throws Exception;  
+    /**
+    * 后处理回调方法，实现处理器的后处理（但在渲染视图之前），此时我们可以通过modelAndView（模型和视图对象）对模型数据进行处理或对视图进行处理，modelAndView也可能为null。
+    */
+    void postHandle(  
+            HttpServletRequest request, HttpServletResponse response,   
+            Object handler, ModelAndView modelAndView)   
+            throws Exception;  
+    /**
+    * 整个请求处理完毕回调方法，即在视图渲染完毕时回调，如性能监控中我们可以在此记录结束时间并输出消耗时间 ，
+    * 还可以进行一些资源清理，类似于try-catch-finally中的finally，但仅调用处理器执行链中preHandle返回true的拦截器的afterCompletion。
+    */
+    void afterCompletion(  
+            HttpServletRequest request, HttpServletResponse response,   
+            Object handler, Exception ex)  
+            throws Exception;  
+}   
+```
+
+
 ## MyBatis原理
 **MyBatis完成2件事情**
 
@@ -80,15 +120,15 @@ SpringMVC流程
 **MyBatis的主要成员**
 
 1. Configuration        MyBatis所有的配置信息都保存在Configuration对象之中，配置文件中的大部分配置都会存储到该类中
-2. SqlSession            作为MyBatis工作的主要顶层API，表示和数据库交互时的会话，完成必要数据库增删改查功能
-3. Executor               MyBatis执行器，是MyBatis 调度的核心，负责SQL语句的生成和查询缓存的维护
-4. StatementHandler 封装了JDBC Statement操作，负责对JDBC statement 的操作，如设置参数等
-5. ParameterHandler  负责对用户传递的参数转换成JDBC Statement 所对应的数据类型
-6. ResultSetHandler   负责将JDBC返回的ResultSet结果集对象转换成List类型的集合
+2. SqlSession           作为MyBatis工作的主要顶层API，表示和数据库交互时的会话，完成必要数据库增删改查功能
+3. Executor             MyBatis执行器，是MyBatis 调度的核心，负责SQL语句的生成和查询缓存的维护
+4. StatementHandler     封装了JDBC Statement操作，负责对JDBC statement 的操作，如设置参数等
+5. ParameterHandler     负责对用户传递的参数转换成JDBC Statement 所对应的数据类型
+6. ResultSetHandler     负责将JDBC返回的ResultSet结果集对象转换成List类型的集合
 7. TypeHandler          负责java数据类型和jdbc数据类型(也可以说是数据表列类型)之间的映射和转换
-8. MappedStatement  MappedStatement维护一条select|update|delete|insert节点的封装
-9. SqlSource              负责根据用户传递的parameterObject，动态地生成SQL语句，将信息封装到BoundSql对象中，并返回
-10. BoundSql              表示动态生成的SQL语句以及相应的参数信息
+8. MappedStatement      MappedStatement维护一条select|update|delete|insert节点的封装
+9. SqlSource            负责根据用户传递的parameterObject，动态地生成SQL语句，将信息封装到BoundSql对象中，并返回
+10. BoundSql            表示动态生成的SQL语句以及相应的参数信息
 
 
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-2.jpg)

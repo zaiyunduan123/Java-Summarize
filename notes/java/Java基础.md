@@ -68,35 +68,76 @@ compareTo()
    }
 ```
 
-## 浮点型数据的精度,怎么解决精度丢失
-浮点型数据的类型有两种，一是单精度浮点数，二是双精度浮点数。
-
-浮点型数据的精度取决于浮点小数结构：
-
-32位单精度浮点型数的二进制位的第0-22位为2进制小数尾值，决定了它的精度在2的负23次方，1/(2^23)=0.0000001
-
-64位双精度浮点型数的二进制位的第0-52位为2进制小数尾值，决定了它的精度在2的负52次方，1/(2^52)=2.2e-16
-
-在文本框输出时
-
-32位浮点型数有7位小数精度（十进制）           .3333333
-
-64位浮点型数有15位小数精度（十进制）         .333333333333333
-
-使用BigDecimal解决精度丢失
+## java中double和float精度丢失问题及解决方法
 ```java
-BigDecimal a = new BigDecimal();
-BigDecimal一共有4个构造方法
-
-BigDecimal(int) 创建一个具有参数所指定整数值的对象。
-
-BigDecimal(double) 创建一个具有参数所指定双精度值的对象。
-
-BigDecimal(long) 创建一个具有参数所指定长整数值的对象。
-
-BigDecimal(String) 创建一个具有参数所指定以字符串表示的数值的对象。
+ System.out.println(0.11+2001299.32);
 ```
+控制台输出2001299.4300000002
 
+在需要精确的表示两位小数时我们需要把他们转换为BigDecimal对象，然后再进行运算。
+
+另外需要注意
+
+使用BigDecimal(double val)构造函数时仍会存在精度丢失问题，建议使用BigDecimal(String val)
+
+
+### BigDecimal
+```java
+public BigDecimal(double val)
+```
+将 double 转换为 BigDecimal，后者是 double 的二进制浮点值准确的十进制表示形式。返回的 BigDecimal 的标度是使 (10scale × val) 为整数的最小值。
+注：
+
+1. 此构造方法的结果有一定的不可预知性。有人可能认为在 Java 中写入 new BigDecimal(0.1) 所创建的 BigDecimal 正好等于 0.1（非标度值 1，其标度为 1），但是它实际上等于 0.1000000000000000055511151231257827021181583404541015625。这是因为 0.1 无法准确地表示为 double（或者说对于该情况，不能表示为任何有限长度的二进制小数）。这样，传入 到构造方法的值不会正好等于 0.1（虽然表面上等于该值）。
+2. 另一方面，String 构造方法是完全可预知的：写入 new BigDecimal("0.1") 将创建一个 BigDecimal，它正好 等于预期的 0.1。因此，比较而言，通常建议优先使用 String 构造方法。
+3. 当 double 必须用作 BigDecimal 的源时，请注意，此构造方法提供了一个准确转换；它不提供与以下操作相同的结果：先使用 Double.toString(double) 方法，然后使用 BigDecimal(String) 构造方法，将 double 转换为 String。要获取该结果，请使用 static valueOf(double) 方法。
+
+## 注解
+
+### 元注解（4个）
+
+1. @Target – 作用域
+- ElementType.TYPE 用于描述类、接口或enum声明
+- ElementType.FIELD 用于描述实例变量
+- ElementType.METHOD 方法声明
+- ElementType.PARAMETER 参数
+- ElementType.CONSTRUCTOR 构造器
+- ElementType.LOCAL_VARIABLE 局部变量
+- ElementType.ANNOTATION_TYPE 另一个注释
+- ElementType.PACKAGE  包
+
+2. @Retention 生命周期,定义了该Annotation被保留的时间长短
+- RetentionPolicy.SOURCE – 在源文件中有效（即源文件保留）
+- RetentionPolicy.CLASS – 在class文件中有效（即class保留）
+- RetentionPolicy.RUNTIME– 在运行时有效（即运行时保留）
+
+3.  @Documented  是否生成javadoc文档。
+
+4. @Inherited  是否被子类继承
+
+### 自定义注解
+使用@interface自定义注解时，自动继承了java.lang.annotation.Annotation接口，由编译程序自动完成其他细节。在定义注解时，不能继承其他的注解或接口。
+@interface用来声明一个注解，其中的每一个方法实际上是声明了一个配置参数。方法的名称就是参数的名称，返回值类型就是参数的类型（返回值类型只能是基本类型、Class、String、enum）。可以通过default来声明参数的默认值。
+
+格式：public @interface 注解名 {定义体}
+
+```java
+/**
+ * 水果名称注解
+ */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface FruitName {
+    String value() default "";
+}
+```
+```java
+public class Apple {
+    @FruitName("Apple")
+    private String appleName;
+    }
+```
 
 ## 创建一个类的几种方法?
 
