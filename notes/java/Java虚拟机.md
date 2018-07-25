@@ -211,3 +211,42 @@ public void doSomething(Object A){
 1. 用栈把递归转换成非递归
 2. 使用static对象替代nonstatic局部对象
 3. 增大堆栈大小值
+
+### 案例分析
+```java
+public class StaticTest {
+
+    public static void main(String[] args) {
+        staticFunction();
+    }
+    
+    static StaticTest st = new StaticTest();
+
+    static {                     //3
+        System.out.println("1");
+    }
+
+    {
+        System.out.println("2"); //1
+    }
+
+    StaticTest() {               //2
+        System.out.println("3");   
+        System.out.println("a=" + a + ",b=" + b);
+    }
+
+    public static void staticFunction() {
+        System.out.println("4");//4
+    }
+
+    int a = 110;
+    static int b = 112;
+}
+```
+执行结果
+
+2
+3
+a=110,b=0
+1
+4
