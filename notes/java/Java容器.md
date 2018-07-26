@@ -118,3 +118,37 @@ for (int i = 0;i< list1.size();i++){
             }
         }
 ```
+
+## 并发的HashMap为什么会引起死循环？
+线程不安全的HashMap, HashMap在并发执行put操作时会引起死循环，是因为多线程会导致HashMap的Entry链表形成环形数据结构，查找时会陷入死循环
+
+在扩容resize（）方法中，调用transfer方法，把旧表中的元素添加到新表中，这也是引起死循环的根本原因所在
+```java
+do {
+    Entry<K,V> next = e.next; // <--假设线程一执行到这里就被调度挂起了
+    int i = indexFor(e.hash, newCapacity);
+    e.next = newTable[i];
+    newTable[i] = e;
+    e = next;
+} while (e != null);
+```
+执行一：  线程A执行到transfer函数中（1）处挂起（transfer函数代码中有标注）。此时在线程A的栈中
+```java
+e = 3
+next = 7
+```
+
+执行二：线程B执行 transfer函数中的while循环，即会把原来的table变成新一table（线程B自己的栈中），再写入到内存,如下图（假设两个元素在新的hash函数下也会映射到同一个位置）
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-9.jpg)
+
+
+执行三： 线程A解挂，接着执行（看到的仍是旧表），即从transfer代码（1）处接着执行，当前的 e = 3, next = 7, 上面已经描述。
+
+1. 处理元素 3 ， 将 3 放入 线程A自己栈的新table中（新table是处于线程A自己栈中，是线程私有的，不肥线程2的影响），处理3后的图如下：
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-10.jpg)
+2. 线程A再复制元素 7 ， **当前 e = 7 ,而next值由于线程 B 修改了它的引用，所以next 为 3** ，处理后的新表如下图
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-11.jpg)
+3. 由于上面取到的next = 3, 接着while循环，即当前处理的结点为3， next就为null ，退出while循环，执行完while循环后，新表中的内容如下图：
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-12.jpg)
+4. 当操作完成，执行查找时，会陷入死循环！
+

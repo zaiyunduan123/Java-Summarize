@@ -53,6 +53,7 @@
 ### 1、集合类
 - [ArrayList源码分析（基于JDK8）](https://blog.csdn.net/fighterandknight/article/details/61240861)
 - [ConcurrentHashMap总结](http://www.importnew.com/22007.html)
+- [疫苗：JAVA HASHMAP的死循环](https://coolshell.cn/articles/9606.html)
 ### 2、三大框架
 - [CGLIB介绍与原理](https://blog.csdn.net/zghwaicsdn/article/details/50957474)
 - [我们为什么要使用AOP？](http://www.cnblogs.com/xrq730/p/7003082.html)
