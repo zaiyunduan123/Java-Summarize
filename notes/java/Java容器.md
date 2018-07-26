@@ -152,3 +152,23 @@ next = 7
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-12.jpg)
 4. 当操作完成，执行查找时，会陷入死循环！
 
+
+总结：多线程PUT操作时可能会覆盖刚PUT进去的值,扩容操作会让链表形成环形数据结构，形成死循环
+
+
+## ConcurrentHashMap原理
+
+HashTable 在每次同步执行时都要锁住整个结构。ConcurrentHashMap 锁的方式是稍微细粒度的。 ConcurrentHashMap 将 hash 表分为 16 个桶（默认值）
+
+Java7
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-13.jpg)
+
+ConcurrentHashMap 类中包含两个静态内部类 HashEntry 和 Segment。HashEntry 用来封装映射表的键 / 值对；Segment 用来充当锁的角色，每个 Segment 对象守护整个散列映射表的若干个桶。每个桶是由若干个 HashEntry 对象链接起来的链表。一个 ConcurrentHashMap 实例中包含由若干个 Segment 对象组成的数组。
+
+Java8
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-14.jpg)
+Java 8为进一步提高并发性，摒弃了分段锁的方案，而是直接使用一个大的数组。同时为了提高哈希碰撞下的寻址性能，Java 8在链表长度超过一定阈值（8）时将链表（寻址时间复杂度为O(N)）转换为红黑树（寻址时间复杂度为O(long(N))
+
+Java 8的ConcurrentHashMap同样是通过Key的哈希值与数组长度取模确定该Key在数组中的索引。
+
+对于put操作，如果Key对应的数组元素为null，则通过CAS操作将其设置为当前值。如果Key对应的数组元素（也即链表表头或者树的根元素）不为null，则对该元素使用synchronized关键字申请锁，然后进行操作。如果该put操作使得当前链表长度超过一定阈值，则将该链表转换为树，从而提高寻址效率。

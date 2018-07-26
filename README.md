@@ -16,12 +16,11 @@
 
 -  [JAVA虚拟机](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
 
-
 -  [JAVA并发](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%B9%B6%E5%8F%91.md)
 
 -  [JAVA容器](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/java/Java%E5%AE%B9%E5%99%A8.md)
 
-
+-  [锁汇总](https://github.com/zaiyunduan123/Java_ecosystem/blob/master/doc/lock.md)
 ## :open_file_folder: 数据库
 -  [MySQL](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/MySQL.md)
 -  [Redis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/Redis.md)
@@ -61,6 +60,7 @@
 ### 3、Redis/Mysql
 - [Redis到底是多线程还是单线程？](https://blog.csdn.net/bird73/article/details/79792548)
 - [数据库_MySQL_由浅入深理解索引的实现](https://blog.csdn.net/u010003835/article/details/51563348)
+- [缓存穿透，缓存击穿，缓存雪崩解决方案分析](https://blog.csdn.net/zeb_perfect/article/details/54135506)
 ### 4、多线程
 - [ThreadLocal从源码分析总结到内存泄漏](http://www.cnblogs.com/qiuyong/p/7091689.html)
 - [Java中Synchronized的用法](https://blog.csdn.net/luoweifu/article/details/46613015)

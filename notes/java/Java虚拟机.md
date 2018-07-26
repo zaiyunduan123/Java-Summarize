@@ -212,41 +212,9 @@ public void doSomething(Object A){
 2. 使用static对象替代nonstatic局部对象
 3. 增大堆栈大小值
 
-### 案例分析
-```java
-public class StaticTest {
 
-    public static void main(String[] args) {
-        staticFunction();
-    }
-    
-    static StaticTest st = new StaticTest();
+## 逃逸分析
+逃逸是指在某个方法之内创建的对象，除了在方法体之内被引用之外，还在方法体之外被其它变量引用到；这样带来的后果是在该方法执行完毕之后，该方法中创建的对象将无法被GC回收，由于其被其它变量引用。正常的方法调用中，方法体中创建的对象将在执行完毕之后，将回收其中创建的对象；故由于无法回收，即成为逃逸。
 
-    static {                     //3
-        System.out.println("1");
-    }
+逃逸分析可以分析出某个对象是否永远只在某个方法、线程的范围内，并没有“逃逸”出这个范围，逃逸分析的一个结果就是对于某些未逃逸对象可以直接在栈上分配，由于该对象一定是局部的，所以栈上分配不会有问题。
 
-    {
-        System.out.println("2"); //1
-    }
-
-    StaticTest() {               //2
-        System.out.println("3");   
-        System.out.println("a=" + a + ",b=" + b);
-    }
-
-    public static void staticFunction() {
-        System.out.println("4");//4
-    }
-
-    int a = 110;
-    static int b = 112;
-}
-```
-执行结果
-
-2
-3
-a=110,b=0
-1
-4
