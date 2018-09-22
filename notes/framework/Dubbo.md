@@ -23,7 +23,7 @@
 
 ### Dubbo架构具有连通性、健壮性、伸缩性、升级性四个特点
 
-连通性
+**连通性**
 
 1.  注册中心：负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，压力较小
 2.  监控中心：负责统计各服务调用次数，调用时间等，统计先在内存汇总后每分钟一次发送到监控中心服务器，并以报表展示
@@ -36,7 +36,7 @@
 
 
 
-健壮性
+**健壮性**
 
 1. 监控中心宕掉不影响使用，只是丢失部分采样数据
 2. 数据库宕掉后，注册中心仍能通过缓存提供服务列表查询，但不能注册新服务
@@ -45,12 +45,12 @@
 5. 服务提供者无状态，任意一台宕掉后，不影响使用
 6. 服务提供者全部宕掉后，服务消费者应用将无法使用，并无限次重连等待服务提供者恢复
 
-伸缩性
+**伸缩性**
 
 1. 注册中心为对等集群，可动态增加机器部署实例，所有客户端将自动发现新的注册中心
 2. 服务提供者无状态，可动态增加机器部署实例，注册中心将推送新的服务提供者信息给消费者
 
-升级性
+**升级性**
 
 1. 当服务集群规模进一步扩大，带动治理结构进一步升级 
 2. 需要实现动态部署,进行流量计算，现有分布式服务架构不会带来阻力
@@ -70,7 +70,7 @@ Dubbo内核包括四个：SPI（模仿JDK的SPI）、AOP（模仿Spring）、IOC
 
 
 
-SPI的设计目标：
+### SPI的设计目标：
 
 1. 面向对象的设计里，模块之间基于接口编程，模块之间不对实现类进行硬编码（硬编码：数据直接嵌入到程序）
 2. 一旦代码涉及具体的实现类，就违反了可拔插的原则，如果需要替换一种实现，就需要修改代码
@@ -78,20 +78,20 @@ SPI的设计目标：
 4. 为某个接口寻找服务实现的机制，有点类似IOC的思想，就是将装配的控制权转移到代码之外
 
 
-SPI的具体约定：
+### SPI的具体约定：
 
 1. 当服务的提供者（provide），提供了一个接口多种实现时，一般会在jar包的META_INF/services/目录下，创建该接口的同名文件，该文件里面的内容就是该服务接口的具体实现类的名称
 2. 当外部加载这个模块的时候，就能通过jar包的META_INF/services/目录的配置文件得到具体的实现类名，并加载实例化，完成模块的装配
 
 
-dubbo为什么不直接使用JDK的SPI？
+### dubbo为什么不直接使用JDK的SPI？
  
 1. JDK标准的SPI会一次性实例化扩展点所有实现，如果有扩展实现初始化很耗时，但如果没用上也加载，会很浪费资源
 2. dubbo的SPI增加了对扩展点IoC和AOP的支持，一个扩展点可以直接setter注入其他扩展点，JDK的SPI是没有的
 
 
 
-dubbo的SPI目的：获取一个实现类的对象
+### dubbo的SPI目的：获取一个实现类的对象
 途径：ExtensionLoader.getExtension(String name)
 实现路径：
 
@@ -119,7 +119,7 @@ ExtensionLoader.getExtensionLoader(Container.class)
 
 - ExtensionFactory objectFactory ：1、构造器 初始化AdaptiveExtensionFactory[ SpiExtensionFactory, SpringExtensionFactory]  2、new一个ExtensionLoader存储在ConcurrentMap< Class< ? >, ExtensionLoader< ? > > EXTENSION_LOADERS
 
-关于objectFactory的一些细节：
+### 关于objectFactory的一些细节：
 
 1. objectFactory 就是ExtensionFactory ，也是通过ExtensionLoader.getExtensionLoader(ExtensionFactory.class)来实现，但objectFactory  = null;
 2. objectFactory 的作用就是为dubbo的IOC提供所有对象
@@ -204,7 +204,7 @@ public @interface Adaptive {
 }
 ```
 
-@adaptive注解在类和方法上的区别：
+### @adaptive注解在类和方法上的区别：
 
 1. 注解在类上：代表人工实现编码，即实现了一个装饰类（设计模式中的装饰模式），例如：ExtensionFactory
 2. 注解在方法上：代表自动生成和编译一个动态的adpative类，例如：Protocol$adpative
@@ -236,7 +236,8 @@ private static final Protocol protocol = ExtensionLoader.getExtensionLoader(Prot
 ```
 上述的调用中使用loadFile()加载配置信息，下面关于loadFile() 的一些细节：
 
-loadFile()的目的：把配置文件META-INF/dubbo/internal/com.alibaba.dubbo.rpc.Protocol的内容存储在缓存变量里面,下面四种缓存变量：
+### loadFile()的目的
+把配置文件META-INF/dubbo/internal/com.alibaba.dubbo.rpc.Protocol的内容存储在缓存变量里面,下面四种缓存变量：
 
 1. cachedAdaptiveClass //如果这个类有Adaptive注解就赋值，而Protocol在这个环节是没有的
 2. cachedWrapperClasses //只有当该class无Adaptive注解，并且构造函数包含目标接口（type），例如protocol里面的spi就只有ProtocolFilterWrapper、ProtocolListenerWrapper能命中
@@ -333,7 +334,7 @@ public class Protocol$Adpative implements Protocol {
 }
 ```
 
-总结：
+### 总结：
 
 1、获取某个SPI接口的adaptive实现类的规则是：
 
@@ -601,7 +602,7 @@ http\://code.alibabatech.com/schema/dubbo/dubbo.xsd=META-INF/dubbo.xsd
 
 
 
-暴露本地服务和暴露远程服务的区别是什么？
+### 暴露本地服务和暴露远程服务的区别是什么？
 
 1. 暴露本地服务：指暴露在用一个JVM里面，不用通过调用zk来进行远程通信。例如：在同一个服务，自己调用自己的接口，就没必要进行网络IP连接来通信。
 2. 暴露远程服务：指暴露给远程客户端的IP和端口号，通过网络来实现通信。
@@ -852,7 +853,7 @@ ReferenceBean.getObject()
                     
 ```
 
- 服务引用整体架构设计图
+###  服务引用整体架构设计图
 
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-8.png)
 
@@ -1182,7 +1183,7 @@ loadbalance负载均衡有四个实现类
 3. LeastActiveLoadBalance：最少活跃调用数，相同活跃数的随机，活跃数指调用前后计数差。使慢的提供者收到更少请求，因为越慢的提供者的调用前后计数差会越大。
 4. ConsistentHash LoadBalance：一致性Hash，相同参数的请求总是发到同一提供者。当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。
 
-### dubbo实现SOA的服务降级、
+### dubbo实现SOA的服务降级
 
 什么是服务开关？
 - 先讲一下开关的由来，例如淘宝在11月11日做促销活动，在交易下单环节，可能需要调用A、B、C三个接口来完成，但是其实A和B是必须的，  C只是附加的功能（例如在下单的时候做一下推荐，或push消息），可有可无，在平时系统没有压力，容量充足的情况下，调用下没问题，但是在类似店庆之类的大促环节， 系统已经满负荷了，这时候其实完全可以不去调用C接口，怎么实现这个呢？  改代码？
@@ -1384,7 +1385,7 @@ public class DefaultFuture implements ResponseFuture {
 
 ## 10、Dubbo网络通信的编解码
 
-什么是编码、解码？
+### 什么是编码、解码？
 
 1. 编码（Encode）称为序列化（serialization），它将对象序列化为字节数组，用于网络传输、数据持久化或者其它用途。
 2. 解码（Decode）反序列化（deserialization）把从网络、磁盘等读取的字节数组还原成原始对象（通常是原始对象的拷贝），以方便后续的业务逻辑操作。
@@ -1392,12 +1393,12 @@ public class DefaultFuture implements ResponseFuture {
 
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-12.png)
 
-tcp 为什么会出现粘包 拆包的问题？
+### tcp 为什么会出现粘包 拆包的问题？
 
 1.  应用程序写入数据的字节大小大于套接字发送缓冲区的大小
 2. 可能是IP分片传输导致的，也可能是传输过程中丢失部分包导致出现的半包，还有可能就是一个包可能被分成了两次传输，在取数据的时候，先取到了一部分（还可能与接收的缓冲区大小有关系），总之就是一个数据包被分成了多次接收。
 
-tcp 怎么解决粘包 拆包的问题？
+### tcp 怎么解决粘包 拆包的问题？
 
 1. 消息的定长，例如定1000个字节
 2. 就是在包尾增加回车或空格等特殊字符作为切割，典型的FTP协议
@@ -1460,6 +1461,3 @@ consumer 在接收 provider 响应的时候需要把 byte 数组转化成 Respon
         -->DecodeableRpcResult.decode//根据RESPONSE_NULL_VALUE  RESPONSE_VALUE  RESPONSE_WITH_EXCEPTION进行响应的处理
 ```
 
-## 后记
-
-本篇Dubbo源码分析是学习官网和网上博客资料后的个人理解和知识汇总。
