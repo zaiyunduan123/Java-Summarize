@@ -1,7 +1,7 @@
 ## 1、Dubbo的架构原理
 
 ### Dubbo架构图
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-1.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-1.png)
 
 ### 节点角色说明
 
@@ -146,7 +146,7 @@ SPI (Service Provider Interface)
 
 - 而如果是调用方来制定接口，实现方来针对接口来实现不同的实现。调用方来选择自己需要的实现方。
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-2.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-2.png)
 
 当我们选择在调用方和实现方中间引入接口。我们有三种选择：
 
@@ -178,7 +178,7 @@ SPI (Service Provider Interface)
 ### 3、接口位于独立的包中
 如果一个“接口”在一个上下文是API，在另一个上下文是SPI，那么你就可以这么组织
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-3.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-3.png)
 
 
 
@@ -264,7 +264,7 @@ getExtension(String name) //指定对象缓存在cachedInstances；get出来的�
 
 
 可以根据方法的调用得出dubbo的spi流程：
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-4.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-4.png)
 
 
 
@@ -357,7 +357,7 @@ public class Protocol$Adpative implements Protocol {
 
 
 ## 5、Dubbo的动态编译
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-5.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-5.png)
 
 Compile接口定义：
 ```
@@ -446,7 +446,7 @@ dubbo采取通过配置文件来启动container容器，dubbo是使用spring来�
 
 
 dubbo实现通过下面的配置schema自定义配置
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-6.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-6.png)
 
 **完成一个spring的自定义配置一般需要以下5个步骤：**
 
@@ -768,7 +768,7 @@ ServiceBean.onApplicationEvent
 
 ### 服务发布整体架构设计图
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-7.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-7.png)
 ### 重要概念
 
 1、proxyFactory：为了获取一个接口的代理类，例如获取一个远程接口的代理
@@ -854,12 +854,12 @@ ReferenceBean.getObject()
 
  服务引用整体架构设计图
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-8.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-8.png)
 
 
 另外，在Dubbo集群容错部分，给出了服务引用的各功能组件关系图：
  
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-9.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-9.png)
 
 ### directory目录
 通过目录来查找服务，它代表多个invoker，从methodInvokerMap提取，但是他的值是动态，例如注册中心的变更
@@ -904,7 +904,7 @@ public interface Router extends Comparable<Router> {
 3. ScriptRouter：脚本路由
 
 下面是 dubbo 路由服务的类图：
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-11.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-11.png)
 
 
 dubbo 默认会在 AbstractDirectory#setRouters 自动添加 MockInvokersSelector 路由规则。
@@ -1390,7 +1390,7 @@ public class DefaultFuture implements ResponseFuture {
 2. 解码（Decode）反序列化（deserialization）把从网络、磁盘等读取的字节数组还原成原始对象（通常是原始对象的拷贝），以方便后续的业务逻辑操作。
 
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-12.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-12.png)
 
 tcp 为什么会出现粘包 拆包的问题？
 
@@ -1404,7 +1404,7 @@ tcp 怎么解决粘包 拆包的问题？
 3. 将消息分为消息头消息体。例如 dubbo
 
 下面我们来看一下 dubbo 的协议头约定：
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-13.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-13.png)
 dubbo 使用长度为 16 的 byte 数组作为协议头。1 个 byte 对应 8 位。所以 dubbo 的协议头有 128 位 (也就是上图的从 0 到 127)。我们来看一下这 128 位协议头分别代表什么意思。
 
 - 0 ~ 7 ： dubbo 魔数((short) 0xdabb) 高位，也就是 (short) 0xda。
@@ -1462,4 +1462,4 @@ consumer 在接收 provider 响应的时候需要把 byte 数组转化成 Respon
 
 ## 后记
 
-本篇Dubbo源码分析是参考官网和网上博客资料后的个人理解和知识汇总。
+本篇Dubbo源码分析是学习官网和网上博客资料后的个人理解和知识汇总。
