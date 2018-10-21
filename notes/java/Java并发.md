@@ -91,13 +91,29 @@ Runtime.getRuntime().availableProcessors();
 ```
 返回了CPU的核心数量。
 
+## Executorshe和ThreaPoolExecutor创建线程池的区别
+- Executors 各个方法的弊端：
+1.  newFixedThreadPool 和 newSingleThreadExecutor:
+主要问题是堆积的请求处理队列可能会耗费非常大的内存，甚至 OOM。
+2. newCachedThreadPool 和 newScheduledThreadPool:
+ 主要问题是线程数最大数是 Integer.MAX_VALUE，可能会创建数量非常多的线程，甚至 OOM。
 
+- ThreaPoolExecutor
+1. 创建线程池方式只有一种，就是走它的构造函数，参数自己指定
+
+
+## CountDownLatch与CyclicBarrier的比较
+CountDownLatch与CyclicBarrier都是用于控制并发的工具类，都可以理解成维护的就是一个计数器，但是这两者还是各有不同侧重点的：
+   
+1. CountDownLatch一般用于某个线程A等待若干个其他线程执行完任务之后，它才执行；而CyclicBarrier一般用于一组线程互相等待至某个状态，然后这一组线程再同时执行；CountDownLatch强调一个线程等多个线程完成某件事情。CyclicBarrier是多个线程互等，等大家都完成，再携手共进。
+2. 调用CountDownLatch的countDown方法后，当前线程并不会阻塞，会继续往下执行；而调用CyclicBarrier的await方法，会阻塞当前线程，直到CyclicBarrier指定的线程全部都到达了指定点的时候，才能继续往下执行；
+3. CountDownLatch方法比较少，操作比较简单，而CyclicBarrier提供的方法更多，比如能够通过getNumberWaiting()，isBroken()这些方法获取当前多个线程的状态，并且CyclicBarrier的构造方法可以传入barrierAction，指定当所有线程都到达时执行的业务功能；
+4. CountDownLatch是不能复用的，而CyclicLatch是可以复用的。
 
 ## 对象锁和静态锁之间的区别
 1. 对象锁用于对象实例方法，
 2. 类锁用于类的静态方法或一个类的class对象。
 3. 类的对象实例可以有很多，不同对象实例的对象锁互不干扰，而每个类只有一个类锁 
-
 
 
 
