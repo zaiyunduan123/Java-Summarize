@@ -1,3 +1,37 @@
+## Redis 内部数据结构
+### 1. 字符串
+
+Redis的字符串叫做[SDS]，即Simple Dynamic String。它的结构是一个带长度信息的字节数组
+
+```c++
+struct SDS<T> {
+T capacity; // 数组容量
+T len; // 数组长度
+byte flags; // 特殊标识位，不理睬它
+byte[] content; // 数组内容
+}
+```
+
+1. content存储真正的字符串内容，capacity表示所分配数组的长度，len表示字符串的实际长度
+
+2. SDS使泛型用T，是因为当字符串比较短时，len和capacity可以使用byte和short来表示
+3. Redis的字符串有两种存储方式，当长度特别短使用`EMB`形式存储，当长度超过44时，使用`raw`形式存储
+
+4. 字符串在长度小于 1M 之前，扩容空间采用加倍策略，也就是保留 100% 的冗余空间。当长度超过 1M 之后，为了避免加倍后的冗余空间过大而导致浪费，每次扩容只会多分配 1M 大小的冗余空间。
+
+### 2. 字典
+
+Redis中的hash结构、zset中value和score值的映射关系、Redis所有的key和value、带过期时间的key都是使用字典（dict）这个数据结构
+
+dict 结构内部包含两个 hashtable，通常情况下只有一个 hashtable 是有值的。但是在 dict 扩容缩容时，需要分配新的 hashtable，然后进行渐进式搬迁，这时候两个 hashtable 存储的分别是旧的 hashtable 和新的 hashtable。待搬迁结束后，旧的 hashtable 被删除，新的 hashtable 取而代之。
+
+
+
+
+
+
+
+
 
 ## redis单线程问题
 单线程指的是网络请求模块使用了一个线程（所以不需考虑并发安全性），即一个线程处理所有网络请求，其他模块仍用了多个线程。
