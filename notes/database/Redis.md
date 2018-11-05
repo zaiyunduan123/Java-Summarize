@@ -21,15 +21,29 @@ byte[] content; // 数组内容
 
 ### 2. 字典
 
-Redis中的hash结构、zset中value和score值的映射关系、Redis所有的key和value、带过期时间的key都是使用字典（dict）这个数据结构
+字典，是一种用于保存键值对的抽象数据结构，Redis中的hash结构、zset中value和score值的映射关系、Redis所有的key和value、带过期时间的key都是使用字典（dict）这个数据结构。
 
-dict 结构内部包含两个 hashtable，通常情况下只有一个 hashtable 是有值的。但是在 dict 扩容缩容时，需要分配新的 hashtable，然后进行渐进式搬迁，这时候两个 hashtable 存储的分别是旧的 hashtable 和新的 hashtable。待搬迁结束后，旧的 hashtable 被删除，新的 hashtable 取而代之。
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-1.png)
 
-
-
-
+字典使用哈希表来作为底层实现，每个字典带有两个哈希表，一个平时使用，另外一个仅在进行渐进式搬迁时使用，这时候两个 hashtable 存储的分别是旧的 hashtable 和新的 hashtable。待搬迁结束后，旧的 hashtable 被删除，新的 hashtable 取而代之。
 
 
+
+扩容：
+
+1. 如果服务器没有正在执行bgsave令，并且哈希表中的元素个数大于等于一维数据的长度，自动开始对dict进行扩容扩容至2倍
+2. 如果服务器正在执行bgsave命令，并且哈希表中的元素个数大于等于一维数据的长度的5倍，才进行强制扩容
+
+缩容：
+
+1. 当元素个数低于数组长度的 10%，Redis 会对 hash 表进行缩容来减少 hash 表的第一维数组空间占用。缩容不会考虑 Redis 是否正在做 bgsave。
+
+
+SAVE和BGSAVE的区别：
+
+1. SAVE  保存是阻塞主进程，客户端无法连接redis，等SAVE完成后，主进程才开始工作，客户端可以连接
+
+2. BGSAVE  是fork一个save的子进程，在执行save过程中，不影响主进程，客户端可以正常链接redis，等子进程fork执行save完成后，通知主进程，子进程关闭。很明显BGSAVE方式比较适合线上的维护操作，两种方式的使用一定要了解清楚在谨慎选择。
 
 
 
