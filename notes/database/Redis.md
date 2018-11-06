@@ -45,10 +45,59 @@ SAVE和BGSAVE的区别：
 
 2. BGSAVE  是fork一个save的子进程，在执行save过程中，不影响主进程，客户端可以正常链接redis，等子进程fork执行save完成后，通知主进程，子进程关闭。很明显BGSAVE方式比较适合线上的维护操作，两种方式的使用一定要了解清楚在谨慎选择。
 
+### 3. 压缩列表
+
+zset 和 hash 容器对象在元素个数较少的时候，采用压缩列表 (ziplist) 进行存储。压缩列表是一块连续的内存空间，元素之间紧挨着存储，没有任何冗余空隙。
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-2.png)
+
+- zlbytes：4字节，记录整个压缩列表占用内存的字节数
+- zltail：4字节，记录压缩列表尾部节点距离起始地址的偏移量
+- zllen：2字节，记录压缩列表包含的节点数量
+- entry：不定，列表中的每个节点
+- zlend：1字节，特殊值0xFF，标记压缩列表的结束
 
 
-## redis单线程问题
-单线程指的是网络请求模块使用了一个线程（所以不需考虑并发安全性），即一个线程处理所有网络请求，其他模块仍用了多个线程。
+
+增加元素：
+
+1. 因为 ziplist 都是紧凑存储，没有冗余空间 。意味着插入一个新的元素就需要调用 realloc 扩展内存。取决于内存分配器算法和当前的 ziplist 内存大小，realloc 可能会重新分配新的内存空间，并将之前的内容一次性拷贝到新的地址，也可能在原有的地址上进行扩展，这时就不需要进行旧内容的内存拷贝。
+2. 如果 ziplist 占据内存太大，重新分配内存和拷贝内存就会有很大的消耗。所以 ziplist 不适合存储大型字符串，存储的元素也不宜过多。
+
+级联更新：
+
+1. 当前某个 entry 之前的节点 从小于254字节，变成大于等于254字节， 那么当前entry 的 previous_entry_length 从1字节变成5字节。如果因为从1字节变成5字节，使自己跨越了从小于254字节，到过了254字节这条线，就又会引起下一个节点的扩容。
+2. 最坏的情况是：所有entry都是刚好处于250-253字节之间，然后在链表头插入一个大于等于254字节的entry，此时会触发全链级联更新。
+3. 删除中间的某个节点也可能会导致级联更新
+
+
+
+### 4. 快速列表
+
+考虑到链表的附加空间相对太高，prev 和 next 指针就要占去 16 个字节 (64bit 系统的指针是 8 个字节)，另外每个节点的内存都是单独分配，会加剧内存的碎片化，影响内存管理效率。后续版本对列表数据结构进行了改造，使用 quicklist 代替了 ziplist 和 linkedlist。
+
+```c++
+typedef struct quicklist {
+    quicklistNode *head;        // 指向quicklist的头部
+    quicklistNode *tail;        // 指向quicklist的尾部
+    unsigned long count;        // 列表中所有数据项的个数总和
+    unsigned int len;           // quicklist节点的个数，即ziplist的个数
+    int fill : 16;              // ziplist大小限定，由list-max-ziplist-size给定
+    unsigned int compress : 16; // 节点压缩深度设置，由list-compress-depth给定
+} quicklist;
+
+```
+
+
+
+quicklist 是 ziplist 和 linkedlist 的混合体，它将 linkedlist 按段切分，每一段使用 ziplist 来紧凑存储，多个 ziplist 之间使用双向指针串接起来。
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-3.png)
+
+1. quicklist 内部默认单个 ziplist 长度为 8k 字节，超出了这个字节数，就会新起一个 ziplist。ziplist 的长度由配置参数list-max-ziplist-size决定。
+2. quicklist 默认的压缩深度是 0，也就是不压缩。压缩的实际深度由配置参数list-compress-depth决定。为了支持快速的 push/pop 操作，quicklist 的首尾两个 ziplist 不压缩，此时深度就是 1。如果深度为 2，就表示 quicklist 的首尾第一个 ziplist 以及首尾第二个 ziplist 都不压缩。
+
+
 
 ## 为什么说redis能够快速执行
 
