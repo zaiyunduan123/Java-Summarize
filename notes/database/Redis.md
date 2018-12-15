@@ -101,7 +101,7 @@ quicklist 是 ziplist 和 linkedlist 的混合体，它将 linkedlist 按段切�
 ### 5. 跳跃列表
 Redis 的 zset 是一个复合结构，一方面它需要一个 hash 结构来存储 value 和 score 的对应关系，另一方面需要提供按照 score 来排序的功能，还需要能够指定 score 的范围来获取 value 列表的功能，这就需要另外一个结构「跳跃列表」。
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-4.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-4.png)
 
 图中只画了四层，Redis 的跳跃表共有 64 层，意味着最多可以容纳 2^64 次方个元素。每一个 kv 块对应的结构如下面的代码中的zslnode结构，kv header 也是这个结构，只不过 value 字段是 null 值——无效的，score 是 Double.MIN_VALUE，用来垫底的。kv 之间使用指针串起来形成了双向链表结构，它们是 有序 排列的，从小到大。不同的 kv 层高可能不一样，层数越高的 kv 越少。同一层的 kv 会使用指针串起来。每一个层元素的遍历都是从 kv header 出发。
 

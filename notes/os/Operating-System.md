@@ -56,3 +56,8 @@ ln     source     dist     #   建立硬连接
 3. CPU切换到内核态, 并跳到位于内存指定位置的指令, 这些指令是操作系统的一部分, 他们具有内存保护, 不可被用户态程序访问
 4. 这些指令称之为陷阱(trap)或者系统调用处理器(system call handler). 他们会读取程序放入内存的数据参数, 并执行程序请求的服务
 5. 系统调用完成后, 操作系统会重置CPU为用户态并返回系统调用的结果
+
+## linux内核map图
+
+http://makelinux.net/kernel_map/
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/os-2.png)
