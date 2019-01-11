@@ -6,7 +6,7 @@
 ### 节点角色说明
 
 |节点|	角色说明|
-| ------- | ---- | 
+| ------- | ---- |
 |Provider|	暴露服务的服务提供方|
 |Consumer	|调用远程服务的服务消费方|
 |Registry |	服务注册与发现的注册中心|
@@ -85,7 +85,7 @@ Dubbo内核包括四个：SPI（模仿JDK的SPI）、AOP（模仿Spring）、IOC
 
 
 ### dubbo为什么不直接使用JDK的SPI？
- 
+
 1. JDK标准的SPI会一次性实例化扩展点所有实现，如果有扩展实现初始化很耗时，但如果没用上也加载，会很浪费资源
 2. dubbo的SPI增加了对扩展点IoC和AOP的支持，一个扩展点可以直接setter注入其他扩展点，JDK的SPI是没有的
 
@@ -101,6 +101,7 @@ Dubbo内核包括四个：SPI（模仿JDK的SPI）、AOP（模仿Spring）、IOC
 
 
 ### ExtensionLoader
+ExtensionLoader扩展点加载器，是扩展点的查找，校验，加载等核心逻辑的实现类，几乎所有特性都在这个类中实现
 
 从ExtensionLoader.getExtensionLoader（Class< Type > type）讲起
 
@@ -117,7 +118,11 @@ ExtensionLoader.getExtensionLoader(Container.class)
 
 - Class< ? > type: 构造器 初始化要得到的接口名
 
-- ExtensionFactory objectFactory ：1、构造器 初始化AdaptiveExtensionFactory[ SpiExtensionFactory, SpringExtensionFactory]  2、new一个ExtensionLoader存储在ConcurrentMap< Class< ? >, ExtensionLoader< ? > > EXTENSION_LOADERS
+- ExtensionFactory objectFactory ：
+
+  1、构造器 初始化AdaptiveExtensionFactory[ SpiExtensionFactory, SpringExtensionFactory] 
+
+  2、new一个ExtensionLoader存储在ConcurrentMap< Class< ? >, ExtensionLoader< ? > > EXTENSION_LOADERS
 
 ### 关于objectFactory的一些细节：
 
@@ -263,7 +268,6 @@ getExtension(String name) //指定对象缓存在cachedInstances；get出来的�
     
 ```
 
-
 可以根据方法的调用得出dubbo的spi流程：
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-4.png)
 
@@ -381,8 +385,8 @@ AbstractCompiler是一个抽象类，它通过正则表达式获取到对象的�
 ```
       com.alibaba.dubbo.common.compiler.Compiler compiler = ExtensionLoader.getExtensionLoader(com.alibaba.dubbo.common.compiler.Compiler.class).getAdaptiveExtension();
 ```
-getExtensionLoader （）：new一个ExtensionLoader对象，用到单例模式、工厂模式，然后换成起来
-getAdaptiveExtension() ：为了获取扩展装饰类或代理类的对像，不过有个规则：如果@Adaptive注解在类上就是一个装饰类；如果注解在方法上就是一个动态代理类。
+- getExtensionLoader()：new一个ExtensionLoader对象，用到单例模式、工厂模式，然后换成起来。
+- getAdaptiveExtension()：为了获取扩展装饰类或代理类的对像，不过有个规则：如果@Adaptive注解在类上就是一个装饰类；如果注解在方法上就是一个动态代理类。
 
 ```java
 public abstract class AbstractCompiler implements Compiler {
@@ -430,8 +434,13 @@ public abstract class AbstractCompiler implements Compiler {
 
 ```
 AbstractCompiler：在公用逻辑中，利用正则表达式匹配出源代码中的包名和类名： 
-PACKAGE_PATTERN = Pattern.compile("package\\s+([$_a-zA-Z][$_a-zA-Z0-9\\.]*);"); 
-CLASS_PATTERN = Pattern.compile("class\\s+([$_a-zA-Z][$_a-zA-Z0-9]*)\\s+"); 
+
+- PACKAGE_PATTERN = Pattern.compile("package\\s+([$_a-zA-Z][$_a-zA-Z0-9\\.]*);"); 
+
+- CLASS_PATTERN = Pattern.compile("class\\s+([$_a-zA-Z][$_a-zA-Z0-9]*)\\s+"); 
+
+
+
 然后在JVM中查找看看是否存在：Class.forName(className, true, ClassHelper.getCallerClassLoader(getClass()));存在返回，不存在就使用JavassistCompiler或者是JdkCompiler来执行编译。 
 
 
@@ -530,9 +539,9 @@ public class DubboNamespaceHandler extends NamespaceHandlerSupport {
 }
 ```
 解析器DubboBeanDefinitionParser，代码太长就不贴了，解析器大概作用：从配置文件中通过element.getAttribute(String name)拿到属性的值，赋给bean。
-                                      
-                              
-那么问题来了，dubbo.xsd和DubboNamespaceHandler 、DubboBeanDefinitionParser 这两个类是关联起来呢？第四步来解决这个题
+​                                      
+​                              
+那么问题来了，dubbo.xsd和DubboNamespaceHandler 、DubboBeanDefinitionParser 这两个类是关联起来呢？第四步来解决这个问题
 
 
 ### 4. 编写两个类spring.handlers和spring.schemas串联起所有部件
@@ -779,10 +788,11 @@ ServiceBean.onApplicationEvent
 2. getProxy（）：针对client端，创建接口的代理对象，例如DemoService的接口
 
 2、Wrapper：它类似spring的beanWrapper，它就是包装了一个接口或一个类，可以通过wrapper对实例对象进行赋值以及制定方法的调用
+
 3、Invoker：一个可执行的对象，能够根据方法的名称、参数得到相应的执行结果。
  它里面有一个很重要的方法Result invoke（Invocation invocation），Invocation是包含了需要执行的方法和参数等重要信息，目前只有两个实现类。RpcInvocation 、MockInvocation 
 它有三种类型的Invoker：
-  
+
  1. 本地执行的Invoker  
  2. 远程通信的Invoker  
  3. 多个远程通信执行类的Invoker聚合成集群版的Invoker
@@ -793,14 +803,16 @@ ServiceBean.onApplicationEvent
 2. refer：引用远程服务（用于客户端），通过proxyFactory.getProxy来创建远程的动态代理类，例如DemoDemoService的接口
 
 5、exporter：维护invoder的生命周期
+
 6、exchanger：信息交换层，封装请求相应模式，同步转异步
+
 7、transporter：网络传输层，用来抽象netty和mina的统一接口
-    
-    
-    
-    
-    
-    
+​    
+​    
+​    
+​    
+​    
+​    
 
 ## 8、服务引用设计原理
 下面是服务引用详细的代码跟踪与解析
@@ -859,7 +871,7 @@ ReferenceBean.getObject()
 
 
 另外，在Dubbo集群容错部分，给出了服务引用的各功能组件关系图：
- 
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-9.png)
 
 ### directory目录
@@ -1227,7 +1239,7 @@ dubbo 的通信方式 有3类类型：
 ```
 
 ### 2、 异步，有返回值
-	
+
 这种情况下consumer首先把请求信息发送给provider，这个时候在consumer端不仅把请求方式配置成异步，并且需要RpcContext这个ThreadLocal对象获取到Future对象，然后通过Future#get( )阻塞式获取provider的相应，那么这个Future是如何添加到RpcContext中呢？
 
 在第二小节讲服务发送的时候， 在 DubboInvoke 里面有三种调用方式，之前只具体请求了同步请求的发送方式而且没有异步请求的发送。异步请求发送代码如下：
@@ -1264,12 +1276,13 @@ hello=temp.get();
 
 
 ### 3、异步，变同步（默认的通信方式）
- 
+
 异步变同步其实原理和异步请求的通过 Future#get 等待 provider 响应返回一样，只不过异步有返回值是显示调用而默认是 dubbo 内部把这步完成了。
 
   A. 当前线程怎么让它 “暂停，等结果回来后，再执行”？
   B. socket是一个全双工的通信方式，那么在多线程的情况下，如何知道那个返回结果对应原先那条线程的调用？
-    	通过一个全局唯一的ID来做consumer 和 provider 来回传输。
+​    	
+  通过一个全局唯一的ID来做consumer 和 provider 来回传输。
 
   我们都知道在 consumer 发送请求的时候会调用 HeaderExchangeChannel#request 方法：
 > HeaderExchangeChannel#request
@@ -1460,4 +1473,6 @@ consumer 在接收 provider 响应的时候需要把 byte 数组转化成 Respon
       -->DubboCodec.decodeBody
         -->DecodeableRpcResult.decode//根据RESPONSE_NULL_VALUE  RESPONSE_VALUE  RESPONSE_WITH_EXCEPTION进行响应的处理
 ```
+
+
 
