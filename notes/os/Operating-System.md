@@ -31,12 +31,6 @@
 8. 信号 ( sinal ) ： 信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。
 
 
-## Linux中软链接和硬链接的区别
-ln -s source     dist     #  建立软连接
-ln     source     dist     #   建立硬连接
-建立硬链接时，链接文件和被链接文件必须位于同一个文件系统中，并且不能建立指向目录的硬链接
-1. 硬连接就像一个文件有多个文件名，
-2. 软连接就是产生一个新文件(这个文件内容,实际上就是记当要链接原文件路径的信息)，这个文件指向另一个文件的位置
 
 
 ## 内核态与用户态
@@ -57,7 +51,3 @@ ln     source     dist     #   建立硬连接
 4. 这些指令称之为陷阱(trap)或者系统调用处理器(system call handler). 他们会读取程序放入内存的数据参数, 并执行程序请求的服务
 5. 系统调用完成后, 操作系统会重置CPU为用户态并返回系统调用的结果
 
-## linux内核map图
-
-http://makelinux.net/kernel_map/
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/os-2.png)
