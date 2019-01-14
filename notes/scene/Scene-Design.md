@@ -312,6 +312,12 @@ BASE是Basically Available(基本可用）、Soft state(软状态）和Eventuall
 ACID追求强一致性，BASE追求最终一致性
 
 
+
+
+
+
+## 一致性协议，从2PC到3PC到Paxos到ZAB
+
 ## 2PC（Two-Phase Commit，两阶段提交）
 所谓的两个阶段是指：
 - 第一阶段：准备阶段 (投票阶段)
@@ -347,7 +353,7 @@ ACID追求强一致性，BASE追求最终一致性
 - 缺点：同步阻塞、单点问题、数据不一致、太过保守
 
 
-## 3PC(Three-Phase Commit，三阶段提交)
+## 3PC（Three-Phase Commit，三阶段提交）
 Three-Phase Commit，三阶段提交，分为CanCommit、PreCommit、do Commit三个阶段。
 
 为了避免在通知所有参与者提交事务时，其中一个参与者crash不一致时，就出现了三阶段提交的方式。三阶段提交在两阶段提交的基础上增加了一个preCommit的过程，当所有参与者收到preCommit后，并不执行动作，直到收到commit或超过一定时间后才完成操作。
@@ -405,7 +411,7 @@ Paxos 算法解决的问题是在一个可能发生上述异常的分布式系�
 
 
 ## ZAB协议
-ZAB(Zookeeper Atomic Broadcast)协议是专门为zookeeper设计的一致性协议。ZAB和Paxos是两种不同的协议。ZAB和Paxos最大的不同是，ZAB主要是为分布式主备系统设计的，而Paxos的实现是一致性状态机
+ZAB(Zookeeper Atomic Broadcast)协议是专门为zookeeper设计的一致性协议。
 
 ZAB协议包括两种基本的模式：消息广播和崩溃恢复
 
@@ -420,3 +426,22 @@ ZAB协议包括两种基本的模式：消息广播和崩溃恢复
 2. 数据同步：Leader服务器与其他服务器进行数据同步。
 3. 消息广播：Leader服务器将数据发送给其他服务器。
 
+
+
+## ZAD和Paxos算法的联系和区别
+共同点：
+1. 两者都存在一个类似于Leader进程的角色，由其负责协调多个Follow进程的运行。
+2. Leader进程都会等待超过半数的Follower做出正确的反馈后，才会将一个提案进行提交。
+3. 在ZAB协议中，每个Proposal中都包含了一个epoch值，用来代表当前Leader周期，在Paxos算法中，同样存在这样一个标识，只是名字变成了Ballot。
+
+不同点：
+
+Paxos算法中，一个新的选举产生的主进程会进行两个阶段的工作
+1. 读阶段，新的主进程会通过和所有其他进程进行通信的方式来搜集上一个主进程提出的提案，并将它们提交。
+2. 写阶段，当前主进程开始提出它自己的提案。
+
+ZAB在Paxos基础上额外添加一个同步阶段。同步阶段之前，ZAB协议存在一个和Paxos读阶段类似的发现（Discovery）阶段
+- 同步阶段中，新的Leader会确保存在过半的Follower已经提交了之前Leader周期中的所有事务Proposal
+- 发现阶段的存在，确保所有进程都已经完成对之前所有事物Proposal的提交
+
+ZAB协议主要用于构建一个高可用的分布式数据主备系统，例如ZooKeeper，Paxos算法则是用于构建一个分布式的一致性状态机系统
