@@ -33,6 +33,9 @@
 6. Bridge，桥模式：将抽象部分与它的实现部分相分离，使他们可以独立的变化。 
 7. Flyweight，享元模式
 
+## 23种设计模式彩图
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/design-1.jpg)
+
 
 ## 动态代理和静态代理有什么区别
 ### 静态代理
