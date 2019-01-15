@@ -81,14 +81,75 @@ n[i]为物品i限制的个数
 注意：遍历W时务必从右到左，原因同上
 
 
+## 树的深度优先遍历、广度优先遍历
+对于树形结构主要有两种遍历方式：深度优先遍历和广度优先遍历。
+
+一个简单的树结构图
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/algorithms-2.png) 
+
+
+### 一、深度优先遍历
+
+对于一颗二叉树，深度优先搜索(Depth First Search)是从根节点开始沿着树的深度遍历树的节点，尽可能深的搜索树的分支。上图的深度优先遍历结果为：ABDECFG
+
+深度优先遍历的特点是，从树的根节点开始，先遍历左子树，然后遍历右子树。因此我们可以利用堆栈的先进后出的特点，现将右子树压栈，再将左子树压栈，这样左子树就位于栈顶，可以保证结点的左子树先于右子树被遍历。
+
+我们借助栈结构来实现深度优先遍历，代码如下：
+```java
+Stack<Node> stack = new Stack<Node>();
+List<Node> result = new ArrayList<Node>();
+stack.push(root);
+while (!stack.isEmpty()) {
+	Node top = stack.pop();
+	result.add(top);
+	List<Node> children = top.getChildren();
+	if (children != null && children.size() > 0) {
+		for (int i = children.size() - 1; i >= 0; i--) {
+			stack.push(children.get(i));
+		}
+	}
+}
+```
+### 二、广度优先遍历（层序遍历）
+
+对于一颗二叉树，广度优先搜索（Breadth First Search）是从根节点开始沿着树的宽度依次遍历树的每个节点。上图的遍历结果为：ABCDEFG
+
+如上图所示的二叉树，A 是第一个访问的，然后顺序是 B、C，然后再是 D、E、F、G。
+
+那么，怎样才能来保证这个访问的顺序呢？
+
+借助队列数据结构，由于队列是先进先出的顺序，因此可以先将左子树入队，然后再将右子树入队。这样一来，左子树结点就存在队头，可以先被访问到。
+
+我们借助队列结构来实现树的广度优先遍历，代码如下：
+```java
+Queue<Node> queue = new LinkedBlockingQueue<Node>();
+List<Node> result = new ArrayList<Node>();
+queue.add(root);
+while (!queue.isEmpty()) {
+	Node first = queue.poll();
+	result.add(first);
+	List<Node> children = first.getChildren();
+	if (children != null && children.size() > 0) {
+		for (int i = 0; i < children.size(); i++) {
+			queue.add(children.get(i));
+		}
+	}
+}
+```
+
+
+
 ## 快速排序的思想
 在数组中找到一个基准数（pivot）
 分区，将数组中比基准数大的放到它的右边，比基准数小的放到它的左边
 继续对左右区间重复第二步，直到各个区间只有一个数，这时候，数组也就有序了。
 
-## 快速排序算法是不稳定的算法
+### 快速排序算法是不稳定的算法
 27 23 27 3
+
 以第一个27作为pivot中心点，则27与后面那个3交换，形成
+
 3 23 27 27，排序经过一次结束，但最后那个27在排序之初先于初始位置3那个27，所以不稳定。
 
 
