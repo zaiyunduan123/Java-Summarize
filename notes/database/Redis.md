@@ -1,3 +1,12 @@
+## Redis是什么？
+Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。
+
+Redis 与其他 key - value 缓存产品有以下三个特点：
+- Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。
+- Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。
+- Redis支持数据的备份，即master-slave模式的数据备份。
+
+
 ## Redis 内部数据结构
 ### 1. 字符串
 
@@ -104,6 +113,45 @@ Redis 的 zset 是一个复合结构，一方面它需要一个 hash 结构来�
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-4.png)
 
 图中只画了四层，Redis 的跳跃表共有 64 层，意味着最多可以容纳 2^64 次方个元素。每一个 kv 块对应的结构如下面的代码中的zslnode结构，kv header 也是这个结构，只不过 value 字段是 null 值——无效的，score 是 Double.MIN_VALUE，用来垫底的。kv 之间使用指针串起来形成了双向链表结构，它们是 有序 排列的，从小到大。不同的 kv 层高可能不一样，层数越高的 kv 越少。同一层的 kv 会使用指针串起来。每一个层元素的遍历都是从 kv header 出发。
+
+
+
+
+## Redis的应用
+### 1、分布式锁
+Redis为单进程单线程模式，采用队列模式将并发访问变成串行访问，且多客户端对Redis的连接并不存在竞争关系。redis的SETNX命令可以方便的实现分布式锁。
+
+分布式锁本质上要实现的目标就是在 Redis 里面占一个“茅坑”，当别的进程也要来占时，发现已经有人蹲在那里了，就只好放弃或者稍后再试。
+
+占坑一般是使用 setnx(set if not exists) 指令，只允许被一个客户端占坑。先来先占， 用完了，再调用 del 指令释放茅坑。
+
+setNX（SET if Not eXists 如果不存在，则 SET）
+1. 当 key 不存在，将 key 的值设为 value 。
+2. 若给定的 key 已经存在，则 SETNX 不做任何动作。
+
+**如果一个持有锁的客户端失败或崩溃了不能释放锁，该怎么解决？**
+
+如果一个客户端持有的锁超时了，任何客户端都可以检测超时并删除该锁，那么这里就会存在竞态关系，
+```java
+C0操作超时了，但它还持有着锁，C1和C2读取lock.foo检查时间戳，先后发现超时了。 
+C1 发送DEL lock.foo 
+C1 发送SETNX lock.foo 并且成功了。 
+C2 发送DEL lock.foo 
+C2 发送SETNX lock.foo 并且成功了。 
+这样一来，C1，C2都拿到了锁！
+```
+所以使用执行下面的命令解决上面问题
+```java
+GETSET lock.foo <current Unix time + lock timeout + 1>
+```
+通过GETSET，C1拿到的时间戳如果是超时的，那就说明中间锁超时并且中间没有被其他客户端抢先获得锁，因此C1拿到锁。 
+如果在C1之前，有个叫C2的客户端比C1快一步执行了上面的操作，那么C1拿到的时间戳是个未超时的值，这时C1没有如期获得锁，需要再次等待或重试。尽管C1没拿到锁，但它改写了C2设置的锁的超时值，不过这一点非常微小的误差带来的影响可以忽略不计。 
+
+
+
+
+
+
 
 ## 为什么说redis能够快速执行
 
