@@ -10,11 +10,11 @@
   - [元注解（4个）](#%E5%85%83%E6%B3%A8%E8%A7%A34%E4%B8%AA)
   - [自定义注解](#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3)
 - [Arrays.sort()原理分析](#arrayssort%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90)
-  - [源码中的快速排序，主要做了以下几个方面的优化：](#%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E4%B8%BB%E8%A6%81%E5%81%9A%E4%BA%86%E4%BB%A5%E4%B8%8B%E5%87%A0%E4%B8%AA%E6%96%B9%E9%9D%A2%E7%9A%84%E4%BC%98%E5%8C%96)
+  - [源码中的快速排序，主要做了以下几个方面的优化](#%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E4%B8%BB%E8%A6%81%E5%81%9A%E4%BA%86%E4%BB%A5%E4%B8%8B%E5%87%A0%E4%B8%AA%E6%96%B9%E9%9D%A2%E7%9A%84%E4%BC%98%E5%8C%96)
 - [foreach和while的区别(编译之后)](#foreach%E5%92%8Cwhile%E7%9A%84%E5%8C%BA%E5%88%AB%E7%BC%96%E8%AF%91%E4%B9%8B%E5%90%8E)
 - [创建一个类的几种方法?](#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95)
 - [Redirect和forward](#redirect%E5%92%8Cforward)
-- [什么是泛型，为什么要使用以及类型擦除。](#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4)
+- [什么是泛型，为什么要使用以及类型擦除](#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4)
 - [Object跟这些标记符代表的java类型有啥区别呢？](#object%E8%B7%9F%E8%BF%99%E4%BA%9B%E6%A0%87%E8%AE%B0%E7%AC%A6%E4%BB%A3%E8%A1%A8%E7%9A%84java%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%95%A5%E5%8C%BA%E5%88%AB%E5%91%A2)
 - [Java 异常的体系结构](#java-%E5%BC%82%E5%B8%B8%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84)
 - [throw和throws区别](#throw%E5%92%8Cthrows%E5%8C%BA%E5%88%AB)
@@ -27,10 +27,11 @@
 - [Java中wait 和sleep 方法比较](#java%E4%B8%ADwait-%E5%92%8Csleep-%E6%96%B9%E6%B3%95%E6%AF%94%E8%BE%83)
 - [hashCode和equals方法的关系](#hashcode%E5%92%8Cequals%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB)
 - [Object类中有哪些方法](#object%E7%B1%BB%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95)
-- [String s=new String("xyz")究竟创建String Object分为两种情况：](#string-snew-stringxyz%E7%A9%B6%E7%AB%9F%E5%88%9B%E5%BB%BAstring-object%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5)
+- [String s=new String("xyz")究竟创建String Object分为两种情况](#string-snew-stringxyz%E7%A9%B6%E7%AB%9F%E5%88%9B%E5%BB%BAstring-object%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5)
 - [什么是值传递和引用传递](#%E4%BB%80%E4%B9%88%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E5%92%8C%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## 抽象类和接口的对比
 | 参数        | 抽象类   |  接口  |
@@ -186,7 +187,7 @@ Java Arrays中提供了对所有类型的排序。其中主要分为Primitive(8�
 
 分析: 长度为6的数组冒泡排序总比较次数最多也就1+2+3+4+5+6=21次，最好情况下只有6次比较。而快排或归并涉及到递归调用等的开销，其时间效率在n较小时劣势就凸显了，因此这里采用了冒泡排序，这也是对快速排序极重要的优化。
 
-### 源码中的快速排序，主要做了以下几个方面的优化：
+### 源码中的快速排序，主要做了以下几个方面的优化
 1. 当待排序的数组中的元素个数较少时，源码中的阀值为7，采用的是插入排序。尽管插入排序的时间复杂度为0(n^2)，但是当数组元素较少时，插入排序优于快速排序，因为这时快速排序的递归操作影响性能。
 
 2. 较好的选择了划分元（基准元素）。能够将数组分成大致两个相等的部分，避免出现最坏的情况。例如当数组有序的的情况下，选择第一个元素作为划分元，将使得算法的时间复杂度达到O(n^2).
@@ -246,7 +247,7 @@ Servlet1调用forward()方法，在服务器端将请求转发给Servlet2；
 最终由Servlet2做出响应。
 
 
-##  什么是泛型，为什么要使用以及类型擦除。
+##  什么是泛型，为什么要使用以及类型擦除
 1. 泛型的本质就是“参数化类型”，也就是说所操作的数据类型被指定为一个参数。
 创建集合时就指定集合元素的数据类型，该集合只能保存其指定类型的元素，
 避免使用强制类型转换。
@@ -463,7 +464,7 @@ public class Object {
 }
 ```
 
-## String s=new String("xyz")究竟创建String Object分为两种情况：
+## String s=new String("xyz")究竟创建String Object分为两种情况
 1. 如果String常理池中，已经创建"xyz"，则不会继续创建，此时只创建了一个对象new String("xyz")；
 2. 如果String常理池中，没有创建"xyz"，则会创建两个对象，一个对象的值是"xyz"，一个对象new String("xyz")。
 
