@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [23种设计模式彩图](#23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%BD%A9%E5%9B%BE)
+- [动态代理和静态代理有什么区别](#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%92%8C%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB)
+  - [静态代理](#%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86)
+  - [动态代理](#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86)
+  - [静态代理与动态代理的区别主要](#%E9%9D%99%E6%80%81%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%BB%E8%A6%81)
+- [JDK中的动态代理和CGLIB](#jdk%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%92%8Ccglib)
+- [实现动态代理的方案有下列几种](#%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9A%84%E6%96%B9%E6%A1%88%E6%9C%89%E4%B8%8B%E5%88%97%E5%87%A0%E7%A7%8D)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 设计模式主要分三个类型:创建型、结构型和行为型。 
 
 **创建型**
@@ -83,7 +98,7 @@
 4. CGLIB缺点：对于final方法，无法进行代理
 
 
-## 实现动态代理的方案有下列几种：
+## 实现动态代理的方案有下列几种
 - jdk 动态代理
 - cglib 动态代理
 - javassist 动态代理

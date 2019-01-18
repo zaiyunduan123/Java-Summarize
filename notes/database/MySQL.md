@@ -1,5 +1,48 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-[TOC]
+- [为什么用自增列作为主键](#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E8%87%AA%E5%A2%9E%E5%88%97%E4%BD%9C%E4%B8%BA%E4%B8%BB%E9%94%AE)
+- [为什么使用数据索引能提高效率](#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E7%B4%A2%E5%BC%95%E8%83%BD%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87)
+- [B+树索引和哈希索引的区别](#b%E6%A0%91%E7%B4%A2%E5%BC%95%E5%92%8C%E5%93%88%E5%B8%8C%E7%B4%A2%E5%BC%95%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [B树和B+树的区别](#b%E6%A0%91%E5%92%8Cb%E6%A0%91%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [为什么说B+比B树更适合实际应用中操作系统的文件索引和数据库索引](#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4b%E6%AF%94b%E6%A0%91%E6%9B%B4%E9%80%82%E5%90%88%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E4%B8%AD%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%96%87%E4%BB%B6%E7%B4%A2%E5%BC%95%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95)
+- [mysql联合索引](#mysql%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95)
+- [什么情况下应不建或少建索引](#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E5%BA%94%E4%B8%8D%E5%BB%BA%E6%88%96%E5%B0%91%E5%BB%BA%E7%B4%A2%E5%BC%95)
+- [MySQL分区](#mysql%E5%88%86%E5%8C%BA)
+  - [什么是分区？](#%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%8C%BA)
+  - [分区与分表的区别](#%E5%88%86%E5%8C%BA%E4%B8%8E%E5%88%86%E8%A1%A8%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [使用场景](#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF)
+  - [限制](#%E9%99%90%E5%88%B6)
+  - [如何判断当前MySQL是否支持分区？](#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8Dmysql%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81%E5%88%86%E5%8C%BA)
+  - [MySQL支持的分区类型有哪些？](#mysql%E6%94%AF%E6%8C%81%E7%9A%84%E5%88%86%E5%8C%BA%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B)
+- [四种隔离级别](#%E5%9B%9B%E7%A7%8D%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB)
+- [对于脏读，不可重复读，幻读的理解](#%E5%AF%B9%E4%BA%8E%E8%84%8F%E8%AF%BB%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E5%B9%BB%E8%AF%BB%E7%9A%84%E7%90%86%E8%A7%A3)
+  - [脏读](#%E8%84%8F%E8%AF%BB)
+  - [不可重复读](#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB)
+  - [幻读](#%E5%B9%BB%E8%AF%BB)
+  - [不可重复读和幻读区别](#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E5%92%8C%E5%B9%BB%E8%AF%BB%E5%8C%BA%E5%88%AB)
+- [关于MVVC](#%E5%85%B3%E4%BA%8Emvvc)
+- [行级锁定](#%E8%A1%8C%E7%BA%A7%E9%94%81%E5%AE%9A)
+  - [优点](#%E4%BC%98%E7%82%B9)
+  - [缺点](#%E7%BC%BA%E7%82%B9)
+- [什么是存储过程](#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B)
+- [MySQL优化](#mysql%E4%BC%98%E5%8C%96)
+- [key和index的区别](#key%E5%92%8Cindex%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [Mysql存储引擎](#mysql%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E)
+  - [MyISAM和InnoDB的区别](#myisam%E5%92%8Cinnodb%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [如何选择](#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9)
+- [mysql主从同步以及原理](#mysql%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E4%BB%A5%E5%8F%8A%E5%8E%9F%E7%90%86)
+  - [使用主从同步的好处](#%E4%BD%BF%E7%94%A8%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E7%9A%84%E5%A5%BD%E5%A4%84)
+  - [主从复制原理](#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86)
+- [MySQL事务原理](#mysql%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86)
+  - [undo 日志文件](#undo-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6)
+  - [redo/undo日志文件](#redoundo%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6)
+- [Join的实现原理](#join%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86)
+  - [优化](#%E4%BC%98%E5%8C%96)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## 为什么用自增列作为主键
 1. 如果我们定义了主键(PRIMARY KEY)，那么InnoDB会选择主键作为聚集索引、如果没有显式定义主键，则InnoDB会选择第一个不包含有NULL值的唯一索引作为主键索引、如果也没有这样的唯一索引，则InnoDB会选择内置6字节长的ROWID作为隐含的聚集索引(ROWID随着行记录的写入而主键递增，这个ROWID不像ORACLE的ROWID那样可引用，是隐含的)。
@@ -211,9 +254,9 @@ Prepared Statements很像存储过程，是一种运行在后台的SQL语句集�
 
 
 
-## Mysql 中 MyISAM 和 InnoDB 的区别有哪些？
+## Mysql存储引擎
 
-### 区别：
+### MyISAM和InnoDB的区别
 
 1. InnoDB支持事务，MyISAM不支持，对于InnoDB每一条SQL语言都默认封装成事务，自动提交，这样会影响速度，所以最好把多条SQL语言放在begin和commit之间，组成一个事务；  
 
@@ -227,7 +270,7 @@ Prepared Statements很像存储过程，是一种运行在后台的SQL语句集�
 
 
 
-### 如何选择：
+### 如何选择
 
 1. 是否要支持事务，如果要请选择innodb，如果不需要可以考虑MyISAM；
 
@@ -243,13 +286,13 @@ Prepared Statements很像存储过程，是一种运行在后台的SQL语句集�
 
 主从同步使得数据可以从一个数据库服务器复制到其他服务器上，在复制数据时，一个服务器充当主服务器（master），其余的服务器充当从服务器（slave）。因为复制是异步进行的，所以从服务器不需要一直连接着主服务器，从服务器甚至可以通过拨号断断续续地连接主服务器。通过配置文件，可以指定复制所有的数据库，某个数据库，甚至是某个数据库上的某个表。
 
-### 使用主从同步的好处：
+### 使用主从同步的好处
 
 1. 通过增加从服务器来提高数据库的性能，在主服务器上执行写入和更新，在从服务器上向外提供读功能，可以动态地调整从服务器的数量，从而调整整个数据库的性能。
 2. 提高数据安全-因为数据已复制到从服务器，从服务器可以终止复制进程，所以，可以在从服务器上备份而不破坏主服务器相应数据
 3. 在主服务器上生成实时数据，而在从服务器上分析这些数据，从而提高主服务器的性能
 
-### 主从复制原理：
+### 主从复制原理
 >1. 主库需要一个线程叫做I/O线程
 >2. 从库需要两个线程完成，一个叫做I/O线程，一个叫做sql线程
 
@@ -283,7 +326,7 @@ H 事务提交
 
 但是单纯使用undo保证原子性和持久性需要在事务提交之前将数据写到磁盘，浪费大量I/O。
 
-### redo/undo 日志文件
+### redo/undo日志文件
 引入redo日志记录数据修改后的值，可以避免数据在事务提交之前必须写入到磁盘的需求，减少I/O。
 ```
 A 事务开始

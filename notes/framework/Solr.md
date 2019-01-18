@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [solr原理](#solr%E5%8E%9F%E7%90%86)
+  - [索引](#%E7%B4%A2%E5%BC%95)
+  - [索引创建](#%E7%B4%A2%E5%BC%95%E5%88%9B%E5%BB%BA)
+  - [搜索步骤](#%E6%90%9C%E7%B4%A2%E6%AD%A5%E9%AA%A4)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 ## solr原理
 
 ### 索引

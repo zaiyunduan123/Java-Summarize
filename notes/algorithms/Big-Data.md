@@ -1,4 +1,21 @@
-## 海量数据处理总结
+# 海量数据处理总结
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [1、分而治之/hash映射 + HashMap统计 + 堆/快速/归并排序](#1%E5%88%86%E8%80%8C%E6%B2%BB%E4%B9%8Bhash%E6%98%A0%E5%B0%84--hashmap%E7%BB%9F%E8%AE%A1--%E5%A0%86%E5%BF%AB%E9%80%9F%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F)
+- [2、多层划分](#2%E5%A4%9A%E5%B1%82%E5%88%92%E5%88%86)
+- [3、Bloom filter/Bitmap](#3bloom-filterbitmap)
+- [4、Trie树/数据库/倒排索引](#4trie%E6%A0%91%E6%95%B0%E6%8D%AE%E5%BA%93%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95)
+  - [Trie树](#trie%E6%A0%91)
+  - [数据库索引](#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95)
+  - [倒排索引](#%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95)
+- [5、外排序](#5%E5%A4%96%E6%8E%92%E5%BA%8F)
+- [6、 分布式处理之Hadoop/MapReduce](#6-%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%84%E7%90%86%E4%B9%8Bhadoopmapreduce)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 
 海量数据处理六种方法：
 1. 分而治之/hash映射 + HashMap统计 + 堆/快速/归并排序

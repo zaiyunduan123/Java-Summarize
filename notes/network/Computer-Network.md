@@ -1,3 +1,40 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [GET 和 POST 区别](#get-%E5%92%8C-post-%E5%8C%BA%E5%88%AB)
+  - [**（GET）**](#get)
+  - [**（POST）**](#post)
+  - [相同点](#%E7%9B%B8%E5%90%8C%E7%82%B9)
+- [dns使用的协议](#dns%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE)
+- [幂等](#%E5%B9%82%E7%AD%89)
+- [Cookies和session区别](#cookies%E5%92%8Csession%E5%8C%BA%E5%88%AB)
+- [TCP粘包和拆包](#tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85)
+  - [1. TCP粘包和拆包产生的原因](#1-tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E4%BA%A7%E7%94%9F%E7%9A%84%E5%8E%9F%E5%9B%A0)
+  - [2. TCP粘包和拆包的解决策略](#2-tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E7%9A%84%E8%A7%A3%E5%86%B3%E7%AD%96%E7%95%A5)
+- [TCP/IP三次握手与四次挥手](#tcpip%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B)
+  - [三次握手](#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B)
+  - [四次挥手](#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B)
+  - [TIME_WAIT](#time_wait)
+  - [CLOSE_WAIT](#close_wait)
+  - [1. 为什么需要 TIME_WAIT 状态？](#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-time_wait-%E7%8A%B6%E6%80%81)
+  - [2. 为什么 TIME_WAIT 状态需要保持 2MSL 这么长的时间？](#2-%E4%B8%BA%E4%BB%80%E4%B9%88-time_wait-%E7%8A%B6%E6%80%81%E9%9C%80%E8%A6%81%E4%BF%9D%E6%8C%81-2msl-%E8%BF%99%E4%B9%88%E9%95%BF%E7%9A%84%E6%97%B6%E9%97%B4)
+  - [3. TCP为什么不是两次连接，而是三次握手？](#3-tcp%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%98%AF%E4%B8%A4%E6%AC%A1%E8%BF%9E%E6%8E%A5%E8%80%8C%E6%98%AF%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B)
+  - [4. 为什么建立连接协议是三次握手，而关闭连接却是四次握手呢？](#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%80%8C%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5%E5%8D%B4%E6%98%AF%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%91%A2)
+  - [5.为什么TIME_WAIT状态还需要等2MSL后才能返回到CLOSED状态？](#5%E4%B8%BA%E4%BB%80%E4%B9%88time_wait%E7%8A%B6%E6%80%81%E8%BF%98%E9%9C%80%E8%A6%81%E7%AD%892msl%E5%90%8E%E6%89%8D%E8%83%BD%E8%BF%94%E5%9B%9E%E5%88%B0closed%E7%8A%B6%E6%80%81)
+- [一次完整的HTTP请求过程](#%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84http%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B)
+- [讲一下长连接](#%E8%AE%B2%E4%B8%80%E4%B8%8B%E9%95%BF%E8%BF%9E%E6%8E%A5)
+- [TCP如何保证可靠传输？](#tcp%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93)
+- [详细介绍http](#%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8Dhttp)
+- [URI和URL的区别](#uri%E5%92%8Curl%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [HTTPS和HTTP的区别](#https%E5%92%8Chttp%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [HTTPS](#https)
+  - [https是如何保证数据传输的安全](#https%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E5%AE%89%E5%85%A8)
+- [网络为什么要分层](#%E7%BD%91%E7%BB%9C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%B1%82)
+- [为什么有IP地址还需要MAC地址](#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89ip%E5%9C%B0%E5%9D%80%E8%BF%98%E9%9C%80%E8%A6%81mac%E5%9C%B0%E5%9D%80)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## GET 和 POST 区别
 ### **（GET）**

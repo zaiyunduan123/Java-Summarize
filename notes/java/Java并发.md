@@ -1,3 +1,39 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [JAVA 线程状态转换图示](#java-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE%E7%A4%BA)
+- [synchronized 的底层怎么实现](#synchronized-%E7%9A%84%E5%BA%95%E5%B1%82%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0)
+- [讲一下CAS](#%E8%AE%B2%E4%B8%80%E4%B8%8Bcas)
+- [线程池](#%E7%BA%BF%E7%A8%8B%E6%B1%A0)
+  - [ThreadPoolExecutor执行的策略](#threadpoolexecutor%E6%89%A7%E8%A1%8C%E7%9A%84%E7%AD%96%E7%95%A5)
+  - [常见四种线程池](#%E5%B8%B8%E8%A7%81%E5%9B%9B%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%B1%A0)
+  - [四种拒绝策略](#%E5%9B%9B%E7%A7%8D%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5)
+  - [为什么要用线程池](#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0)
+  - [如何设计线程池中的线程数量](#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%95%B0%E9%87%8F)
+- [Executorshe和ThreaPoolExecutor创建线程池的区别](#executorshe%E5%92%8Cthreapoolexecutor%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [CountDownLatch与CyclicBarrier的比较](#countdownlatch%E4%B8%8Ecyclicbarrier%E7%9A%84%E6%AF%94%E8%BE%83)
+- [对象锁和静态锁之间的区别](#%E5%AF%B9%E8%B1%A1%E9%94%81%E5%92%8C%E9%9D%99%E6%80%81%E9%94%81%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [简述volatile字](#%E7%AE%80%E8%BF%B0volatile%E5%AD%97)
+- [happens-before 原则（先行发生原则）](#happens-before-%E5%8E%9F%E5%88%99%E5%85%88%E8%A1%8C%E5%8F%91%E7%94%9F%E5%8E%9F%E5%88%99)
+- [Lock 和synchronized 的区别](#lock-%E5%92%8Csynchronized-%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [ThreadLocal(线程变量副本)](#threadlocal%E7%BA%BF%E7%A8%8B%E5%8F%98%E9%87%8F%E5%89%AF%E6%9C%AC)
+- [通过Callable和Future创建线程](#%E9%80%9A%E8%BF%87callable%E5%92%8Cfuture%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B)
+- [什么叫守护线程，用什么方法实现守护线程（Thread.setDeamon()的含义）](#%E4%BB%80%E4%B9%88%E5%8F%AB%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B%E7%94%A8%E4%BB%80%E4%B9%88%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8Bthreadsetdeamon%E7%9A%84%E5%90%AB%E4%B9%89)
+- [如何停止一个线程？](#%E5%A6%82%E4%BD%95%E5%81%9C%E6%AD%A2%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B)
+- [什么是线程安全？什么是线程不安全？](#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8)
+- [I/O多路复用](#io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8)
+- [讲一下netty](#%E8%AE%B2%E4%B8%80%E4%B8%8Bnetty)
+- [Nio的原理（同步非阻塞）](#nio%E7%9A%84%E5%8E%9F%E7%90%86%E5%90%8C%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E)
+- [缓冲区Buffer、通道Channel、选择器Selector](#%E7%BC%93%E5%86%B2%E5%8C%BAbuffer%E9%80%9A%E9%81%93channel%E9%80%89%E6%8B%A9%E5%99%A8selector)
+- [BIO和NIO的区别](#bio%E5%92%8Cnio%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [NIO的selector作用](#nio%E7%9A%84selector%E4%BD%9C%E7%94%A8)
+- [final域的内存语义](#final%E5%9F%9F%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89)
+  - [写final域的重排序规则](#%E5%86%99final%E5%9F%9F%E7%9A%84%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99)
+  - [读final域的重排序规则](#%E8%AF%BBfinal%E5%9F%9F%E7%9A%84%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## JAVA 线程状态转换图示
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-3.jpg)

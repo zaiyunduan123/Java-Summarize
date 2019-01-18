@@ -1,3 +1,40 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [JVM内存结构 VS Java内存模型 VS Java对象模型](#jvm%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84-vs-java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-vs-java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B)
+- [JVM内存结构](#jvm%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84)
+  - [**（1）程序计数器**](#1%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8)
+  - [**（2）Java虚拟机栈**](#2java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88)
+  - [**（3）堆**](#3%E5%A0%86)
+  - [**（4）方法区**](#4%E6%96%B9%E6%B3%95%E5%8C%BA)
+- [Java内存模型](#java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B)
+- [Java对象模型](#java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B)
+  - [三者区别](#%E4%B8%89%E8%80%85%E5%8C%BA%E5%88%AB)
+- [Major GC和Full GC的区别是什么？触发条件呢？](#major-gc%E5%92%8Cfull-gc%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E5%91%A2)
+- [什么时候会触发full gc](#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BC%9A%E8%A7%A6%E5%8F%91full-gc)
+- [可以作为root的对象：](#%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAroot%E7%9A%84%E5%AF%B9%E8%B1%A1)
+- [新生代转移到老年代的触发条件](#%E6%96%B0%E7%94%9F%E4%BB%A3%E8%BD%AC%E7%A7%BB%E5%88%B0%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6)
+- [G1和CMS的区别](#g1%E5%92%8Ccms%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制](#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E7%94%A8%E6%88%B7%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8-%E6%80%8E%E4%B9%88%E6%89%93%E7%A0%B4%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%89%98%E6%9C%BA%E5%88%B6)
+- [即时编译器的优化方法](#%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95)
+- [编译过程的五个阶段](#%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BA%94%E4%B8%AA%E9%98%B6%E6%AE%B5)
+- [java应用系统运行速度慢的解决方法](#java%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F%E8%BF%90%E8%A1%8C%E9%80%9F%E5%BA%A6%E6%85%A2%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95)
+- [内存溢出是什么，什么原因导致的](#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E6%98%AF%E4%BB%80%E4%B9%88%E4%BB%80%E4%B9%88%E5%8E%9F%E5%9B%A0%E5%AF%BC%E8%87%B4%E7%9A%84)
+- [内存溢出的解决](#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%9A%84%E8%A7%A3%E5%86%B3)
+  - [栈溢出几种情况](#%E6%A0%88%E6%BA%A2%E5%87%BA%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5)
+  - [解决办法：](#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95)
+- [逃逸分析](#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90)
+- [JVM、Java编译器和Java解释器](#jvmjava%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8Cjava%E8%A7%A3%E9%87%8A%E5%99%A8)
+- [JVM是怎么实现invokedynamic的](#jvm%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0invokedynamic%E7%9A%84)
+- [方法句柄](#%E6%96%B9%E6%B3%95%E5%8F%A5%E6%9F%84)
+- [JIT 编译过程](#jit-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B)
+- [Graal 的实现](#graal-%E7%9A%84%E5%AE%9E%E7%8E%B0)
+- [Jvm中的Intrinsics方法](#jvm%E4%B8%AD%E7%9A%84intrinsics%E6%96%B9%E6%B3%95)
+- [GraalVM 中的 Ahead-Of-Time（AOT）](#graalvm-%E4%B8%AD%E7%9A%84-ahead-of-timeaot)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## JVM内存结构 VS Java内存模型 VS Java对象模型
 ## JVM内存结构

@@ -1,3 +1,23 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Spring IOC](#spring-ioc)
+  - [IOC原理](#ioc%E5%8E%9F%E7%90%86)
+- [Spring AOP](#spring-aop)
+  - [实现AOP的技术](#%E5%AE%9E%E7%8E%B0aop%E7%9A%84%E6%8A%80%E6%9C%AF)
+  - [Spring实现AOP](#spring%E5%AE%9E%E7%8E%B0aop)
+  - [AOP使用场景](#aop%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF)
+- [Spring @Transactional工作原理](#spring-transactional%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+- [SpringMVC的工作原理](#springmvc%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+- [SpringMVC拦截器](#springmvc%E6%8B%A6%E6%88%AA%E5%99%A8)
+  - [常见应用场景](#%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
+  - [拦截器接口](#%E6%8B%A6%E6%88%AA%E5%99%A8%E6%8E%A5%E5%8F%A3)
+- [MyBatis原理](#mybatis%E5%8E%9F%E7%90%86)
+- [MyBatis缓存](#mybatis%E7%BC%93%E5%AD%98)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Spring IOC
 java程序中的每个业务逻辑至少需要两个或以上的对象来协作完成。通常，每个对象在使用他的合作对象时，自己均要使用像new object（） 这样的语法来完成合作对象的申请工作。这样对象间的耦合度高了。
 

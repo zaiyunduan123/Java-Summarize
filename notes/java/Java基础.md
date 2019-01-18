@@ -1,3 +1,37 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [抽象类和接口的对比](#%E6%8A%BD%E8%B1%A1%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AF%B9%E6%AF%94)
+- [equals()](#equals)
+- [java中double和float精度丢失问题及解决方法](#java%E4%B8%ADdouble%E5%92%8Cfloat%E7%B2%BE%E5%BA%A6%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95)
+  - [BigDecimal](#bigdecimal)
+- [注解](#%E6%B3%A8%E8%A7%A3)
+  - [元注解（4个）](#%E5%85%83%E6%B3%A8%E8%A7%A34%E4%B8%AA)
+  - [自定义注解](#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3)
+- [Arrays.sort()原理分析](#arrayssort%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90)
+  - [源码中的快速排序，主要做了以下几个方面的优化：](#%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E4%B8%BB%E8%A6%81%E5%81%9A%E4%BA%86%E4%BB%A5%E4%B8%8B%E5%87%A0%E4%B8%AA%E6%96%B9%E9%9D%A2%E7%9A%84%E4%BC%98%E5%8C%96)
+- [foreach和while的区别(编译之后)](#foreach%E5%92%8Cwhile%E7%9A%84%E5%8C%BA%E5%88%AB%E7%BC%96%E8%AF%91%E4%B9%8B%E5%90%8E)
+- [创建一个类的几种方法?](#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95)
+- [Redirect和forward](#redirect%E5%92%8Cforward)
+- [什么是泛型，为什么要使用以及类型擦除。](#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4)
+- [Object跟这些标记符代表的java类型有啥区别呢？](#object%E8%B7%9F%E8%BF%99%E4%BA%9B%E6%A0%87%E8%AE%B0%E7%AC%A6%E4%BB%A3%E8%A1%A8%E7%9A%84java%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%95%A5%E5%8C%BA%E5%88%AB%E5%91%A2)
+- [Java 异常的体系结构](#java-%E5%BC%82%E5%B8%B8%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84)
+- [throw和throws区别](#throw%E5%92%8Cthrows%E5%8C%BA%E5%88%AB)
+- [.class 文件是什么类型文件](#class-%E6%96%87%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88%E7%B1%BB%E5%9E%8B%E6%96%87%E4%BB%B6)
+- [java中序列化之子类继承父类序列化](#java%E4%B8%AD%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B%E5%AD%90%E7%B1%BB%E7%BB%A7%E6%89%BF%E7%88%B6%E7%B1%BB%E5%BA%8F%E5%88%97%E5%8C%96)
+- [标识符](#%E6%A0%87%E8%AF%86%E7%AC%A6)
+- [Integer i=new Integer(127);和Integer i=127;的区别](#integer-inew-integer127%E5%92%8Cinteger-i127%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [手写单例模式](#%E6%89%8B%E5%86%99%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F)
+- [为什么线程通信的方法wait(), notify()和notifyAll()被定义在Object类里？](#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E6%B3%95wait-notify%E5%92%8Cnotifyall%E8%A2%AB%E5%AE%9A%E4%B9%89%E5%9C%A8object%E7%B1%BB%E9%87%8C)
+- [Java中wait 和sleep 方法比较](#java%E4%B8%ADwait-%E5%92%8Csleep-%E6%96%B9%E6%B3%95%E6%AF%94%E8%BE%83)
+- [hashCode和equals方法的关系](#hashcode%E5%92%8Cequals%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB)
+- [Object类中有哪些方法](#object%E7%B1%BB%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95)
+- [String s=new String("xyz")究竟创建String Object分为两种情况：](#string-snew-stringxyz%E7%A9%B6%E7%AB%9F%E5%88%9B%E5%BB%BAstring-object%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5)
+- [什么是值传递和引用传递](#%E4%BB%80%E4%B9%88%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E5%92%8C%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## 抽象类和接口的对比
 | 参数        | 抽象类   |  接口  |
 | --------   | -----:   | :----: |

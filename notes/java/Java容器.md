@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [HashSet和TreeSet区别](#hashset%E5%92%8Ctreeset%E5%8C%BA%E5%88%AB)
+- [讲一下LinkedHashMap](#%E8%AE%B2%E4%B8%80%E4%B8%8Blinkedhashmap)
+- [Java8 中HashMap的优化（引入红黑树的数据结构和扩容的优化）](#java8-%E4%B8%ADhashmap%E7%9A%84%E4%BC%98%E5%8C%96%E5%BC%95%E5%85%A5%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E6%89%A9%E5%AE%B9%E7%9A%84%E4%BC%98%E5%8C%96)
+- [Map遍历的keySet()和entrySet()性能差异原因](#map%E9%81%8D%E5%8E%86%E7%9A%84keyset%E5%92%8Centryset%E6%80%A7%E8%83%BD%E5%B7%AE%E5%BC%82%E5%8E%9F%E5%9B%A0)
+- [HashMap中的indexFor方法](#hashmap%E4%B8%AD%E7%9A%84indexfor%E6%96%B9%E6%B3%95)
+- [如何删除ArrayList里面的元素](#%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4arraylist%E9%87%8C%E9%9D%A2%E7%9A%84%E5%85%83%E7%B4%A0)
+- [并发的HashMap为什么会引起死循环？](#%E5%B9%B6%E5%8F%91%E7%9A%84hashmap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%BC%95%E8%B5%B7%E6%AD%BB%E5%BE%AA%E7%8E%AF)
+- [ConcurrentHashMap原理](#concurrenthashmap%E5%8E%9F%E7%90%86)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## HashSet和TreeSet区别
 **HashSet**
 
