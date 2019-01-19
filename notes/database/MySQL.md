@@ -85,8 +85,11 @@
 
 ## B+树索引和哈希索引的区别
 B+树是一个平衡的多叉树，从根节点到每个叶子节点的高度差值不超过1，而且同层级的节点间有指针相互链接，是有序的
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-1.jpg)
+
 哈希索引就是采用一定的哈希算法，把键值换算成新的哈希值，检索时不需要类似B+树那样从根节点到叶子节点逐级查找，只需一次哈希算法即可,是无序的
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-2.jpg)
 
 **哈希索引的优势：**
@@ -147,7 +150,7 @@ B+的内部结点并没有指向关键字具体信息的指针。因此其内部
 2. 如果没有主键被定义，那么该表的第一个唯一非空索引被作为聚集索引。
 3. 如果没有主键也没有合适的唯一索引，那么innodb内部会生成一个隐藏的主键作为聚集索引，这个隐藏的主键是一个6个字节的列，该列的值会随着数据的插入自增。
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-6.JPG)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-6.png)
     
 ### 辅助索引
 辅助索引：辅助索引中索引的逻辑顺序与磁盘上行的物理存储顺序不同，一个表中可以拥有多个非聚集索引。叶子节点并不包含行记录的全部数据。叶子节点除了包含键值以外，还存储了一个指向改行数据的聚集索引建的书签。
@@ -160,7 +163,7 @@ B+的内部结点并没有指向关键字具体信息的指针。因此其内部
 
 通过辅助索引查找到对应的主键，最后在聚集索引中使用主键获取对应的行记录，这也是通常情况下行记录的查找方式。
 
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-7.JPG)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/MySQL-7.png)
 
 ## mysql联合索引
 1. 联合索引是两个或更多个列上的索引。对于联合索引:Mysql从左到右的使用索引中的字段，一个查询可以只使用索引中的一部份，但只能是最左侧部分。例如索引是key index (a,b,c). 可以支持a   、    a,b   、  a,b,c 3种组合进行查找，但不支持 b,c进行查找 .当最左侧字段是常量引用时，索引就十分有效。
