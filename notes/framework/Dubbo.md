@@ -220,7 +220,7 @@ SPI (Service Provider Interface)
 3. 接口位于独立的包中
 
 
-### 1、接口位于【调用方】所在的包中
+### 1. 接口位于【调用方】所在的包中
 对于类似这种情况下接口，我们将其称为 SPI, SPI的规则如下：
 
 - 概念上更依赖调用方。
@@ -234,13 +234,13 @@ SPI (Service Provider Interface)
 - 日志 Log
 - dubbo扩展点开发
 
-### 2、接口位于【实现方】所在的包中
+### 2. 接口位于【实现方】所在的包中
 对于类似这种情况下的接口，我们将其称作为API，API的规则如下：
 
 - 概念上更接近实现方。
 - 组织上位于实现方所在的包中。
 
-### 3、接口位于独立的包中
+### 3. 接口位于独立的包中
 如果一个“接口”在一个上下文是API，在另一个上下文是SPI，那么你就可以这么组织
 
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/dubbo-3.png)
@@ -1292,13 +1292,13 @@ dubbo 是基于netty NIO的非阻塞 并行调用通信。 （阻塞  非阻塞 
 dubbo从头到脚都是异步的
 dubbo 的通信方式 有3类类型：
 
-###  1、异步，无返回值
+### 1. 异步，无返回值
 这种请求最简单，consumer 把请求信息发送给 provider 就行了。只是需要在 consumer 端把请求方式配置成异步请求就好了。如下：
 ```
 <dubbo:method name="sayHello" return="false"></dubbo:method>
 ```
 
-### 2、 异步，有返回值
+### 2. 异步，有返回值
 
 这种情况下consumer首先把请求信息发送给provider，这个时候在consumer端不仅把请求方式配置成异步，并且需要RpcContext这个ThreadLocal对象获取到Future对象，然后通过Future#get( )阻塞式获取provider的相应，那么这个Future是如何添加到RpcContext中呢？
 
@@ -1335,7 +1335,7 @@ hello=temp.get();
 
 
 
-### 3、异步，变同步（默认的通信方式）
+### 3. 异步，变同步（默认的通信方式）
 
 异步变同步其实原理和异步请求的通过 Future#get 等待 provider 响应返回一样，只不过异步有返回值是显示调用而默认是 dubbo 内部把这步完成了。
 
@@ -1492,7 +1492,7 @@ dubbo 使用长度为 16 的 byte 数组作为协议头。1 个 byte 对应 8 �
 - 96 ~ 127： data length，请求或响应数据体的数据长度也就是消息头+请求数据的长度。用于处理 dubbo 通信的粘包与拆包问题。
 
 
-### 1、	consumer请求编码
+### 1. consumer请求编码
 consumer 在请求 provider 的时候需要把 Request 对象转化成 byte 数组，所以它是一个需要编码的过程。
 ```
 ----------1------consumer请求编码----------------------
@@ -1502,7 +1502,7 @@ consumer 在请求 provider 的时候需要把 Request 对象转化成 byte 数�
       -->ExchangeCodec.encodeRequest
         -->DubboCodec.encodeRequestData
 ```
-###  2、provider 请求解码
+### 2. provider 请求解码
 provider 在接收 consumer 请求的时候需要把 byte 数组转化成 Request 对象，所以它是一个需要解码的过程。
 ```
 ----------2------provider 请求解码----------------------
@@ -1512,7 +1512,7 @@ provider 在接收 consumer 请求的时候需要把 byte 数组转化成 Reques
       -->ExchangeCodec.decodeBody
 ```
 
-### 3、provider响应结果编码
+### 3. provider响应结果编码
 provider 在处理完成 consumer 请求需要响应结果的时候需要把 Response 对象转化成 byte 数组，所以它是一个需要编码的过程。
 ```
 ----------3------provider响应结果编码----------------------
@@ -1523,7 +1523,7 @@ provider 在处理完成 consumer 请求需要响应结果的时候需要把 Res
         -->DubboCodec.encodeResponseData//先写入一个字节 这个字节可能是RESPONSE_NULL_VALUE  RESPONSE_VALUE  RESPONSE_WITH_EXCEPTION
 ```
 
-###  4、consumer响应结果解码
+### 4. consumer响应结果解码
 consumer 在接收 provider 响应的时候需要把 byte 数组转化成 Response 对象，所以它是一个需要解码的过程。
 ```
 ----------4------consumer响应结果解码----------------------

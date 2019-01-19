@@ -14,6 +14,7 @@
 
 ### 索引
 Solr/Lucene采用的是一种反向索引（倒排索引），所谓反向索引：就是从关键字到文档的映射过程，保存这种映射这种信息的索引称为反向索引
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/solr-1.jpg)
 - 左边保存的是字符串序列
 - 右边是字符串的文档（Document）编号链表，称为倒排表（Posting List）
