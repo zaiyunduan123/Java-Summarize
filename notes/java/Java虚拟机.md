@@ -4,34 +4,38 @@
 
 - [JVM内存结构 VS Java内存模型 VS Java对象模型](#jvm%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84-vs-java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-vs-java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B)
 - [JVM内存结构](#jvm%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84)
-  - [**（1）程序计数器**](#1%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8)
-  - [**（2）Java虚拟机栈**](#2java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88)
-  - [**（3）堆**](#3%E5%A0%86)
-  - [**（4）方法区**](#4%E6%96%B9%E6%B3%95%E5%8C%BA)
+  - [程序计数器](#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8)
+  - [Java虚拟机栈](#java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88)
+  - [堆](#%E5%A0%86)
+  - [方法区](#%E6%96%B9%E6%B3%95%E5%8C%BA)
 - [Java内存模型](#java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B)
 - [Java对象模型](#java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B)
-  - [三者区别](#%E4%B8%89%E8%80%85%E5%8C%BA%E5%88%AB)
-- [Major GC和Full GC的区别是什么？触发条件呢？](#major-gc%E5%92%8Cfull-gc%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E5%91%A2)
-- [什么时候会触发full gc](#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BC%9A%E8%A7%A6%E5%8F%91full-gc)
-- [可以作为root的对象：](#%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAroot%E7%9A%84%E5%AF%B9%E8%B1%A1)
-- [新生代转移到老年代的触发条件](#%E6%96%B0%E7%94%9F%E4%BB%A3%E8%BD%AC%E7%A7%BB%E5%88%B0%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6)
-- [G1和CMS的区别](#g1%E5%92%8Ccms%E7%9A%84%E5%8C%BA%E5%88%AB)
-- [双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制](#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E7%94%A8%E6%88%B7%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8-%E6%80%8E%E4%B9%88%E6%89%93%E7%A0%B4%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%89%98%E6%9C%BA%E5%88%B6)
-- [即时编译器的优化方法](#%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95)
-- [编译过程的五个阶段](#%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BA%94%E4%B8%AA%E9%98%B6%E6%AE%B5)
+- [三者区别](#%E4%B8%89%E8%80%85%E5%8C%BA%E5%88%AB)
+- [垃圾回收](#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6)
+  - [Major GC和Full GC的区别是什么？触发条件呢？](#major-gc%E5%92%8Cfull-gc%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E5%91%A2)
+  - [什么时候会触发full gc](#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BC%9A%E8%A7%A6%E5%8F%91full-gc)
+  - [可以作为root的对象](#%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAroot%E7%9A%84%E5%AF%B9%E8%B1%A1)
+  - [新生代转移到老年代的触发条件](#%E6%96%B0%E7%94%9F%E4%BB%A3%E8%BD%AC%E7%A7%BB%E5%88%B0%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6)
+  - [G1和CMS的区别](#g1%E5%92%8Ccms%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [类加载](#%E7%B1%BB%E5%8A%A0%E8%BD%BD)
+  - [双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制](#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E7%94%A8%E6%88%B7%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8-%E6%80%8E%E4%B9%88%E6%89%93%E7%A0%B4%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%89%98%E6%9C%BA%E5%88%B6)
+- [内存溢出](#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA)
+  - [原因](#%E5%8E%9F%E5%9B%A0)
+  - [解决方法](#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95)
+- [栈溢出](#%E6%A0%88%E6%BA%A2%E5%87%BA)
+  - [解决办法](#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95)
 - [java应用系统运行速度慢的解决方法](#java%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F%E8%BF%90%E8%A1%8C%E9%80%9F%E5%BA%A6%E6%85%A2%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95)
-- [内存溢出是什么，什么原因导致的](#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E6%98%AF%E4%BB%80%E4%B9%88%E4%BB%80%E4%B9%88%E5%8E%9F%E5%9B%A0%E5%AF%BC%E8%87%B4%E7%9A%84)
-- [内存溢出的解决](#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%9A%84%E8%A7%A3%E5%86%B3)
-  - [栈溢出几种情况](#%E6%A0%88%E6%BA%A2%E5%87%BA%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5)
-  - [解决办法：](#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95)
 - [逃逸分析](#%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90)
-- [JVM、Java编译器和Java解释器](#jvmjava%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8Cjava%E8%A7%A3%E9%87%8A%E5%99%A8)
-- [JVM是怎么实现invokedynamic的](#jvm%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0invokedynamic%E7%9A%84)
+- [编译](#%E7%BC%96%E8%AF%91)
+  - [即时编译器的优化方法](#%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95)
+  - [编译过程的五个阶段](#%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BA%94%E4%B8%AA%E9%98%B6%E6%AE%B5)
+  - [JVM、Java编译器和Java解释器](#jvmjava%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8Cjava%E8%A7%A3%E9%87%8A%E5%99%A8)
+  - [JIT 编译过程](#jit-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B)
+  - [Graal 的实现](#graal-%E7%9A%84%E5%AE%9E%E7%8E%B0)
+  - [GraalVM 中的 Ahead-Of-Time（AOT）](#graalvm-%E4%B8%AD%E7%9A%84-ahead-of-timeaot)
+- [JVM的Intrinsics方法](#jvm%E7%9A%84intrinsics%E6%96%B9%E6%B3%95)
+- [JVM的invokedynamic方法](#jvm%E7%9A%84invokedynamic%E6%96%B9%E6%B3%95)
 - [方法句柄](#%E6%96%B9%E6%B3%95%E5%8F%A5%E6%9F%84)
-- [JIT 编译过程](#jit-%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B)
-- [Graal 的实现](#graal-%E7%9A%84%E5%AE%9E%E7%8E%B0)
-- [Jvm中的Intrinsics方法](#jvm%E4%B8%AD%E7%9A%84intrinsics%E6%96%B9%E6%B3%95)
-- [GraalVM 中的 Ahead-Of-Time（AOT）](#graalvm-%E4%B8%AD%E7%9A%84-ahead-of-timeaot)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -91,7 +95,9 @@ Java是一种面向对象的语言，而Java对象在JVM中的存储也是有一
 2. Java内存模型，和Java的并发编程有关。
 3. Java对象模型，和Java对象在虚拟机中的表现形式有关。
 
-## Major GC和Full GC的区别是什么？触发条件呢？
+## 垃圾回收
+
+### Major GC和Full GC的区别是什么？触发条件呢？
 
 针对HotSpot VM的实现，它里面的GC其实准确分类只有两大种：
 Partial GC：并不收集整个GC堆的模式
@@ -102,7 +108,7 @@ Partial GC：并不收集整个GC堆的模式
 Full GC：收集整个堆，包括young gen、old gen、perm gen（如果存在的话）等所有部分的模式。
 
 
-## 什么时候会触发full gc
+### 什么时候会触发full gc
 1. System.gc()方法的调用
 2. 老年代空间不足
 3. 永生区空间不足（JVM规范中运行时数据区域中的方法区，在HotSpot虚拟机中又被习惯称为永生代或者永生区，Permanet Generation中存放的为一些class的信息、常量、静态变量等数据）
@@ -111,7 +117,7 @@ Full GC：收集整个堆，包括young gen、old gen、perm gen（如果存在�
 6. 堆中分配很大的对象
 
 
-## 可以作为root的对象：
+### 可以作为root的对象
 1. 类中的静态变量，当它持有一个指向一个对象的引用时，它就作为root
 2. 活动着的线程，可以作为root
 3. 一个Java方法的参数或者该方法中的局部变量，这两种对象可以作为root
@@ -139,21 +145,21 @@ public void doSomething(Object A){
     }
  }
 ```
-## 新生代转移到老年代的触发条件
+### 新生代转移到老年代的触发条件
 1. 长期存活的对象
 2. 大对象直接进入老年代
 3. minor gc后，survivor仍然放不下
 4. 动态年龄判断 ，大于等于某个年龄的对象超过了survivor空间一半 ，大于等于某个年龄的对象直接进入老年代
 
-## G1和CMS的区别
+### G1和CMS的区别
 1. G1同时回收老年代和年轻代，而CMS只能回收老年代，需要配合一个年轻代收集器。另外G1的分代更多是逻辑上的概念，G1将内存分成多个等大小的region，Eden/ Survivor/Old分别是一部分region的逻辑集合，物理上内存地址并不连续。
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-8.jpg)
 2. CMS在old gc的时候会回收整个Old区，对G1来说没有old gc的概念，而是区分Fully young gc和Mixed gc，前者对应年轻代的垃圾回收，后者混合了年轻代和部分老年代的收集，因此每次收集肯定会回收年轻代，老年代根据内存情况可以不回收或者回收部分或者全部(这种情况应该是可能出现)。
 
 
+## 类加载
 
-
-## 双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制
+### 双亲委派模型中有哪些方法。用户如何自定义类加载器 。怎么打破双亲委托机制
 1. 双亲委派模型中用到的方法：
 - findLoadedClass(),
 - loadClass()
@@ -174,37 +180,15 @@ public void doSomething(Object A){
 
 
 
-## 即时编译器的优化方法
-字节码可以通过以下两种方式转换成合适的语言：
-1.  解释器
-2.  即时编译器
-即时编译器把**整段字节码编译成本地代码**，执行本地代码比一条一条进行解释执行的速度快很多，因为本地代码是保存在缓存里的
-
-
-
-## 编译过程的五个阶段
-1. 第一阶段：词法分析
-2. 第二阶段：语法分析
-3. 第三阶段:词义分析与中间代码产生
-4. 第四阶段：优化
-5. 第五阶段：目标代码生成
 
 
 
 
+## 内存溢出
 
-## java应用系统运行速度慢的解决方法
- 问题解决思路：
- 1. 查看部署应用系统的系统资源使用情况，CPU,内存，IO这几个方面去看。找到对就的进程。
- 2. 使用jstack,jmap等命令查看是JVM是在在什么类型的内存空间中做GC（内存回收），和查看GC日志查看是那段代码在占用内存。
-     ​    首先，调节内存的参数设置，如果还是一样的问题，就要定位到相应的代码。
- 3. 定位代码，修改代码（一般是代码的逻辑问题，或者代码获取的数据量过大。）
-
-
-
-## 内存溢出是什么，什么原因导致的
 内存溢出是指应用系统中存在无法回收的内存或使用的内存过多，最终使得程序运行要用到的内存大于虚拟机能提供的最大内存。
 
+### 原因
 引起内存溢出的原因有很多种，常见的有以下几种：
 
 1. 内存中加载的数据量过于庞大，如一次从数据库取出过多数据；
@@ -215,7 +199,7 @@ public void doSomething(Object A){
 
 
 
-## 内存溢出的解决
+### 解决方法
 内存溢出虽然很棘手，但也有相应的解决办法，可以按照从易到难，一步步的解决。
 
 第一步，就是修改JVM启动参数，直接增加内存。JVM默认可以使用的内存为64M，Tomcat默认可以使用的内存为128MB，对于稍复杂一点的系统就会不够用。在某项目中，就因为启动参数使用的默认值，经常报“OutOfMemory”错误。因此，-Xms，-Xmx参数一定不要忘记加。
@@ -240,15 +224,25 @@ public void doSomething(Object A){
 
 
 
-### 栈溢出几种情况
+## 栈溢出
 1. 递归调用层次太多。递归函数在运行时会执行压栈操作，当压栈次数太多时，也会导致堆栈溢出。
 2. 局部静态变量体积太大,局部数组过大。当函数内部的数组过大时，有可能导致堆栈溢出。
 3. 指针或数组越界。这种情况最常见，例如进行字符串拷贝，或处理用户输入等等。
 
-### 解决办法：
+### 解决办法
 1. 用栈把递归转换成非递归
 2. 使用static对象替代nonstatic局部对象
 3. 增大堆栈大小值
+
+
+
+## java应用系统运行速度慢的解决方法
+ 问题解决思路：
+ 1. 查看部署应用系统的系统资源使用情况，CPU,内存，IO这几个方面去看。找到对就的进程。
+ 2. 使用jstack,jmap等命令查看是JVM是在在什么类型的内存空间中做GC（内存回收），和查看GC日志查看是那段代码在占用内存。
+     ​    首先，调节内存的参数设置，如果还是一样的问题，就要定位到相应的代码。
+ 3. 定位代码，修改代码（一般是代码的逻辑问题，或者代码获取的数据量过大。）
+
 
 
 ## 逃逸分析
@@ -258,8 +252,26 @@ public void doSomething(Object A){
 
 
 
+## 编译
 
-## JVM、Java编译器和Java解释器
+### 即时编译器的优化方法
+字节码可以通过以下两种方式转换成合适的语言：
+1.  解释器
+2.  即时编译器
+即时编译器把**整段字节码编译成本地代码**，执行本地代码比一条一条进行解释执行的速度快很多，因为本地代码是保存在缓存里的
+
+
+
+### 编译过程的五个阶段
+1. 第一阶段：词法分析
+2. 第二阶段：语法分析
+3. 第三阶段:词义分析与中间代码产生
+4. 第四阶段：优化
+5. 第五阶段：目标代码生成
+
+
+
+### JVM、Java编译器和Java解释器
 
 1. Java编译器：将Java源文件（.java文件）编译成字节码文件（.class文件，是特殊的二进制文件，二进制字节码文件），这种字节码就是JVM的“机器语言”。javac.exe可以简单看成是Java编译器。注意，它不会执行代码
 
@@ -289,29 +301,7 @@ Java字节码的执行有两种方式：
 1. 每次读一代码就将字节码起转换（翻译）为JVM可执行的指令，叫翻译
 2. 一次性全部将字节码转换为JVM可执行的指令，叫编译
 
-## JVM是怎么实现invokedynamic的
-我们常用的JavaScript, Python, Ruby都可以归为动态语言，而Java, Bytecode都可以认为是静态语言。这两种语言最大的差别是变量和函数的类型是不是在程序运行中确定的。
-
-invokedynamic 是 Java 7 引入的一条新指令，用以支持动态语言的方法调用。具体来说，它将调用点（CallSite）抽象成一个 Java 类，并且将原本由 Java 虚拟机控制的方法调用以及方法链接暴露给了应用程序。在运行过程中，每一条 invokedynamic 指令将捆绑一个调用点，并且会调用该调用点所链接的方法句柄。
-
-在第一次执行 invokedynamic 指令时，Java 虚拟机会调用该指令所对应的启动方法（BootStrap Method），来生成前面提到的调用点，并且将之绑定至该 invokedynamic 指令中。在之后的运行过程中，Java 虚拟机则会直接调用绑定的调用点所链接的方法句柄。
-
-在 Java 8 中，Lambda 表达式也是借助 invokedynamic 来实现的。
-Lambda 表达式到函数式接口的转换是通过 invokedynamic 指令来实现的。该 invokedynamic 指令对应的启动方法将通过 ASM 生成一个适配器类。
-对于没有捕获其他变量的 Lambda 表达式，该 invokedynamic 指令始终返回同一个适配器类的实例。对于捕获了其他变量的 Lambda 表达式，每次执行 invokedynamic 指令将新建一个适配器类实例。
-
-不管是捕获型的还是未捕获型的 Lambda 表达式，它们的性能上限皆可以达到直接调用的性能。其中，捕获型 Lambda 表达式借助了即时编译器中的逃逸分析，来避免实际的新建适配器类实例的操作。
-
-## 方法句柄
-invokedynamic 底层机制的基石：方法句柄。
-
-方法句柄是一个强类型的、能够被直接执行的引用。它仅关心所指向方法的参数类型以及返回类型，而不关心方法所在的类以及方法名。方法句柄的权限检查发生在创建过程中，相较于反射调用节省了调用时反复权限检查的开销。
-
-方法句柄可以通过 invokeExact 以及 invoke 来调用。其中，invokeExact 要求传入的参数和所指向方法的描述符严格匹配。方法句柄还支持增删改参数的操作，这些操作是通过生成另一个充当适配器的方法句柄来实现的。
-
-方法句柄的调用和反射调用一样，都是间接调用，同样会面临无法内联的问题。
-
-## JIT 编译过程
+### JIT 编译过程
 
 当 JIT 编译启用时（默认是启用的），JVM 读入.class 文件解释后，将其发给 JIT 编译器。JIT 编译器将字节码编译成本机机器代码，下图展示了该过程。
 
@@ -328,7 +318,7 @@ invokedynamic 底层机制的基石：方法句柄。
 
 许多开发者会觉得用 C++ 写的 C2 肯定要比 Graal 快。实际上，在充分预热的情况下，Java 程序中的热点代码早已经通过即时编译转换为二进制码，在执行速度上并不亚于静态编译的 C++ 程序。
 
-## Graal 的实现
+### Graal 的实现
 HotSpot集成了两个JIT compiler — C1及C2（或称为Client及Server）。两者的区别在于，前者没有应用激进的优化技术，因为这些优化往往伴随着耗时较长的代码分析。因此，C1的编译速度较快，而C2所编译的方法运行速度较快。
 
 Java 7引入了tiered compilation的概念，综合了C1的高启动性能及C2的高峰值性能。这两个JIT compiler以及interpreter将HotSpot的执行方式划分为五个级别：
@@ -352,21 +342,7 @@ Graal 是一个用 Java 写就的、并能够将 Java 字节码转换成二进�
 
 这种基于假设的优化手段。在编译过程中，Graal 支持自定义假设，并且直接与去优化节点相关联。
 
-
-
-## Jvm中的Intrinsics方法
-
-
-在hotspot jvm里会定义一些intrinsic的方法，从而可以定义自己独有的一些编译的算法，根据不同的架构使用不同的指令集，比如Math.sin,Math.cos之类.
-
-对每个方法hotspot jvm都会定义一个instrinisics id, 这个id可以用于区分java 里自己定义的lib类的方法还是用户自己定义的java的类的方法，用户自己写的类会用 vmIntrinsics::_none 来表示.
-
-CallGenerator是在hotspot jvm中方法调用的核心，不同运行方式是由不同的call generator决定的，而instrinsic_id又是决定不同的call generator的key.
-
-对Java自定义的lib库的方法，jvm 用了LibraryIntrinsic 作为lib库的CallGenerator， 在generate 函数的时候，初始化了LibraryCallKit，里面inline了很多lib的方法
-
-
-## GraalVM 中的 Ahead-Of-Time（AOT）
+### GraalVM 中的 Ahead-Of-Time（AOT）
 GraalVM 是一个高性能的、支持多种编程语言的执行环境。它既可以在传统的 OpenJDK 上运行，也可以通过 AOT（Ahead-Of-Time）编译成可执行文件单独运行，甚至可以集成至数据库中运行。
 ˚
 即时编译指的是在程序的运行过程中，将字节码转换为可在硬件上直接运行的机器码，并部署至托管环境中的过程。
@@ -381,4 +357,44 @@ Java 9 引入了实验性 AOT 编译工具jaotc。它借助了 Graal 编译器�
 
 源文件就是程序员们所编写出来的文件 程序员们能看懂的文件
 类文件则是利用java虚拟机生成的编译文件 是用来给机器看的机器语言
+
+
+
+## JVM的Intrinsics方法
+
+
+在hotspot jvm里会定义一些intrinsic的方法，从而可以定义自己独有的一些编译的算法，根据不同的架构使用不同的指令集，比如Math.sin,Math.cos之类.
+
+对每个方法hotspot jvm都会定义一个instrinisics id, 这个id可以用于区分java 里自己定义的lib类的方法还是用户自己定义的java的类的方法，用户自己写的类会用 vmIntrinsics::_none 来表示.
+
+CallGenerator是在hotspot jvm中方法调用的核心，不同运行方式是由不同的call generator决定的，而instrinsic_id又是决定不同的call generator的key.
+
+对Java自定义的lib库的方法，jvm 用了LibraryIntrinsic 作为lib库的CallGenerator， 在generate 函数的时候，初始化了LibraryCallKit，里面inline了很多lib的方法
+
+
+
+## JVM的invokedynamic方法
+我们常用的JavaScript, Python, Ruby都可以归为动态语言，而Java, Bytecode都可以认为是静态语言。这两种语言最大的差别是变量和函数的类型是不是在程序运行中确定的。
+
+invokedynamic 是 Java 7 引入的一条新指令，用以支持动态语言的方法调用。具体来说，它将调用点（CallSite）抽象成一个 Java 类，并且将原本由 Java 虚拟机控制的方法调用以及方法链接暴露给了应用程序。在运行过程中，每一条 invokedynamic 指令将捆绑一个调用点，并且会调用该调用点所链接的方法句柄。
+
+在第一次执行 invokedynamic 指令时，Java 虚拟机会调用该指令所对应的启动方法（BootStrap Method），来生成前面提到的调用点，并且将之绑定至该 invokedynamic 指令中。在之后的运行过程中，Java 虚拟机则会直接调用绑定的调用点所链接的方法句柄。
+
+在 Java 8 中，Lambda 表达式也是借助 invokedynamic 来实现的。
+Lambda 表达式到函数式接口的转换是通过 invokedynamic 指令来实现的。该 invokedynamic 指令对应的启动方法将通过 ASM 生成一个适配器类。
+对于没有捕获其他变量的 Lambda 表达式，该 invokedynamic 指令始终返回同一个适配器类的实例。对于捕获了其他变量的 Lambda 表达式，每次执行 invokedynamic 指令将新建一个适配器类实例。
+
+不管是捕获型的还是未捕获型的 Lambda 表达式，它们的性能上限皆可以达到直接调用的性能。其中，捕获型 Lambda 表达式借助了即时编译器中的逃逸分析，来避免实际的新建适配器类实例的操作。
+
+## 方法句柄
+invokedynamic 底层机制的基石：方法句柄。
+
+方法句柄是一个强类型的、能够被直接执行的引用。它仅关心所指向方法的参数类型以及返回类型，而不关心方法所在的类以及方法名。方法句柄的权限检查发生在创建过程中，相较于反射调用节省了调用时反复权限检查的开销。
+
+方法句柄可以通过 invokeExact 以及 invoke 来调用。其中，invokeExact 要求传入的参数和所指向方法的描述符严格匹配。方法句柄还支持增删改参数的操作，这些操作是通过生成另一个充当适配器的方法句柄来实现的。
+
+方法句柄的调用和反射调用一样，都是间接调用，同样会面临无法内联的问题。
+
+
+
 

@@ -2,39 +2,48 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [GET 和 POST 区别](#get-%E5%92%8C-post-%E5%8C%BA%E5%88%AB)
-  - [**（GET）**](#get)
-  - [**（POST）**](#post)
-  - [相同点](#%E7%9B%B8%E5%90%8C%E7%82%B9)
-- [dns使用的协议](#dns%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE)
-- [幂等](#%E5%B9%82%E7%AD%89)
-- [Cookies和session区别](#cookies%E5%92%8Csession%E5%8C%BA%E5%88%AB)
-- [TCP粘包和拆包](#tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85)
-  - [1. TCP粘包和拆包产生的原因](#1-tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E4%BA%A7%E7%94%9F%E7%9A%84%E5%8E%9F%E5%9B%A0)
-  - [2. TCP粘包和拆包的解决策略](#2-tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E7%9A%84%E8%A7%A3%E5%86%B3%E7%AD%96%E7%95%A5)
-- [TCP/IP三次握手与四次挥手](#tcpip%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B)
-  - [三次握手](#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B)
-  - [四次挥手](#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B)
-  - [TIME_WAIT](#time_wait)
-  - [CLOSE_WAIT](#close_wait)
-  - [1. 为什么需要 TIME_WAIT 状态？](#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-time_wait-%E7%8A%B6%E6%80%81)
-  - [2. 为什么 TIME_WAIT 状态需要保持 2MSL 这么长的时间？](#2-%E4%B8%BA%E4%BB%80%E4%B9%88-time_wait-%E7%8A%B6%E6%80%81%E9%9C%80%E8%A6%81%E4%BF%9D%E6%8C%81-2msl-%E8%BF%99%E4%B9%88%E9%95%BF%E7%9A%84%E6%97%B6%E9%97%B4)
-  - [3. TCP为什么不是两次连接，而是三次握手？](#3-tcp%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%98%AF%E4%B8%A4%E6%AC%A1%E8%BF%9E%E6%8E%A5%E8%80%8C%E6%98%AF%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B)
-  - [4. 为什么建立连接协议是三次握手，而关闭连接却是四次握手呢？](#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%80%8C%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5%E5%8D%B4%E6%98%AF%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%91%A2)
-  - [5.为什么TIME_WAIT状态还需要等2MSL后才能返回到CLOSED状态？](#5%E4%B8%BA%E4%BB%80%E4%B9%88time_wait%E7%8A%B6%E6%80%81%E8%BF%98%E9%9C%80%E8%A6%81%E7%AD%892msl%E5%90%8E%E6%89%8D%E8%83%BD%E8%BF%94%E5%9B%9E%E5%88%B0closed%E7%8A%B6%E6%80%81)
-- [一次完整的HTTP请求过程](#%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84http%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B)
-- [讲一下长连接](#%E8%AE%B2%E4%B8%80%E4%B8%8B%E9%95%BF%E8%BF%9E%E6%8E%A5)
-- [TCP如何保证可靠传输？](#tcp%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93)
-- [详细介绍http](#%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8Dhttp)
-- [URI和URL的区别](#uri%E5%92%8Curl%E7%9A%84%E5%8C%BA%E5%88%AB)
-- [HTTPS和HTTP的区别](#https%E5%92%8Chttp%E7%9A%84%E5%8C%BA%E5%88%AB)
+- [TCP](#tcp)
+  - [TCP三次握手](#tcp%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B)
+  - [TCP四次挥手](#tcp%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B)
+  - [TCP如何保证可靠传输？](#tcp%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93)
+  - [滑动窗口](#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3)
+  - [流量控制](#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6)
+  - [拥塞控制](#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6)
+    - [慢开始](#%E6%85%A2%E5%BC%80%E5%A7%8B)
+    - [拥塞避免](#%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D)
+    - [快速重传](#%E5%BF%AB%E9%80%9F%E9%87%8D%E4%BC%A0)
+    - [快速恢复](#%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D)
+  - [TCP粘包和拆包](#tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85)
+    - [TCP粘包和拆包产生的原因](#tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E4%BA%A7%E7%94%9F%E7%9A%84%E5%8E%9F%E5%9B%A0)
+    - [TCP粘包和拆包的解决策略](#tcp%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E7%9A%84%E8%A7%A3%E5%86%B3%E7%AD%96%E7%95%A5)
+- [HTTP](#http)
+  - [特点](#%E7%89%B9%E7%82%B9)
+  - [通信传输流](#%E9%80%9A%E4%BF%A1%E4%BC%A0%E8%BE%93%E6%B5%81)
+  - [各种协议与HTTP协议的关系](#%E5%90%84%E7%A7%8D%E5%8D%8F%E8%AE%AE%E4%B8%8Ehttp%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%85%B3%E7%B3%BB)
+  - [请求消息Request和响应消息Response](#%E8%AF%B7%E6%B1%82%E6%B6%88%E6%81%AFrequest%E5%92%8C%E5%93%8D%E5%BA%94%E6%B6%88%E6%81%AFresponse)
+  - [HTTP是无状态协议](#http%E6%98%AF%E6%97%A0%E7%8A%B6%E6%80%81%E5%8D%8F%E8%AE%AE)
+  - [Keep-Alive模式](#keep-alive%E6%A8%A1%E5%BC%8F)
+  - [状态码](#%E7%8A%B6%E6%80%81%E7%A0%81)
+  - [HTTP方法](#http%E6%96%B9%E6%B3%95)
+  - [GET和POST区别](#get%E5%92%8Cpost%E5%8C%BA%E5%88%AB)
+    - [GET](#get)
+    - [POST](#post)
+    - [相同点](#%E7%9B%B8%E5%90%8C%E7%82%B9)
+  - [一次完整的HTTP请求过程](#%E4%B8%80%E6%AC%A1%E5%AE%8C%E6%95%B4%E7%9A%84http%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B)
+  - [HTTP长连接](#http%E9%95%BF%E8%BF%9E%E6%8E%A5)
+  - [HTTPS和HTTP的区别](#https%E5%92%8Chttp%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [HTTP的缺点](#http%E7%9A%84%E7%BC%BA%E7%82%B9)
 - [HTTPS](#https)
   - [https是如何保证数据传输的安全](#https%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E5%AE%89%E5%85%A8)
+    - [SSL/TLS](#ssltls)
 - [网络为什么要分层](#%E7%BD%91%E7%BB%9C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E5%B1%82)
+- [URI和URL](#uri%E5%92%8Curl)
 - [为什么有IP地址还需要MAC地址](#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89ip%E5%9C%B0%E5%9D%80%E8%BF%98%E9%9C%80%E8%A6%81mac%E5%9C%B0%E5%9D%80)
+- [DNS使用的协议](#dns%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8D%8F%E8%AE%AE)
+- [幂等](#%E5%B9%82%E7%AD%89)
+- [Cookies和Session区别](#cookies%E5%92%8Csession%E5%8C%BA%E5%88%AB)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 
 # TCP
 
@@ -195,20 +204,77 @@ HTTP协议是Hyper Text Transfer Protocol（超文本传输协议）的缩写,�
 
 
 
-## 请求消息Request
+## 通信传输流
 
-1. 请求行，用来说明请求类型,要访问的资源以及所使用的HTTP版本.
-2. 请求头部，紧接着请求行（即第一行）之后的部分，用来说明服务器要使用的附加信息
-从第二行起为请求头部，HOST将指出请求的目的地.User-Agent,服务器端和客户端脚本都能访问它,它是浏览器类型检测逻辑的重要基础.该信息由你的浏览器来定义,并且在每个请求中自动发送等等
-3. 空行，请求头部后面的空行是必须的
-4. 请求数据也叫主体，可以添加任意的其他数据。
 
-## 响应消息Response
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/network-1.png)
 
-1. 状态行，由HTTP协议版本号， 状态码， 状态消息 三部分组成。
-2. 消息报头，用来说明客户端要使用的一些附加信息
-3. 空行，消息报头后面的空行是必须的
-4. 响应正文，服务器返回给客户端的文本信息。
+
+发送端在层与层之间传输数据时，每经过一层时必定会被打上一个该层所属的首部信息。反之，接收端在层与层传输数据时，每经过一层时会把对应的首部消去
+
+ARP 是一种用以解析地址的协议，根据通信方的 IP 地址就可以反查出对应的 MAC 地址。
+
+## 各种协议与HTTP协议的关系
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/network-2.png)
+
+
+
+## 请求消息Request和响应消息Response
+下面则是从客户端发送给某个 HTTP 服务器端的请求报文中的内容：
+```java
+GET /index.htm HTTP/1.1
+Host: hackr.jp
+```
+起始行开头的GET表示请求访问服务器的类型，称为方法（method）。随后的字符串 /index.htm 指明了请求访问的资源对象，
+也叫做请求 URI（request-URI）。最后的 HTTP/1.1，即 HTTP 的版本号，用来提示客户端使用的 HTTP 协议功能。
+综合来看，这段请求内容的意思是：请求访问某台 HTTP 服务器上的/index.htm 页面资源。
+
+请求报文是由请求方法、请求 URI、协议版本、可选的请求首部字段和内容实体构成的。
+
+请求内容的处理结果以响应的形式返回：
+```java
+HTTP/1.1 200 OK
+Date: Tue, 10 Jul 2012 06:50:15 GMT
+Content-Length: 362
+Content-Type: text/html
+<html>
+……
+```
+在起始行开头的 HTTP/1.1 表示服务器对应的 HTTP 版本。紧挨着的 200 OK 表示请求的处理结果的状态码（status code）和原因
+短语（reason-phrase）。下一行显示了创建响应的日期时间，是首部字段（header field）内的一个属性。
+接着以一空行分隔，之后的内容称为资源实体的主体（entitybody）。
+
+
+
+## HTTP是无状态协议
+HTTP 协议自身不具备保存之前发送过的请求或响应的功能，这是为了更快地处理大量事务，确保协议的可伸缩性，而特意把 HTTP 协议设计成如此简单的。
+
+HTTP/1.1 虽然是无状态协议，但为了实现期望的保持状态功能，于是引入了 Cookie 技术。有了 Cookie 再用 HTTP 协议通信，就可以管理状态了。
+
+## Keep-Alive模式
+
+当使用普通模式，即非KeepAlive模式时，每个请求/应答客户和服务器都要新建一个连接，完成之后立即断开连接（HTTP协议为无连接的协议）；当使用Keep-Alive模式（又称持久连接、连接重用）时，Keep-Alive功能使客户端到服务器端的连接持续有效，当出现对服务器的后继请求时，Keep-Alive功能避免了建立或者重新建立连接。
+
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/network-4.png)
+http 1.0中默认是关闭的，需要在http头加入"Connection: Keep-Alive"，才能启用Keep-Alive；http 1.1中默认启用Keep-Alive，如果加入"Connection: close "，才关闭
+
+当HTTP采用keepalive模式，当客户端向服务器发生请求之后，客户端如何判断服务器的数据已经发生完成？
+
+1、使用消息首部字段Conent-Length
+
+故名思意，Conent-Length表示实体内容长度，客户端（服务器）可以根据这个值来判断数据是否接收完成。但是如果消息中没有Conent-Length，那该如何来判断呢？又在什么情况下会没有Conent-Length呢？请继续往下看……
+
+2、使用消息首部字段Transfer-Encoding
+
+当客户端向服务器请求一个静态页面或者一张图片时，服务器可以很清楚的知道内容大小，然后通过Content-length消息首部字段告诉客户端需要接收多少数据。但是如果是动态页面等时，服务器是不可能预先知道内容大小，这时就可以使用Transfer-Encoding：chunk模式来传输数据了。即如果要一边产生数据，一边发给客户端，服务器就需要使用"Transfer-Encoding: chunked"这样的方式来代替Content-Length。
+
+chunk编码将数据分成一块一块的发生。Chunked编码将使用若干个Chunk串连而成，由一个标明长度为0的chunk标示结束。每个Chunk分为头部和正文两部分，头部内容指定正文的字符总数（十六进制的数字）和数量单位（一般不写），正文部分就是指定长度的实际内容，两部分之间用回车换行(CRLF)隔开。在最后一个长度为0的Chunk中的内容是称为footer的内容，是一些附加的Header信息（通常可以直接忽略）。
+
+
+
+
 
 
 ## 状态码
@@ -234,7 +300,8 @@ HTTP协议是Hyper Text Transfer Protocol（超文本传输协议）的缩写,�
 
 
 
-## GET 和 POST 区别
+
+## GET和POST区别
 ### GET
 请注意，查询字符串（名称/值对）是在 GET 请求的 URL 中发送的：
 ```
@@ -265,34 +332,8 @@ name1=value1&name2=value2
 ### 相同点
 HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。
 
-## dns使用的协议
-既使用TCP又使用UDP 
-
-首先了解一下TCP与UDP传送字节的长度限制： 
-
-1.  UDP报文的最大长度为512字节，而TCP则允许报文长度超过512字节。当DNS查询超过512字节时，协议的TC标志出现删除标志，这时则使用TCP发送。通常传统的UDP报文一般不会大于512字节。 
-
-区域传送时使用TCP，主要有一下两点考虑： 
-
-1. 辅域名服务器会定时（一般时3小时）向主域名服务器进行查询以便了解数据是否有变动。如有变动，则会执行一次区域传送，进行数据同步。区域传送将使用TCP而不是UDP，因为数据同步传送的数据量比一个请求和应答的数据量要多得多。 
-2. TCP是一种可靠的连接，保证了数据的准确性。 
-
-域名解析时使用UDP协议： 
-
-1. 客户端向DNS服务器查询域名，一般返回的内容都不超过512字节，用UDP传输即可。不用经过TCP三次握手，这样DNS服务器负载更低，响应更快。虽然从理论上说，客户端也可以指定向DNS服务器查询的时候使用TCP，但事实上，很多DNS服务器进行配置的时候，仅支持UDP查询包。
 
 
-## 幂等
-一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。幂等函数，或幂等方法，是指可以使用相同参数重复执行，并能获得相同结果的函数。这些函数不会影响系统状态，也不用担心重复执行会对系统造成改变。例如，“getUsername()和setTrue()”函数就是一个幂等函数.
-
-
-
-## Cookies和Session区别
-1. Cookies是一种能够让网站服务器把少量数据储存到客户端的硬盘或内存，或是从客户端的硬盘读取数据的一种技术。Cookies是当你浏览某网站时，由Web服务器置于你硬盘上的一个非常小的文本文件，它可以记录你的用户ID、密码、浏览过的网页、停留的时间等信息。 
-session: 当用户请求来自应用程序的 Web 页时，如果该用户还没有会话，则 Web 服务器将自动创建一个 Session 对象。当会话过期或被放弃后，服务器将终止该会话。
-cookie机制：采用的是在客户端保持状态的方案，而session机制采用的是在服务端保持状态的方案。同时我们看到由于服务器端保持状态的方案在客户端也需要保存一个标识，所以session机制可能需要借助cookie机制来达到保存标识的目的。
-
-2. Session是服务器用来跟踪用户的一种手段，每个Session都有一个唯一标识：session ID。当服务器创建了Session时，给客户端发送的响应报文包含了Set-cookie字段，其中有一个名为sid的键值对，这个键值Session ID。客户端收到后就把Cookie保存浏览器，并且之后发送的请求报表都包含SessionID。HTTP就是通过Session和Cookie这两个发送一起合作来实现跟踪用户状态，Session用于服务端，Cookie用于客户端
 
 
 
@@ -312,27 +353,7 @@ http1.0请求与服务端的交互过程:
 
 
 
-
-## URI和URL的区别
-URI，是uniform resource identifier，统一资源标识符，用来唯一的标识一个资源。
-Web上可用的每种资源如HTML文档、图像、视频片段、程序等都是一个来URI来定位的
-
-URI一般由三部组成：
-
-1. 访问资源的命名机制
-2. 存放资源的主机名
-3. 资源自身的名称，由路径表示，着重强调于资源。
-
-URL是uniform resource locator，统一资源定位器，它是一种具体的URI，即URL可以用来标识一个资源，而且还指明了如何locate这个资源。
-URL是Internet上用来描述信息资源的字符串，主要用在各种WWW客户程序和服务器程序上，特别是著名的Mosaic。
-采用URL可以用一种统一的格式来描述各种信息资源，包括文件、服务器的地址和目录等。
-
-URL一般由三部组成：
-
-1. 协议(或称为服务方式)
-2. 存有该资源的主机IP地址(有时也包括端口号)
-3. 主机资源的具体地址。如目录和文件名等
-
+URI是以一种抽象的，高层次概念定义统一资源标识，URL是一种具体的URI，它是URI的一个子集，它不仅唯一标识资源，而且还提供了定位该资源的信息。
 
 
 ## HTTPS和HTTP的区别
@@ -343,7 +364,7 @@ URL一般由三部组成：
 5. http默认使用80端口，https默认使用443端口
 
 
-## HTTP 的缺点
+## HTTP的缺点
 1. 通信使用明文（不加密） ， 内容可能会被窃听
 2. 不验证通信方的身份， 因此有可能遭遇伪装
 3. 无法证明报文的完整性， 所以有可能已遭篡改
@@ -363,22 +384,22 @@ https实际就是在TCP层与http层之间加入了SSL/TLS来为上层的安全�
 
 
 
-SSL/TLS是干嘛的？
+### SSL/TLS
 
 1. SSL 是“Secure Sockets Layer”的缩写，中文叫做“安全套接层”
 2. 因为原先互联网上使用的HTTP协议是明文的，存在很多缺点——比如传输内容会被偷窥（嗅探）和篡改。发明 SSL 协议，就是为了解决这些问题。
    SSL 因为应用广泛，IETF 就把 SSL 标准化。标准化之后的名称改为 TLS（是“Transport Layer Security”的缩写），中文叫做“传输层安全协议”。所以两个是没区别的
 
 
-SSL/TLS作用
-
+**SSL/TLS作用**
 1. 认证用户和服务器，确保数据发送到正确的客户机和服务器；
 2. 加密数据以防止数据中途被窃取；
 3. 维护数据的完整性，确保数据在传输过程中不被改变。
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/network-1.jpg)
 
-# 其他
-## 网络为什么要分层
+
+# 网络为什么要分层
 网络协议分层，和计算机领域的其他分层，比如三层架构的分层，在本质上是一样的。分层的本质是通过分离关注点而让问题简单化。再说一遍，分层的本质是通过分离关注点而让问题简单化。
 
 当一个系统足够复杂时，通过聚合分为不同层次， 每层都是内聚的，对外屏蔽复杂性。 那么宏观上看去，管理和问题定位很容易到具体层次。 然后层层递进，很容易定位问题。 
@@ -391,9 +412,63 @@ SSL/TLS作用
 5. 利于各层逻辑的复用
 
 
-## 为什么有IP地址还需要MAC地址
+# URI和URL
+
+URI(Uniform Resource Identifier 的缩写，统一资源标识符)，用来唯一的标识一个资源。
+
+Web上可用的每种资源如HTML文档、图像、视频片段、程序等都是一个来URI来定位的。
+URI一般由三部组成：
+1. 访问资源的命名机制
+2. 存放资源的主机名
+3. 资源自身的名称，由路径表示，着重强调于资源。
+
+URL(Uniform/Universal Resource Locator 的缩写，统一资源定位符)，它是一种具体的URI，即URL可以用来标识一个资源，而且还指明了如何locate这个资源。
+
+URL是Internet上用来描述信息资源的字符串，主要用在各种WWW客户程序和服务器程序上，特别是著名的Mosaic。
+
+采用URL可以用一种统一的格式来描述各种信息资源，包括文件、服务器的地址和目录等。URL一般由三部组成：
+1. 协议(或称为服务方式)
+2. 存有该资源的主机IP地址(有时也包括端口号)
+3. 主机资源的具体地址。如目录和文件名等
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/network-3.png)
+
+
+
+# 为什么有IP地址还需要MAC地址
 IP可以保证要发送的包在网络中传输，到达目标服务器所在的局域网的网关。
 但是到了网关后，IP就没用了，因为局域网的IP对应的机器是不确定的，可能今天对应A机器，明天对应B机器。
 所以在局域网中使用IP寻址是不严谨的，这时就需要MAC地址来唯一对应一台机器，这样网络包就可以准确的传输到需要的主机上了
+
+
+
+# DNS使用的协议
+既使用TCP又使用UDP 
+
+首先了解一下TCP与UDP传送字节的长度限制： 
+
+1.  UDP报文的最大长度为512字节，而TCP则允许报文长度超过512字节。当DNS查询超过512字节时，协议的TC标志出现删除标志，这时则使用TCP发送。通常传统的UDP报文一般不会大于512字节。 
+
+区域传送时使用TCP，主要有一下两点考虑： 
+
+1. 辅域名服务器会定时（一般时3小时）向主域名服务器进行查询以便了解数据是否有变动。如有变动，则会执行一次区域传送，进行数据同步。区域传送将使用TCP而不是UDP，因为数据同步传送的数据量比一个请求和应答的数据量要多得多。 
+2. TCP是一种可靠的连接，保证了数据的准确性。 
+
+域名解析时使用UDP协议： 
+
+1. 客户端向DNS服务器查询域名，一般返回的内容都不超过512字节，用UDP传输即可。不用经过TCP三次握手，这样DNS服务器负载更低，响应更快。虽然从理论上说，客户端也可以指定向DNS服务器查询的时候使用TCP，但事实上，很多DNS服务器进行配置的时候，仅支持UDP查询包。
+
+
+# 幂等
+一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。幂等函数，或幂等方法，是指可以使用相同参数重复执行，并能获得相同结果的函数。这些函数不会影响系统状态，也不用担心重复执行会对系统造成改变。例如，“getUsername()和setTrue()”函数就是一个幂等函数.
+
+
+
+# Cookies和Session区别
+1. Cookies是一种能够让网站服务器把少量数据储存到客户端的硬盘或内存，或是从客户端的硬盘读取数据的一种技术。Cookies是当你浏览某网站时，由Web服务器置于你硬盘上的一个非常小的文本文件，它可以记录你的用户ID、密码、浏览过的网页、停留的时间等信息。 
+session: 当用户请求来自应用程序的 Web 页时，如果该用户还没有会话，则 Web 服务器将自动创建一个 Session 对象。当会话过期或被放弃后，服务器将终止该会话。
+cookie机制：采用的是在客户端保持状态的方案，而session机制采用的是在服务端保持状态的方案。同时我们看到由于服务器端保持状态的方案在客户端也需要保存一个标识，所以session机制可能需要借助cookie机制来达到保存标识的目的。
+
+2. Session是服务器用来跟踪用户的一种手段，每个Session都有一个唯一标识：session ID。当服务器创建了Session时，给客户端发送的响应报文包含了Set-cookie字段，其中有一个名为sid的键值对，这个键值Session ID。客户端收到后就把Cookie保存浏览器，并且之后发送的请求报表都包含SessionID。HTTP就是通过Session和Cookie这两个发送一起合作来实现跟踪用户状态，Session用于服务端，Cookie用于客户端
 
 
