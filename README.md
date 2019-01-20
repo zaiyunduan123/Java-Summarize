@@ -48,7 +48,9 @@
 -  [系统设计](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/scene/Scene-Design.md)
 
 ### 框架原理
--   [SSM实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Framework.md)
+-   [Spring实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Spring.md)
+
+-   [MyBatis实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/MyBatis.md)
    
 -   [Solr实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md)
 
