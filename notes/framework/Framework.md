@@ -18,12 +18,12 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Spring IOC
+# Spring IOC
 java程序中的每个业务逻辑至少需要两个或以上的对象来协作完成。通常，每个对象在使用他的合作对象时，自己均要使用像new object（） 这样的语法来完成合作对象的申请工作。这样对象间的耦合度高了。
 
 IOC的思想是：IoC的核心思想在于资源统一管理,你所持有的资源全部放入到IoC容器中,而你也只需要依赖IoC容器,该容器会自动为你装配所需要的具体依赖. 对于spring框架来说，就是由spring来负责控制对象的生命周期和对象间的关系。
 
-### IOC原理
+## IOC原理
 
 IOC:
 
@@ -37,13 +37,13 @@ IOC:
 
 当然，bean也可以使用原型方式加载，使用原型的话，每次创建bean都会是全新的。
 
-##  Spring AOP
+#  Spring AOP
 1. AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了 多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即方面。所谓“方面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的 逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。
 
-### 实现AOP的技术
+## 实现AOP的技术
 主要分为两大类：一是采用动态代理技术，利用截取消息的方式，对该消息进行装饰，以取代原有对象行为的执行； 二是采用静态织入的方式，引入特定的语法创建“方面”，从而使得编译器可以在编译期间织入有关“方面”的代码。
 
-### Spring实现AOP
+## Spring实现AOP
 1. JDK动态代理：其代理对象必须是某个接口的实现，它是通过在运行期间创建一个接口的实现类来完成对目标对象的代理；其核心的两个类是InvocationHandler和Proxy。
 2. CGLIB代理：实现原理类似于JDK动态代理，只是它在运行期间生成的代理对象是针对目标类扩展的子类。CGLIB是高效的代码生成包，底层是依靠ASM（开源的java字节码编辑类库）操作字节码实现的，性能比JDK强；需要引入包asm.jar和cglib.jar。
 
@@ -68,7 +68,7 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 
 然后和aop的动态代理方式类似，当Spring容器为bean生成代理时，会注入事务的增强器，其中实际上实现了事务中的begin和commit，所以执行方法的过程实际上就是在事务中进行的。
 
-###  AOP使用场景
+##  AOP使用场景
 1. Authentication 权限检查        
 2. Caching 缓存        
 3. Context passing 内容传递        
@@ -83,7 +83,7 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 12. Transactions 事务管理  
 
 
-## Spring @Transactional工作原理
+# Spring @Transactional工作原理
 1. 当spring遍历容器中所有的切面，查找与当前实例化bean匹配的切面，这里就是获取事务属性切面，查找@Transactional注解及其属性值，然后根据得到的切面进入createProxy方法，创建一个AOP代理。
 2. 默认是使用JDK动态代理创建代理，如果目标类是接口，则使用JDK动态代理，否则使用Cglib。
 3. 获取的是当前目标方法对应的拦截器，里面是根据之前获取到的切面来获取相对应拦截器，这时候会得到TransactionInterceptor实例。如果获取不到拦截器，则不会创建MethodInvocation，直接调用目标方法。
@@ -96,7 +96,7 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 
 
 
-## SpringMVC的工作原理
+# SpringMVC的工作原理
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-1.jpg)
 SpringMVC流程
 1.  用户发送请求至前端控制器DispatcherServlet。
@@ -114,15 +114,15 @@ SpringMVC流程
 请求 ---> DispatcherServlet（前端控制器）---> 调用HandlerMapping（处理器映射器）---> DispatcherServlet调用 HandlerAdapter（处理器适配器）---> 适配调用具体的Controller ---> 返回ModelAndView  --->  传给ViewReslover视图解析器  --->  解析后返回具体View ---> 根据View进行渲染视图响应用户
 
 
-## SpringMVC拦截器
-### 常见应用场景
+# SpringMVC拦截器
+## 常见应用场景
 1. 日志记录：记录请求信息的日志，以便进行信息监控、信息统计、计算PV（Page View）等
 2. 权限检查：如登录检测，进入处理器检测检测是否登录，如果没有直接返回到登录页面
 3. 性能监控：有时候系统在某段时间莫名其妙的慢，可以通过拦截器在进入处理器之前记录开始时间，在处理完后记录结束时间，从而得到该请求的处理时间（如果有反向代理，如apache可以自动记录）
 4. 通用行为：读取cookie得到用户信息并将用户对象放入请求，从而方便后续流程使用，还有如提取Locale、Theme信息等，只要是多个处理器都需要的即可使用拦截器实现。
 5. OpenSessionInView：如Hibernate，在进入处理器打开Session，在完成后关闭Session。
 
-### 拦截器接口
+## 拦截器接口
 ```java
 public interface HandlerInterceptor {  
     /**
@@ -153,7 +153,7 @@ public interface HandlerInterceptor {
 ```
 
 
-## MyBatis原理
+# MyBatis原理
 **MyBatis完成2件事情**
 
 1. 封装JDBC操作
@@ -176,7 +176,7 @@ public interface HandlerInterceptor {
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-2.jpg)
 
 
-## MyBatis缓存
+# MyBatis缓存
 
 MyBatis提供查询缓存，用于减轻数据库压力，提高性能。MyBatis提供了一级缓存和二级缓存。
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-3.jpg)
