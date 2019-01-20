@@ -4,6 +4,7 @@
 
 - [Spring IOC](#spring-ioc)
   - [IOC原理](#ioc%E5%8E%9F%E7%90%86)
+  - [Spring单例Bean与单例模式的区别](#spring%E5%8D%95%E4%BE%8Bbean%E4%B8%8E%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [Spring AOP](#spring-aop)
   - [实现AOP的技术](#%E5%AE%9E%E7%8E%B0aop%E7%9A%84%E6%8A%80%E6%9C%AF)
   - [Spring实现AOP](#spring%E5%AE%9E%E7%8E%B0aop)
@@ -13,6 +14,23 @@
 - [SpringMVC拦截器](#springmvc%E6%8B%A6%E6%88%AA%E5%99%A8)
   - [常见应用场景](#%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
   - [拦截器接口](#%E6%8B%A6%E6%88%AA%E5%99%A8%E6%8E%A5%E5%8F%A3)
+- [Spring源码分析](#spring%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90)
+  - [容器的基本实现](#%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0)
+    - [DefaultListableBeanFactory](#defaultlistablebeanfactory)
+    - [XmlBeanDefinitionReader](#xmlbeandefinitionreader)
+  - [Bean的加载](#bean%E7%9A%84%E5%8A%A0%E8%BD%BD)
+    - [ClassPathXmlApplicationContext构造函数](#classpathxmlapplicationcontext%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)
+    - [refresh()](#refresh)
+    - [getBean()](#getbean)
+      - [1、转换对应beanName](#1%E8%BD%AC%E6%8D%A2%E5%AF%B9%E5%BA%94beanname)
+      - [2、尝试从缓存中加载单例](#2%E5%B0%9D%E8%AF%95%E4%BB%8E%E7%BC%93%E5%AD%98%E4%B8%AD%E5%8A%A0%E8%BD%BD%E5%8D%95%E4%BE%8B)
+      - [3、bean的实例化](#3bean%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96)
+      - [4、原型模式的依赖检查](#4%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%BE%9D%E8%B5%96%E6%A3%80%E6%9F%A5)
+      - [5、检测parentBeanFactory](#5%E6%A3%80%E6%B5%8Bparentbeanfactory)
+      - [6、将存储XML配置文件的GernericBeanDefinition转换为RootBeanDefinition](#6%E5%B0%86%E5%AD%98%E5%82%A8xml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84gernericbeandefinition%E8%BD%AC%E6%8D%A2%E4%B8%BArootbeandefinition)
+      - [7、寻找依赖](#7%E5%AF%BB%E6%89%BE%E4%BE%9D%E8%B5%96)
+      - [8、针对不同的scope进行bean的创建](#8%E9%92%88%E5%AF%B9%E4%B8%8D%E5%90%8C%E7%9A%84scope%E8%BF%9B%E8%A1%8Cbean%E7%9A%84%E5%88%9B%E5%BB%BA)
+      - [9、类型转换](#9%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
