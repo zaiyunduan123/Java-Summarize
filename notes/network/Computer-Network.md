@@ -46,6 +46,10 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # TCP
+TCP（Transmission Control Protocol 传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议。
+
+TCP通过校验和、序列号、确认应答、重发控制、连接管理以及窗口控制等机制实现可靠性传输。
+
 
 ## TCP三次握手
 ![](https://user-gold-cdn.xitu.io/2018/5/1/1631bf1e79b3cd42?w=666&h=426&f=png&s=32121)
