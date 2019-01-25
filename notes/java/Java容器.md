@@ -208,49 +208,50 @@ Java 8的ConcurrentHashMap同样是通过Key的哈希值与数组长度取模确
 
 ## HashMap原理
 ### HashMap特性
-　　HashMap的特性：HashMap存储键值对，实现快速存取数据；允许null键/值；非同步；不保证有序(比如插入的顺序)。实现map接口。
+HashMap的特性：HashMap存储键值对，实现快速存取数据；允许null键/值；非同步；不保证有序(比如插入的顺序)。实现map接口。
 
 ### HashMap的原理，内部数据结构
-　　HashMap是基于hashing的原理，底层使用哈希表（数组 + 链表）实现。里边最重要的两个方法put、get，使用put(key, value)存储对象到HashMap中，使用get(key)从HashMap中获取对象。 
-　　存储对象时，我们将K/V传给put方法时，它调用hashCode计算hash从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量(超过Load Facotr则resize为原来的2倍)。获取对象时，我们将K传给get，它调用hashCode计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。如果发生碰撞的时候，Hashmap通过链表将产生碰撞冲突的元素组织起来，在Java 8中，如果一个bucket中碰撞冲突的元素超过某个限制(默认是8)，则使用红黑树来替换链表，从而提高速度。
+HashMap是基于hashing的原理，底层使用哈希表（数组 + 链表）实现。里边最重要的两个方法put、get，使用put(key, value)存储对象到HashMap中，使用get(key)从HashMap中获取对象。 
+
+存储对象时，我们将K/V传给put方法时，它调用hashCode计算hash从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量(超过Load Facotr则resize为原来的2倍)。获取对象时，我们将K传给get，它调用hashCode计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。如果发生碰撞的时候，Hashmap通过链表将产生碰撞冲突的元素组织起来，在Java 8中，如果一个bucket中碰撞冲突的元素超过某个限制(默认是8)，则使用红黑树来替换链表，从而提高速度。
 
 ### 讲一下 HashMap 中 put 方法过程
-1.对key的hashCode做hash操作，然后再计算在bucket中的index（1.5 HashMap的哈希函数）； 
-2.如果没碰撞直接放到bucket里； 
-3.如果碰撞了，以链表的形式存在buckets后； 
-4.如果节点已经存在就替换old value(保证key的唯一性) 
-5.如果bucket满了(超过阈值，阈值=loadfactor*current capacity，load factor默认0.75)，就要resize。
+1. 对key的hashCode做hash操作，然后再计算在bucket中的index（1.5 HashMap的哈希函数）； 
+2. 如果没碰撞直接放到bucket里； 
+3. 如果碰撞了，以链表的形式存在buckets后； 
+4. 如果节点已经存在就替换old value(保证key的唯一性) 
+5. 如果bucket满了(超过阈值，阈值=loadfactor*current capacity，load factor默认0.75)，就要resize。
 
 ### get()方法的工作原理
-　　通过对key的hashCode()进行hashing，并计算下标( n-1 & hash)，从而获得buckets的位置。如果产生碰撞，则利用key.equals()方法去链表中查找对应的节点。
+通过对key的hashCode()进行hashing，并计算下标( n-1 & hash)，从而获得buckets的位置。如果产生碰撞，则利用key.equals()方法去链表中查找对应的节点。
 
 ### HashMap中hash函数怎么是是实现的？还有哪些 hash 的实现方式？
-　　1. 对key的hashCode做hash操作（高16bit不变，低16bit和高16bit做了一个异或）； 
-　　2. h & (length-1); //通过位操作得到下标index。
+1. 对key的hashCode做hash操作（高16bit不变，低16bit和高16bit做了一个异或）； 
+2. h & (length-1); //通过位操作得到下标index。
 
-　　还有数字分析法、平方取中法、分段叠加法、 除留余数法、 伪随机数法。
+还有数字分析法、平方取中法、分段叠加法、 除留余数法、 伪随机数法。
 
 ### HashMap 怎样解决冲突？
-　　HashMap中处理冲突的方法实际就是链地址法，内部数据结构是数组+单链表。
+HashMap中处理冲突的方法实际就是链地址法，内部数据结构是数组+单链表。
 
 #### 扩展问题1：当两个对象的hashcode相同会发生什么？
-　　因为两个对象的Hashcode相同，所以它们的bucket位置相同，会发生“碰撞”。HashMap使用链表存储对象，这个Entry(包含有键值对的Map.Entry对象)会存储在链表中。
+因为两个对象的Hashcode相同，所以它们的bucket位置相同，会发生“碰撞”。HashMap使用链表存储对象，这个Entry(包含有键值对的Map.Entry对象)会存储在链表中。
 
 #### 扩展问题2：抛开 HashMap，hash 冲突有那些解决办法？
-　　开放定址法、链地址法、再哈希法。
+开放定址法、链地址法、再哈希法。
 
 ### 如果两个键的hashcode相同，你如何获取值对象？
-　　重点在于理解hashCode()与equals()。 
-　　通过对key的hashCode()进行hashing，并计算下标( n-1 & hash)，从而获得buckets的位置。两个键的hashcode相同会产生碰撞，则利用key.equals()方法去链表或树（java1.8）中去查找对应的节点。
+重点在于理解hashCode()与equals()。 
+
+通过对key的hashCode()进行hashing，并计算下标( n-1 & hash)，从而获得buckets的位置。两个键的hashcode相同会产生碰撞，则利用key.equals()方法去链表或树（java1.8）中去查找对应的节点。
 
 ### 针对 HashMap 中某个 Entry 链太长，查找的时间复杂度可能达到 O(n)，怎么优化？
-　　将链表转为红黑树，实现 O(logn) 时间复杂度内查找。JDK1.8 已经实现了。
+将链表转为红黑树，实现 O(logn) 时间复杂度内查找。JDK1.8 已经实现了。
 
 ### 如果HashMap的大小超过了负载因子(load factor)定义的容量，怎么办？
-　　扩容。这个过程也叫作rehashing，因为它重建内部数据结构，并调用hash方法找到新的bucket位置。 
-　　大致分两步： 
-　　1.扩容：容量扩充为原来的两倍（2 * table.length）； 
-　　2.移动：对每个节点重新计算哈希值，重新计算每个元素在数组中的位置，将原来的元素移动到新的哈希表中。 
+扩容。这个过程也叫作rehashing，因为它重建内部数据结构，并调用hash方法找到新的bucket位置。 大致分两步： 
+1. 扩容：容量扩充为原来的两倍（2 * table.length）； 
+2. 移动：对每个节点重新计算哈希值，重新计算每个元素在数组中的位置，将原来的元素移动到新的哈希表中。 
 　　 
 补充： 
 1. loadFactor：加载因子。默认值DEFAULT_LOAD_FACTOR = 0.75f； 
@@ -269,13 +270,13 @@ Java 8的ConcurrentHashMap同样是通过Key的哈希值与数组长度取模确
 　　Hashtable可以看做是线程安全版的HashMap，两者几乎“等价”（当然还是有很多不同）。Hashtable几乎在每个方法上都加上synchronized（同步锁），实现线程安全。
 
 ###  区别
-　　1.HashMap继承于AbstractMap，而Hashtable继承于Dictionary； 
-　　2.线程安全不同。Hashtable的几乎所有函数都是同步的，即它是线程安全的，支持多线程。而HashMap的函数则是非同步的，它不是线程安全的。若要在多线程中使用HashMap，需要我们额外的进行同步处理； 
-　　3.null值。HashMap的key、value都可以为null。Hashtable的key、value都不可以为null； 
-　　4.迭代器(Iterator)。HashMap的迭代器(Iterator)是fail-fast迭代器，而Hashtable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构（增加或者移除元素），将会抛出ConcurrentModificationException。 
-　　5.容量的初始值和增加方式都不一样：HashMap默认的容量大小是16；增加容量时，每次将容量变为“原始容量x2”。Hashtable默认的容量大小是11；增加容量时，每次将容量变为“原始容量x2 + 1”； 
-　　6.添加key-value时的hash值算法不同：HashMap添加元素时，是使用自定义的哈希算法。Hashtable没有自定义哈希算法，而直接采用的key的hashCode()。 
-　　7.速度。由于Hashtable是线程安全的也是synchronized，所以在单线程环境下它比HashMap要慢。如果你不需要同步，只需要单一线程，那么使用HashMap性能要好过Hashtable。
+1. HashMap继承于AbstractMap，而Hashtable继承于Dictionary； 
+2. 线程安全不同：Hashtable的几乎所有函数都是同步的，即它是线程安全的，支持多线程。而HashMap的函数则是非同步的，它不是线程安全的。若要在多线程中使用HashMap，需要我们额外的进行同步处理； 
+3. null值：HashMap的key、value都可以为null。Hashtable的key、value都不可以为null； 
+4. 迭代器(Iterator)：HashMap的迭代器(Iterator)是fail-fast迭代器，而Hashtable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构（增加或者移除元素），将会抛出ConcurrentModificationException。 
+5. 容量的初始值和增加方式都不一样：HashMap默认的容量大小是16；增加容量时，每次将容量变为“原始容量x2”。Hashtable默认的容量大小是11；增加容量时，每次将容量变为“原始容量x2 + 1”； 
+6. 添加key-value时的hash值算法不同：HashMap添加元素时，是使用自定义的哈希算法。Hashtable没有自定义哈希算法，而直接采用的key的hashCode()。 
+7. 速度。由于Hashtable是线程安全的也是synchronized，所以在单线程环境下它比HashMap要慢。如果你不需要同步，只需要单一线程，那么使用HashMap性能要好过Hashtable。
 
 ### 能否让HashMap同步？
 　　HashMap可以通过下面的语句进行同步：Map m = Collections.synchronizeMap(hashMap);
