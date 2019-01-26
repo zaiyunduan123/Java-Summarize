@@ -395,6 +395,38 @@ invokedynamic 底层机制的基石：方法句柄。
 
 方法句柄的调用和反射调用一样，都是间接调用，同样会面临无法内联的问题。
 
+# 栈上分配和TLAB
 
+## 栈上分配
+JVM提供了一种叫做栈上分配的概念，针对那些作用域不会逃逸出方法的对象，在分配内存时不在将对象分配在堆内存中，而是将对象属性打散后分配在栈（线程私有的，属于栈内存）上，这样，随着方法的调用结束，栈空间的回收就会随着将栈上分配的打散后的对象回收掉，不再给gc增加额外的无用负担，从而提升应用程序整体的性能
 
+## 线程私有分配区TLAB
+对象分配在堆上，而堆是一个全局共享的区域，当多个线程同一时刻操作堆内存分配对象空间时，就需要通过锁机制或者指针碰撞的方式确保不会申请到同一块内存，而这带来的效果就是对象分配效率变差（尽管JVM采用了CAS的形式处理分配失败的情况），但是对于存在竞争激烈的分配场合仍然会导致效率变差。因此，在Hotspot 1.6的实现中引入了TLAB技术。
+
+TLAB全称ThreadLocalAllocBuffer，是线程的一块私有内存，如果设置了虚拟机参数 -XX:UseTLAB，在线程初始化时，同时也会申请一块指定大小的内存，只给当前线程使用，这样每个线程都单独拥有一个Buffer，如果需要分配内存，就在自己的Buffer上分配，这样就不存在竞争的情况，可以大大提升分配效率。
+
+TLAB只是让每个线程有私有的分配指针，但底下存对象的内存空间还是给所有线程访问的，只是其它线程无法在这个区域分配而已。当一个TLAB用满（分配指针_top撞上分配极限_end了），就新申请一个TLAB。
+```java
+class ThreadLocalAllocBuffer: public CHeapObj<mtThread> {
+  HeapWord* _start;                              // address of TLAB
+  HeapWord* _top;                                // address after last allocation
+  HeapWord* _pf_top;                             // allocation prefetch watermark
+  HeapWord* _end;                                // allocation end (excluding alignment_reserve)
+  size_t    _desired_size;                       // desired size   (including alignment_reserve)
+  size_t    _refill_waste_limit;                 // hold onto tlab if free() is larger than this
+  .....................省略......................
+}
+```
+TLAB空间主要有3个指针：_start、_top、_end。_start指针表示TLAB空间的起始内存，_end指针表示TLAB空间的结束地址，通过_start和_end指针，表示线程管理的内存区域，每个线程都会从Eden分配一大块空间（TLAB实际上是一块Eden区中划出的线程私有的堆空间），标识出 Eden 里被这个 TLAB 所管理的区域，卡住eden里的一块空间不让其它线程来这里分配
+
+当进行对象的内存划分的时候，就会通过移动_top指针分配内存（TLAB，Eden，To，From 区主要采用指针碰撞来分配内存（pointer bumping）），在TLAB空间为对象分配内存需要遵循下面的原则：
+1. obj_size + tlab_top <= tlab_end，直接在TLAB空间分配对象
+2. obj_size + tlab_top >= tlab_end  &&  tlab_free > tlab_refill_waste_limit，对象不在TLAB分配，在Eden区分配。（tlab_free：剩余的内存空间，tlab_refill_waste_limit：允许浪费的内存空间）
+3. obj_size + tlab_top >= tlab_end  &&  tlab_free < _refill_waste_limit，重新分配一块TLAB空间，在新的TLAB中分配对象
+
+## 总体流程 
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/JVM-2.png)
+
+## 对象分配流程图
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/JVM-1.png)
 
