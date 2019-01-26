@@ -173,7 +173,7 @@ LinkedBlockingQueue queue = new LinkedBlockingQueue();
 
 #### keepAliveTime
 
-线程数量只增加不减少也不行。当负载降低时，可减少线程数量，如果一个线程空闲时间达到keepAliveTiime，该线程就退出。默认情况下线程池最少会保持corePoolSize个线程。
+当负载降低时，可减少线程数量，当线程的空闲时间超过keepAliveTime，会自动释放线程资源。默认情况下线程池停止多余的线程并最少会保持corePoolSize个线程。
 
 
 #### allowCoreThreadTimeout
