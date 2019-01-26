@@ -36,6 +36,11 @@
 - [JVM的Intrinsics方法](#jvm%E7%9A%84intrinsics%E6%96%B9%E6%B3%95)
 - [JVM的invokedynamic方法](#jvm%E7%9A%84invokedynamic%E6%96%B9%E6%B3%95)
 - [方法句柄](#%E6%96%B9%E6%B3%95%E5%8F%A5%E6%9F%84)
+- [栈上分配和TLAB](#%E6%A0%88%E4%B8%8A%E5%88%86%E9%85%8D%E5%92%8Ctlab)
+  - [栈上分配](#%E6%A0%88%E4%B8%8A%E5%88%86%E9%85%8D)
+  - [线程私有分配区TLAB](#%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%88%86%E9%85%8D%E5%8C%BAtlab)
+  - [总体流程](#%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B)
+  - [对象分配流程图](#%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E6%B5%81%E7%A8%8B%E5%9B%BE)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

@@ -10,7 +10,12 @@
   - [常见四种线程池](#%E5%B8%B8%E8%A7%81%E5%9B%9B%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%B1%A0)
   - [四种拒绝策略](#%E5%9B%9B%E7%A7%8D%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5)
   - [为什么要用线程池](#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0)
-  - [如何设计线程池中的线程数量](#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%95%B0%E9%87%8F)
+  - [线程池ThreadPoolExecutor参数设置](#%E7%BA%BF%E7%A8%8B%E6%B1%A0threadpoolexecutor%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE)
+    - [corePoolSize](#corepoolsize)
+    - [maxPoolSize](#maxpoolsize)
+    - [queueCapacity](#queuecapacity)
+    - [keepAliveTime](#keepalivetime)
+    - [allowCoreThreadTimeout](#allowcorethreadtimeout)
 - [Executorshe和ThreaPoolExecutor创建线程池的区别](#executorshe%E5%92%8Cthreapoolexecutor%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [CountDownLatch与CyclicBarrier的比较](#countdownlatch%E4%B8%8Ecyclicbarrier%E7%9A%84%E6%AF%94%E8%BE%83)
 - [对象锁和静态锁之间的区别](#%E5%AF%B9%E8%B1%A1%E9%94%81%E5%92%8C%E9%9D%99%E6%80%81%E9%94%81%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB)
@@ -139,17 +144,42 @@ Executor线程池框架是一个根据一组**执行策略调用，调度，执�
 2. 运用线程池能有效的控制线程最大并发数，可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。 
 3. 对线程进行一些简单的管理，比如：延时执行、定时循环执行的策略等，运用线程池都能进行很好的实现
 
-### 如何设计线程池中的线程数量
-线程池的最大线程数目根据CPU核心数来确定
 
-1. 如果你是CPU密集型运算，那么线程数量和CPU核心数相同就好，避免了大量无用的切换线程上下文
-2. 如果你是IO密集型的话，需要大量等待，那么线程数可以设置的多一些，比如CPU核心乘以2
+### 线程池ThreadPoolExecutor参数设置
+参数的设置跟系统的负载有直接的关系，下面为系统负载的相关参数：
+- tasks，每秒需要处理的的任务数
+- tasktime，处理每个任务花费的时间
+- responsetime，系统允许任务最大的响应时间，比如每个任务的响应时间不得超过2秒。
 
-至于如何获取 CPU 核心数，Java 提供了一个方法：
+#### corePoolSize
+每个任务需要tasktime秒处理，则每个线程每钞可处理1/tasktime个任务。系统每秒有tasks个任务需要处理，则需要的线程数为：tasks/(1/tasktime)，即tasks*tasktime个线程数。
+
+假设系统每秒任务数为100~1000，每个任务耗时0.1秒，则需要100*0.1至1000*0.1，即10~100个线程。那么corePoolSize应该设置为大于10，具体数字最好根据8020原则，即80%情况下系统每秒任务数，若系统80%的情况下第秒任务数小于200，最多时为1000，则corePoolSize可设置为20。
+
+#### maxPoolSize
+
+当系统负载达到最大值时，核心线程数已无法按时处理完所有任务，这时就需要增加线程。每秒200个任务需要20个线程，那么当每秒达到1000个任务时，则需要(1000-queueCapacity)*(20/200)，即60个线程，可将maxPoolSize设置为60。
+
+#### queueCapacity
+
+任务队列的长度要根据核心线程数，以及系统对任务响应时间的要求有关。队列长度可以设置为(corePoolSize/tasktime)*responsetime： (20/0.1)*2=400，即队列长度可设置为400。
+
+队列长度设置过大，会导致任务响应时间过长，切忌以下写法：
 ```java
-Runtime.getRuntime().availableProcessors();
+LinkedBlockingQueue queue = new LinkedBlockingQueue();
 ```
-返回了CPU的核心数量。
+这实际上是将队列长度设置为Integer.MAX_VALUE，将会导致线程数量永远为corePoolSize，再也不会增加，当任务数量陡增时，任务响应时间也将随之陡增。
+
+
+#### keepAliveTime
+
+线程数量只增加不减少也不行。当负载降低时，可减少线程数量，如果一个线程空闲时间达到keepAliveTiime，该线程就退出。默认情况下线程池最少会保持corePoolSize个线程。
+
+
+#### allowCoreThreadTimeout
+
+默认情况下核心线程不会退出，可通过将该参数设置为true，让核心线程也退出。
+
 
 ## Executorshe和ThreaPoolExecutor创建线程池的区别
 - Executors 各个方法的弊端：
