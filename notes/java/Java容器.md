@@ -29,6 +29,10 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+
+## Java集合类框架图
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-16.jpg)
+
 ## HashSet和TreeSet区别
 **HashSet**
 
