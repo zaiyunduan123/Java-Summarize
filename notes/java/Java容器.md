@@ -31,7 +31,7 @@
 
 
 ## Java集合类框架图
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-16.jpg)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-16.png)
 
 ## HashSet和TreeSet区别
 **HashSet**
