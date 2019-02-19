@@ -2,6 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+- [Java集合类框架图](#java%E9%9B%86%E5%90%88%E7%B1%BB%E6%A1%86%E6%9E%B6%E5%9B%BE)
 - [HashSet和TreeSet区别](#hashset%E5%92%8Ctreeset%E5%8C%BA%E5%88%AB)
 - [讲一下LinkedHashMap](#%E8%AE%B2%E4%B8%80%E4%B8%8Blinkedhashmap)
 - [Java8 中HashMap的优化（引入红黑树的数据结构和扩容的优化）](#java8-%E4%B8%ADhashmap%E7%9A%84%E4%BC%98%E5%8C%96%E5%BC%95%E5%85%A5%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E6%89%A9%E5%AE%B9%E7%9A%84%E4%BC%98%E5%8C%96)
