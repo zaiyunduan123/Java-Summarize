@@ -12,6 +12,14 @@
   - [Java对象模型](#java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B)
   - [三者区别](#%E4%B8%89%E8%80%85%E5%8C%BA%E5%88%AB)
 - [垃圾回收](#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6)
+  - [GC垃圾收集器](#gc%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8)
+    - [Serial垃圾收集器（单线程、复制算法）](#serial%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%8D%95%E7%BA%BF%E7%A8%8B%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95)
+    - [ParNew垃圾收集器（Serial + 多线程）](#parnew%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8serial--%E5%A4%9A%E7%BA%BF%E7%A8%8B)
+    - [Parllel Scavenge收集器 （多线程、复制算法）](#parllel-scavenge%E6%94%B6%E9%9B%86%E5%99%A8-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95)
+    - [Serial Old收集器（单线程标记整理算法）](#serial-old%E6%94%B6%E9%9B%86%E5%99%A8%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95)
+    - [Parallel Old收集器（多线程标记整理算法）](#parallel-old%E6%94%B6%E9%9B%86%E5%99%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95)
+    - [CMS收集器（多线程标记清除算法）](#cms%E6%94%B6%E9%9B%86%E5%99%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95)
+    - [G1收集器](#g1%E6%94%B6%E9%9B%86%E5%99%A8)
   - [Major GC和Full GC的区别是什么？触发条件呢？](#major-gc%E5%92%8Cfull-gc%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E5%91%A2)
   - [什么时候会触发full gc](#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BC%9A%E8%A7%A6%E5%8F%91full-gc)
   - [可以作为root的对象](#%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAroot%E7%9A%84%E5%AF%B9%E8%B1%A1)
@@ -41,6 +49,7 @@
   - [线程私有分配区TLAB](#%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%E5%88%86%E9%85%8D%E5%8C%BAtlab)
   - [总体流程](#%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B)
   - [对象分配流程图](#%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E6%B5%81%E7%A8%8B%E5%9B%BE)
+- [Java 8: 从永久代（PermGen）到元空间（Metaspace）](#java-8-%E4%BB%8E%E6%B0%B8%E4%B9%85%E4%BB%A3permgen%E5%88%B0%E5%85%83%E7%A9%BA%E9%97%B4metaspace)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -101,6 +110,23 @@ Java是一种面向对象的语言，而Java对象在JVM中的存储也是有一
 3. Java对象模型，和Java对象在虚拟机中的表现形式有关。
 
 # 垃圾回收
+
+## GC垃圾收集器
+### Serial垃圾收集器（单线程、复制算法）
+Serial(英文：连续)是最基本垃圾收集器，使用复制算法，曾经是 JDK1.3.1 之前新生代唯一的垃圾收集器。Serial 是一个单线程的收集器，它不但只会使用一个 CPU 或一条线程去完成垃圾收集工作，并且在进行垃圾收集的同时，必须暂停其他所有的工作线程，直到垃圾收集结束。
+
+Serial 垃圾收集器虽然在收集垃圾过程中需要暂停所有其他的工作线程，但是它简单高效，对于限定单个 CPU 环境来说，没有线程交互的开销，可以获得最高的单线程垃圾收集效率，因此 Serial垃圾收集器依然是 java 虚拟机运行在 Client 模式下默认的新生代垃圾收集器。
+### ParNew垃圾收集器（Serial + 多线程）
+ParNew（Parallel:平行的） 垃圾收集器其实是 Serial 收集器的多线程版本，也使用复制算法，除了使用多线程进行垃 圾收集之外，其余的行为和 Serial 收集器完全一样，ParNew 垃圾收集器在垃圾收集过程中同样也 要暂停所有其他的工作线程。
+
+ParNew 收集器默认开启和 CPU 数目相同的线程数，可以通过-XX:ParallelGCThreads 参数来限 制垃圾收集器的线程数。
+
+ParNew 虽然是除了多线程外和 Serial 收集器几乎完全一样，但是 ParNew 垃圾收集器是很多 java 虚拟机运行在 Server 模式下新生代的默认垃圾收集器。
+### Parllel Scavenge收集器 （多线程、复制算法）
+### Serial Old收集器（单线程标记整理算法）
+### Parallel Old收集器（多线程标记整理算法）
+### CMS收集器（多线程标记清除算法）
+### G1收集器
 
 ## Major GC和Full GC的区别是什么？触发条件呢？
 
@@ -434,4 +460,12 @@ TLAB空间主要有3个指针：_start、_top、_end。_start指针表示TLAB空
 
 ## 对象分配流程图
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/JVM-1.png)
+
+
+# Java 8: 从永久代（PermGen）到元空间（Metaspace）
+在 Java8 中，永久代（PermGen）已经被移除，被一个称为“元空间（Metaspace）”的区域所取代。元空间并不在虚拟机中，而是使用本地内存（Native memory）
+
+类的元数据信息（metadata）转移到Metaspace的原因是PermGen很难调整。PermGen中类的元数据信息在每次FullGC的时候可能会被收集。而且应该为PermGen分配多大的空间很难确定，因为PermSize的大小依赖于很多因素，比如JVM加载的class的总数，常量池的大小，方法的大小等。
+
+由于类的元数据可以在本地内存(native memory)之外分配,所以其最大可利用空间是整个系统内存的可用空间。这样，你将不再会遇到OOM错误，溢出的内存会涌入到交换空间。最终用户可以为类元数据指定最大可利用的本地内存空间，JVM也可以增加本地内存空间来满足类元数据信息的存储。
 
