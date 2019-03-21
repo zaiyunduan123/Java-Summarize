@@ -154,7 +154,7 @@ Executor线程池框架是一个根据一组**执行策略调用，调度，执�
 #### corePoolSize
 每个任务需要tasktime秒处理，则每个线程每钞可处理1/tasktime个任务。系统每秒有tasks个任务需要处理，则需要的线程数为：tasks/(1/tasktime)，即tasks*tasktime个线程数。
 
-假设系统每秒任务数为100~1000，每个任务耗时0.1秒，则需要100 * 0.1至1000 * 0.1，即10~100个线程。那么corePoolSize应该设置为大于10，具体数字最好根据8020原则，即80%情况下系统每秒任务数，若系统80%的情况下第秒任务数小于200，最多时为1000，则corePoolSize可设置为20。
+假设系统每秒任务数为100 ~ 1000，每个任务耗时0.1秒，则需要100 * 0.1至1000 * 0.1，即10 ~ 100个线程。那么corePoolSize应该设置为大于10，具体数字最好根据8020原则，即80%情况下系统每秒任务数小于200，最多时为1000，则corePoolSize可设置为20。
 
 #### maxPoolSize
 
@@ -179,6 +179,9 @@ LinkedBlockingQueue queue = new LinkedBlockingQueue();
 #### allowCoreThreadTimeout
 
 默认情况下核心线程不会退出，可通过将该参数设置为true，让核心线程也退出。
+
+
+如果涉及到有突发流量的场景，又该如何设置？
 
 
 ## Executorshe和ThreaPoolExecutor创建线程池的区别
