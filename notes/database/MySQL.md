@@ -55,6 +55,7 @@
 - [Join的实现原理](#join%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86)
   - [优化](#%E4%BC%98%E5%8C%96)
 - [MySQL优化](#mysql%E4%BC%98%E5%8C%96)
+- [MySQL中binary log和redo log顺序一致性问题](#mysql%E4%B8%ADbinary-log%E5%92%8Credo-log%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -565,3 +566,46 @@ Prepared Statements很像存储过程，是一种运行在后台的SQL语句集�
 1. double write（两次写）作用：可以保证页损坏之后，有副本直接可以进行恢复。
 2. adaptive hash index（自适应哈希索引）作用：Innodb 存储引擎会监控对表上索引的查找，如果观察到建立哈希索引可以带来速度上的提升，则建立哈希索引。读写速度上也有所提高。
 3. insert buffer （插入缓冲）作用：针对普通索引的插入把随机 IO 变成顺序 IO，并合并插入磁盘
+
+
+# MySQL中binary log和redo log顺序一致性问题
+MySQL是多存储引擎的，不管使用那种存储引擎，都会有binary log，而不一定有redo log，简单的说，binlog是MySQL Server层的，redo log是InnoDB层的
+
+二进制日志主要有三个作用：1、数据的即时点恢复 2、主从复制，原理和恢复一样 3、通过信息审计，判断是否存在注入的攻击
+
+InnoDB的重做日志：记录每一页的更新的物理情况，用来保证事务安全的。
+
+二进制文件仅在事务提交前进行提交，即只写磁盘一次，而重做日志条目在事务进行的过程被不断写入到日志文件中，写入重做日志文件的操作不是直接写，
+而是写入一个重做日志缓存（redo log buffer）后，然后安装一定的条件顺序地写入日志文件
+
+MySQL为了保证master和slave的数据一致性，就必须保证binlog和InnoDB redo日志的一致性（因为备库通过二进制日志重放主库提交的事务，而主库binlog写入在commit之前，如果写完binlog主库crash，再次启动时会回滚事务。但此时从库已经执行，则会造成主备数据不一致）
+MySQL引入二阶段提交（two phase commit or 2pc），MySQL内部会自动将普通事务当做一个XA事务（内部分布式事物）来处理：
+
+– 自动为每个事务分配一个唯一的ID（XID）。
+
+– COMMIT会被自动的分成Prepare和Commit两个阶段。
+
+– Binlog会被当做事务协调者(Transaction Coordinator)，Binlog Event会被当做协调者日志。
+
+
+Binlog在2PC中充当了事务的协调者（Transaction Coordinator）。由Binlog来通知InnoDB引擎来执行prepare，commit或者rollback的步骤。事务提交的整个过程如下：
+在这里插入图片描述
+
+以上的图片中可以看到，事务的提交主要分为两个主要步骤：
+
+准备阶段（Storage Engine（InnoDB） Transaction Prepare Phase）
+此时SQL已经成功执行，并生成xid信息及redo和undo的内存日志。然后调用prepare方法完成第一阶段，papare方法实际上什么也没做，将事务状态设为TRX_PREPARED，并将redo log刷磁盘。
+
+提交阶段(Storage Engine（InnoDB）Commit Phase)
+2.1 记录协调者日志，即Binlog日志。
+
+如果事务涉及的所有存储引擎的prepare都执行成功，则调用TC_LOG_BINLOG::log_xid方法将SQL语句写到binlog（write()将binary log内存日志数据写入文件系统缓存，fsync()将binary log文件系统缓存日志数据永久写入磁盘）。此时，事务已经铁定要提交了。否则，调用ha_rollback_trans方法回滚事务，而SQL语句实际上也不会写到binlog。
+
+2.2 告诉引擎做commit。
+
+最后，调用引擎的commit完成事务的提交。会清除undo信息，刷redo日志，将事务设为TRX_NOT_STARTED状态。
+
+PS：记录Binlog是在InnoDB引擎Prepare（即Redo Log写入磁盘）之后，这点至关重要。
+
+由上面的二阶段提交流程可以看出，一旦步骤2中的操作完成，就确保了事务的提交，即使在执行步骤3时数据库发送了宕机。此外需要注意的是，每个步骤都需要进行一次fsync操作才能保证上下两层数据的一致性。步骤2的fsync参数由sync_binlog=1控制，步骤3的fsync由参数innodb_flush_log_at_trx_commit=1控制，俗称“双1”，是保证CrashSafe的根本。
+

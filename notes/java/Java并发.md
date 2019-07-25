@@ -3,11 +3,13 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [JAVA 线程状态转换图示](#java-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE%E7%A4%BA)
+  - [线程为什么调用start()而不是直接调用run()](#%E7%BA%BF%E7%A8%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B0%83%E7%94%A8start%E8%80%8C%E4%B8%8D%E6%98%AF%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8run)
 - [synchronized 的底层怎么实现](#synchronized-%E7%9A%84%E5%BA%95%E5%B1%82%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0)
 - [讲一下CAS](#%E8%AE%B2%E4%B8%80%E4%B8%8Bcas)
 - [线程池](#%E7%BA%BF%E7%A8%8B%E6%B1%A0)
   - [ThreadPoolExecutor执行的策略](#threadpoolexecutor%E6%89%A7%E8%A1%8C%E7%9A%84%E7%AD%96%E7%95%A5)
   - [常见四种线程池](#%E5%B8%B8%E8%A7%81%E5%9B%9B%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%B1%A0)
+  - [四种线程池使用场景](#%E5%9B%9B%E7%A7%8D%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF)
   - [四种拒绝策略](#%E5%9B%9B%E7%A7%8D%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5)
   - [为什么要用线程池](#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0)
   - [线程池ThreadPoolExecutor参数设置](#%E7%BA%BF%E7%A8%8B%E6%B1%A0threadpoolexecutor%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE)
@@ -23,6 +25,9 @@
 - [happens-before 原则（先行发生原则）](#happens-before-%E5%8E%9F%E5%88%99%E5%85%88%E8%A1%8C%E5%8F%91%E7%94%9F%E5%8E%9F%E5%88%99)
 - [Lock 和synchronized 的区别](#lock-%E5%92%8Csynchronized-%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [ThreadLocal(线程变量副本)](#threadlocal%E7%BA%BF%E7%A8%8B%E5%8F%98%E9%87%8F%E5%89%AF%E6%9C%AC)
+  - [Threadlocal和run方法的局部变量的区别](#threadlocal%E5%92%8Crun%E6%96%B9%E6%B3%95%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [ThreadLocal 适用于如下两种场景](#threadlocal-%E9%80%82%E7%94%A8%E4%BA%8E%E5%A6%82%E4%B8%8B%E4%B8%A4%E7%A7%8D%E5%9C%BA%E6%99%AF)
+  - [ThreadLocal内存泄露](#threadlocal%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2)
 - [通过Callable和Future创建线程](#%E9%80%9A%E8%BF%87callable%E5%92%8Cfuture%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B)
 - [什么叫守护线程，用什么方法实现守护线程（Thread.setDeamon()的含义）](#%E4%BB%80%E4%B9%88%E5%8F%AB%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B%E7%94%A8%E4%BB%80%E4%B9%88%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8Bthreadsetdeamon%E7%9A%84%E5%90%AB%E4%B9%89)
 - [如何停止一个线程？](#%E5%A6%82%E4%BD%95%E5%81%9C%E6%AD%A2%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B)
@@ -36,6 +41,7 @@
 - [final域的内存语义](#final%E5%9F%9F%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89)
   - [写final域的重排序规则](#%E5%86%99final%E5%9F%9F%E7%9A%84%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99)
   - [读final域的重排序规则](#%E8%AF%BBfinal%E5%9F%9F%E7%9A%84%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99)
+- [notify和notifyAll的区别](#notify%E5%92%8Cnotifyall%E7%9A%84%E5%8C%BA%E5%88%AB)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -65,6 +71,37 @@
     2、线程抛出一个未捕获的Exception或Error；
     
     3、直接调用该线程的stop()方法来结束该线程；
+    
+    
+线程进入等待状态有三种方式：
+ 1. cpu调度给优先级更高的线程
+ 2. 线程要等待获得资源或者信号
+ 3. 时间片的轮转，时间片到了，进入等待状态
+
+### 线程为什么调用start()而不是直接调用run()
+1. run()方法只是一个类中的普通方法，直接执行和普通的方法没有设么两样
+2. start()方法则不同，它首先做了创建线程等一系列工作，然后调用行的run()方法
+
+所以：start() 创建新进程 ，run() 并没有
+
+新建线程
+```java
+Thread thread = new Thread();
+thread.start();
+```
+这样就开启了一个线程。
+有一点需要注意的是
+```java
+Thread thread = new Thread();
+thread.run();
+```
+直接调用run方法是无法开启一个新线程的。直接调用run其实就是一个普通的函数调用而已，并没有达到多线程的作用
+
+
+start方法其实是在一个新的操作系统线程上面去调用run方法。换句话说，直接调用run方法而不是调用start方法的话，它并不会开启新的线程，而是在调用run的当前的线程当中执行你的操作。
+
+
+
 
 ## synchronized 的底层怎么实现
 1. **同步代码块**(Synchronization)基于进入和退出管程(Monitor)对象实现。每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：
@@ -127,6 +164,14 @@ Executor线程池框架是一个根据一组**执行策略调用，调度，执�
 4. SingleThreadExecutor()：单线程化的线程池。
 - 有且仅有一个工作线程执行任务
 - 所有任务按照指定顺序执行，即遵循队列的入队出队规则
+
+### 四种线程池使用场景
+
+1. newSingleThreadExecutor：适用于串行执行任务的场景
+2. newFixedThreadExecutor：适用于处理CPU密集型的任务，确保CPU在长期被工作线程使用的情况下，尽可能的少的分配线程即可。一般Ncpu + 1
+3. newCachedThreadExecutor：适用于北方执行大量短期的小任务
+4. newScheduledThreadExecutor：适用于需要多个后台线程执行周期任务，同时需要限制线程数量的场景
+
 
 
 ### 四种拒绝策略
@@ -268,11 +313,35 @@ synchronized 是 内置的语言实现；
 
 ## ThreadLocal(线程变量副本)
 Synchronized实现内存共享，ThreadLocal为每个线程维护一个本地变量。
-采用空间换时间，它用于线程间的数据隔离，为每一个使用该变量的线程提供一个副本，每个线程都可以独立地改变自己的副本，而不会和其他线程的副本冲突。
-ThreadLocal类中维护一个Map，用于存储每一个线程的变量副本，Map中元素的键为线程对象，而值为对应线程的变量副本。
-ThreadLocal在Spring中发挥着巨大的作用，在管理Request作用域中的Bean、事务管理、任务调度、AOP等模块都出现了它的身影。
-Spring中绝大部分Bean都可以声明成Singleton作用域，采用ThreadLocal进行封装，因此有状态的Bean就能够以singleton的方式在多线程中正常工作了。
 
+采用空间换时间，它用于线程间的数据隔离，为每一个使用该变量的线程提供一个副本，每个线程都可以独立地改变自己的副本，而不会和其他线程的副本冲突。
+
+ThreadLocal类中维护一个Map，用于存储每一个线程的变量副本，Map中元素的键为线程对象，而值为对应线程的变量副本。
+
+注意：跟多线程并发问题没关系！！！
+
+ThreadLocal 适用于每个线程需要自己独立的实例且该实例需要在多个方法中被使用，也即变量在线程间隔离而在方法或类间共享的场景。
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-10.png)
+
+
+### Threadlocal和run方法的局部变量的区别
+1. ThreadLocal可以跨方法共享变量，ThreadLocal减少同一个线程多个方法函数或者组件之间一些公共变量的传递的复杂度
+2. run局部变量只能在单个方法
+
+
+
+### ThreadLocal 适用于如下两种场景
+1. 每个线程需要有自己单独的实例
+2. 实例需要在多个方法中共享，但不希望被多线程共享
+
+比如：
+- ThreadLocal在Spring中发挥着巨大的作用，在管理Request作用域中的Bean、事务管理、任务调度、AOP等模块都出现了它的身影。
+- Spring中绝大部分Bean都可以声明成Singleton作用域，采用ThreadLocal进行封装，因此有状态的Bean就能够以singleton的方式在多线程中正常工作了。
+
+
+### ThreadLocal内存泄露
+ThreadLocal.ThreadLocalMap.Entry中的key是弱引用的，也即是当某个ThreadLocal对象不存在强引用时，就会被GC回收，但是value是基于强引用的，所以当key被回收，但是value还存在其他强引用时，就会出现内存的泄露情况，在最新的ThreadLocal中已经做出了修改，即在调用set、get、remove方法时，会清除key为null的Entry，但是如果不调用这些方法，仍然还是会出现内存泄漏 ：），所以要养成用完ThreadLocal对象之后及时remove的习惯。
 
 
 ## 通过Callable和Future创建线程
@@ -415,6 +484,18 @@ reader() 方法包含三个操作:
 1. 初次读引用变量 obj;
 2. 初次读引用变量 obj 指向对象的普通域 j。
 3. 初次读引用变量 obj 指向对象的 final 域 i。
+
+
+## notify和notifyAll的区别
+-  如果线程调用了对象的 wait()方法，那么线程便会处于该对象的等待池中，等待池中的线程不会去竞争该对象的锁。
+-  当有线程调用了对象的 notifyAll()方法（唤醒所有 wait 线程）或 notify()方法（只随机唤醒一个 wait 
+线程），被唤醒的的线程便会进入该对象的锁池中，锁池中的线程会去竞争该对象锁。也就是说，调用了notify后只要一个线程会由等待池进入锁池，而notifyAll会将该对象等待池内的所有线程移动到锁池中，等待锁竞争
+-  优先级高的线程竞争到对象锁的概率大，假若某线程没有竞争到该对象锁，它还会留在锁池中，唯有线程再次调用 wait()方法，它才会重新回到等待池中。而竞争到对象锁的线程则继续往下执行，直到执行完了 synchronized 
+代码块，它会释放掉该对象锁，这时锁池中的线程会继续竞争该对象锁。
+- 尽量使用 notifyAll()，notify()可能会导致死锁
+
+
+
 
 
 

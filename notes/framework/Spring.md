@@ -9,11 +9,14 @@
   - [实现AOP的技术](#%E5%AE%9E%E7%8E%B0aop%E7%9A%84%E6%8A%80%E6%9C%AF)
   - [Spring实现AOP](#spring%E5%AE%9E%E7%8E%B0aop)
   - [AOP使用场景](#aop%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF)
+- [Spring Bean生命周期](#spring-bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)
 - [Spring @Transactional工作原理](#spring-transactional%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
 - [SpringMVC的工作原理](#springmvc%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+  - [两种bean的实例化](#%E4%B8%A4%E7%A7%8Dbean%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96)
 - [SpringMVC拦截器](#springmvc%E6%8B%A6%E6%88%AA%E5%99%A8)
   - [常见应用场景](#%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
   - [拦截器接口](#%E6%8B%A6%E6%88%AA%E5%99%A8%E6%8E%A5%E5%8F%A3)
+  - [拦截器和过滤器什么区别](#%E6%8B%A6%E6%88%AA%E5%99%A8%E5%92%8C%E8%BF%87%E6%BB%A4%E5%99%A8%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB)
 - [Spring源码分析](#spring%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90)
   - [容器的基本实现](#%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0)
     - [DefaultListableBeanFactory](#defaultlistablebeanfactory)
@@ -109,6 +112,19 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 11. Synchronization　同步        
 12. Transactions 事务管理  
 
+# Spring Bean生命周期
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/spring-4.png)
+- Bean的建立， 由BeanFactory读取Bean定义文件，并生成各个实例
+- Setter注入，执行Bean的属性依赖注入
+- BeanNameAware的setBeanName(), 如果实现该接口，则执行其setBeanName方法
+- BeanFactoryAware的setBeanFactory()，如果实现该接口，则执行其setBeanFactory方法
+- BeanPostProcessor的processBeforeInitialization()，如果有关联的processor，则在Bean初始化之前都会执行这个实例的processBeforeInitialization()方法
+- InitializingBean的afterPropertiesSet()，如果实现了该接口，则执行其afterPropertiesSet()方法
+- Bean定义文件中定义init-method
+- BeanPostProcessors的processAfterInitialization()，如果有关联的processor，则在Bean初始化之前都会执行这个实例的processAfterInitialization()方法
+- DisposableBean的destroy()，在容器关闭时，如果Bean类实现了该接口，则执行它的destroy()方法
+- Bean定义文件中定义destroy-method，在容器关闭时，可以在Bean定义文件中使用“destory-method”定义的方法
+
 
 # Spring @Transactional工作原理
 1. 当spring遍历容器中所有的切面，查找与当前实例化bean匹配的切面，这里就是获取事务属性切面，查找@Transactional注解及其属性值，然后根据得到的切面进入createProxy方法，创建一个AOP代理。
@@ -139,6 +155,19 @@ SpringMVC流程
 11.  DispatcherServlet响应用户。
 
 请求 ---> DispatcherServlet（前端控制器）---> 调用HandlerMapping（处理器映射器）---> DispatcherServlet调用 HandlerAdapter（处理器适配器）---> 适配调用具体的Controller ---> 返回ModelAndView  --->  传给ViewReslover视图解析器  --->  解析后返回具体View ---> 根据View进行渲染视图响应用户
+
+## 两种bean的实例化
+1、 懒汉式：BeanFactory
+
+只有当客户端调用BeanFactory的getBean()方法来请求某个实例对象的时候，才会触发相应bean的实例化进程（ 当然对于 BeanFactory 容器而言并不是所有的 getBean() 方法都会触发实例化进程，比如 signleton 类型的 bean，该类型的 bean 只会在第一次调用 getBean() 的时候才会触发，而后续的调用则会直接返回容器缓存中的实例对象）
+
+2、 饿汉式：ApplicationContext
+
+使用ApplicationContext容器启动的时候立刻调用注册到该容器所有bean定义的实例化方法
+
+Spring提供了两种类型的IOC容器实现（两种类型的配置方式是一样）
+1. BeanFactory：是Spring框架的基础设施，面向Spring本身
+2. ApplicationContext： 面向使用 Spring 框架的开发者，几乎所有的应用场合都直接使用 ApplicationContext 而非底层的
 
 
 # SpringMVC拦截器
@@ -179,6 +208,15 @@ public interface HandlerInterceptor {
 }   
 ```
 
+## 拦截器和过滤器什么区别
+Spring的拦截器与Servlet的过滤器Filter有很多相似之处，比如两者都是AOP编程思想的体现，都能实现权限检查、日志记录等，不同的是：
+1. 使用范围不同：Filter是Servlet规范规定的，只能用于Web程序中，而拦截器既可以用于Web程序，也可以用于Application、Swing程序中
+2. 规范不同：Filter是Servlet规范中定义的，是Servlet容器支持的。而拦截器是在Spring容器内的，是Spring框架支持的
+3. 使用的资源不同：拦截器是一个Spring的组件，归Spring管理，配置在Spring文件中，因此能使用Spring里的任何资源、对象，例如Service对象、数据源、事务管理等，通过IoC注入到拦截器即可，而Filter则不能
+4. 深度不同：Filter只在Servlet前后起作用。而拦截器能够深入到方法前后、异常抛出前后等，因此拦截器的使用具有更大的弹性。所以在Spring架构的程序中，要优先使用拦截器。
+5. 实现原理不同：拦截器是基于动态代理来实现的，而过滤器是基于函数回调来实现的。
+6. 作用域不同：拦截器只对Action起作用，过滤器可以对所有请求起作用。
+7. 调用次序不同：在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次。
 
 
 # Spring源码分析
