@@ -558,12 +558,12 @@ java 字节码。
 3. 内部暴露。由于反射允许代码执行一些在正常情况下不被允许的操作（比如访问私有的属性和方 法），所以使用反射可能会导致意料之外的副作用－－代码有功能上的错误，降低可移植性。 反射代码破坏了抽象性。
 
 
-## Java各个版本的主要新特性
-Version 1.0      1996-01-23 Oak(橡树)
+## Java1.0-1.12各个版本的新特性
+**Version 1.0      1996-01-23 Oak(橡树)**
 - 提供了一个解释执行的 Java 虚拟机；
 - Applet 能在 Mozilla 浏览器中运行。
 
-JDK Version 1.1     1997-02-19 
+**JDK Version 1.1     1997-02-19 **
 - JDBC(Java DataBase Connectivity);
 - 支持内部类;
 - RMI(Remote Method Invocation) ;
@@ -572,7 +572,7 @@ JDK Version 1.1     1997-02-19
 
 Java 语言的基本形态基本确定了，比如反射 (reflection), JavaBean, 接口和类的关系等等，一直到今天都保持一致
 
-JDK Version 1.2    1998-12-08 Playground(操场)
+**JDK Version 1.2    1998-12-08 Playground(操场)**
 - 集合框架;
 - JIT(Just In Time)编译器;
 - 对打包的Java文件进行数字签名;
@@ -584,13 +584,13 @@ JDK Version 1.2    1998-12-08 Playground(操场)
 Java 第一个里程碑式的版本。JIT（Just in time）编译器技术，使得语言的可迁移性和执行效率达到最优的平衡，同时 Collections 集合类设计优良，在企业应用开发中迅速得到了广泛使用。
 
 
-JDK Version 1.3   2000-05-08 Kestrel(红隼)
+**JDK Version 1.3   2000-05-08 Kestrel(红隼)**
 - Java Sound API;
 - jar文件索引;
 - 对Java的各个方面都做了大量优化和增强;
 
 
-JDK Version 1.4    2004-02-06 Merlin(隼)
+**JDK Version 1.4    2004-02-06 Merlin(隼)**
 - XML处理;
 - Java打印服务;
 - Logging API;
@@ -605,7 +605,7 @@ JDK Version 1.4    2004-02-06 Merlin(隼)
 
 Java 语言真正走向成熟，提供了非常完备的语言特性，如 NIO，正则表达式，XML 处理器等。
 
-JAVA 5  2004-09-30 Tiger(老虎)
+**JAVA 5  2004-09-30 Tiger(老虎)**
 - 泛型;
 - 增强循环,可以使用迭代方式;
 - 自动装箱与自动拆箱;
@@ -617,7 +617,7 @@ JAVA 5  2004-09-30 Tiger(老虎)
 
 这个版本发生很大的变化，如注解 (Annotation)，装箱 (Autoboxing)，泛型 (Generic)，枚举 (Enum)，foreach 等被加入，提供了 java.util.concurrent 并发包。
 
-JAVA 6  2006-12-11 Mustang(野马)
+**JAVA 6  2006-12-11 Mustang(野马)**
 - 支持脚本语言;
 - JDBC 4.0API;
 - Java Compiler API;
@@ -628,7 +628,7 @@ JAVA 6  2006-12-11 Mustang(野马)
 
 
 
-JAVA 7 2011-07-28 Dolphin(海豚)
+**JAVA 7 2011-07-28 Dolphin(海豚)**
 - switch语句块中允许以字符串作为分支条件;
 - 在创建泛型对象时应用类型推断;
 - 在一个语句块中捕获多种异常;
@@ -641,7 +641,7 @@ JAVA 7 2011-07-28 Dolphin(海豚)
 
 这个版本中最引人注目的便是 NIO2 和 Fork/Join 并发包
 
-JAVA 8 2014-03-18 
+**JAVA 8 2014-03-18**
 - Lambda 表达式 − Lambda允许把函数作为一个方法的参数（函数作为参数传递进方法中。
 - 方法引用 − 方法引用提供了非常有用的语法，可以直接引用已有Java类或对象（实例）的方法或构造器。与lambda联合使用，方法引用可以使语言的构造更紧凑简洁，减少冗余代码。
 - 默认方法 − 默认方法就是一个在接口里面有了一个实现的方法。
@@ -654,7 +654,7 @@ JAVA 8 2014-03-18 
 这个版本中最引人注目的便是 Lambda 表达式了，从此 Java 语言原生提供了函数式编程能力
 
 
-JAVA 9   2017-09-22
+**JAVA 9   2017-09-22**
 - 模块系统：模块是一个包的容器，Java 9 最大的变化之一是引入了模块系统（Jigsaw 项目）。
 - REPL (JShell)：交互式编程环境。
 - 默认的垃圾回收器 —— G1
@@ -677,7 +677,7 @@ JAVA 9   2017-09-22
 这个版本中最引人注目的时候模块化和默认垃圾回收器G1，通过这个工作，可以构建更小的运行时环境，只需要包括Java平台中任务依赖的部分。这可以更好地适应云端的开发。
 
 
-JAVA 10   2018-03-21
+**JAVA 10   2018-03-21**
 - JEP286: var 局部变量类型推断。
 - JEP296: 将原来用 Mercurial 管理的众多 JDK 仓库代码，合并到一个仓库中，简化开发和管理过程。
 - JEP304: 统一的垃圾回收接口。
@@ -692,7 +692,7 @@ JAVA 10   2018-03-21
 - JEP322: 基于时间定义的发布版本，即上述提到的发布周期。版本号为\$FEATURE.\$INTERIM.\$UPDATE.\$PATCH，分j别是大版本，中间版本，升级包和补丁版本。
 
 
-JAVA 11   2018-09-25 
+**JAVA 11   2018-09-25**
 - 181:Nest-Based访问控制
 - 309:动态类文件常量
 - 315:改善Aarch64 intrinsic
@@ -713,7 +713,7 @@ JAVA 11   2018-09-25 
 
 
 
-JAVA 12   2018-09-25 
+**JAVA 12   2018-09-25 **
 - 189: Shenandoah: A Low-Pause-Time Garbage Collector (Experimental) ：新增一个名为 Shenandoah 的垃圾回收器，它通过在 Java 线程运行的同时进行疏散 
 (evacuation) 工作来减少停顿时间。
 - 230: Microbenchmark Suite：新增一套微基准测试，使开发者能够基于现有的 Java Microbenchmark Harness（JMH）轻松测试 JDK 的性能，并创建新的基准测试。
