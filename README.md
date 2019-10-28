@@ -55,6 +55,6 @@
 -   [Solr实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md)
 -   [Dubbo实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Dubbo.md)
 
--   [Netty实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Netty.md)
+-   [Netty实现原理](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)
 
 
