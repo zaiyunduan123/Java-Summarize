@@ -67,15 +67,15 @@ Java NIO的选择器允许一个单独的线程来 监视多个输入通道，�
 - socketServer的accept方法是阻塞的；
 - 获得连接的顺序是和客户端请求到达服务器的先后顺序相关；
 - 适用于一个线程管理一个通道的情况；因为其中的流数据的读取是阻塞的；
-- 如果需要管理同时打开不太多的连接，这些连接会发送大量的数据；
+- 适合需要管理同时打开不太多的连接，这些连接会发送大量的数据
 
 NIO
 - 基于事件驱动，当有连接请求，会将此连接注册到多路复用器上（selector）；
 - 在多路复用器上可以注册监听事件，比如监听accept、read；
 - 通过监听，当真正有请求数据时，才来处理数据；
-- 不会阻塞，会不停的轮询是否有就绪的事件，所以处理顺序和连接请求先后顺序无关，与请求数据到来的先后顺序有关；
+- 会不停的轮询是否有就绪的事件，所以处理顺序和连接请求先后顺序无关，与请求数据到来的先后顺序有关；
 - 优势在于一个线程管理多个通道；但是数据的处理将会变得复杂；
-- 如果需要管理同时打开的成千上万个连接，这些连接每次只是发送少量的数据，采用这种；
+- 适合需要管理同时打开的成千上万个连接，这些连接每次只是发送少量的数据
 
 
 ## 2、JDK原生NIO程序的问题
@@ -289,14 +289,18 @@ ChannelHandler 有两大子接口：
 
 ### 事件的传播
 AbstractChannel直接调用了Pipeline的write()方法，因为write是个outbound事件，所以DefaultChannelPipeline直接找到tail部分的context，调用其write()方法：
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/netty-10.png)
+
 context的write()方法沿着context链往前找，直至找到一个outbound类型的context为止，然后调用其invokeWrite()方法：
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/netty-11.png)
 ## 10、NioEventLoop
 NioEventLoop除了要处理IO事件，还有主要：
 1. 非IO操作的系统Task
 2. 定时任务
 非IO操作和IO操作各占默认值50%，底层使用Selector（多路复用器）
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/netty-8.png)
 
 
