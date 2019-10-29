@@ -48,7 +48,7 @@
 -  [系统设计](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/scene/Scene-Design.md)
 
 ### 框架原理
-| 🏖  | 🌁| 📮 | 🌈 | ⚔ |️ 🚀 | 🖥 | 🚏 | 
-| :--------: | :---------: | :---------: | :---------: | :---------: | :---------:| :---------: | :-------: | 
-|  [Spring](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Spring.md) | [MyBatis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/MyBatis.md) |[Solr](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md) |  [Dubbo](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Dubbo.md) |  [Netty](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)|[RocketMQ]()|[Zookeepr]()|[Nginx]()|
+| 🧐 | 🥇 | 🏄 | 🌈 | ⛱ |️ 🚀 | 🎯 | 🍻 | 🦄|
+| :--------: | :---------: | :---------: | :---------: | :---------: | :---------:| :---------: | :-------: | :-------: | 
+|  [Spring](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Spring.md) | [MyBatis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/MyBatis.md) |[Solr](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md) |  [Dubbo](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Dubbo.md) |  [Netty](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)|[RocketMQ]()|[Zookeeper]()|[Nginx]()|[Tomcat]()|
 
