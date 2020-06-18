@@ -2,37 +2,23 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Linux 系统的顶层目录结构](#linux-%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%A1%B6%E5%B1%82%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84)
+- [CPU 与内存](#cpu-%E4%B8%8E%E5%86%85%E5%AD%98)
 - [linux内核map图](#linux%E5%86%85%E6%A0%B8map%E5%9B%BE)
 - [Linux中软链接和硬链接的区别](#linux%E4%B8%AD%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%92%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [kill进程杀不掉的原因](#kill%E8%BF%9B%E7%A8%8B%E6%9D%80%E4%B8%8D%E6%8E%89%E7%9A%84%E5%8E%9F%E5%9B%A0)
 - [swap分区的作用](#swap%E5%88%86%E5%8C%BA%E7%9A%84%E4%BD%9C%E7%94%A8)
+- [Linux命令查找出日志文件中访问量最大的10个ip](#linux%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BE%E5%87%BA%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E4%B8%AD%E8%AE%BF%E9%97%AE%E9%87%8F%E6%9C%80%E5%A4%A7%E7%9A%8410%E4%B8%AAip)
+- [Linux常见命令](#linux%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4)
+- [top详细](#top%E8%AF%A6%E7%BB%86)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Linux 系统的顶层目录结构
-```java
-/   根目录
-├── bin 存放用户二进制文件
-├── boot 存放内核引导配置文件
-├── dev 存放设备文件
-├── etc 存放系统配置文件
-├── home 用户主目录
-├── lib 动态共享库
-├── lost+found 文件系统恢复时的恢复文件
-├── media 可卸载存储介质挂载点
-├── mnt 文件系统临时挂载点
-├── opt 附加的应用程序包
-├── proc 系统内存的映射目录，提供内核与进程信息
-├── root root 用户主目录
-├── sbin 存放系统二进制文件
-├── srv 存放服务相关数据
-├── sys sys 虚拟文件系统挂载点
-├── tmp 存放临时文件
-├── usr 存放用户应用程序
-└── var 存放邮件、系统日志等变化文件
-```
-Linux 与其他类 UNIX 系统一样并不区分文件与目录:目录是记录了其他文件名的文件。使用命 令 mkdir 创建目录时，若期望创建的目录的名称与现有的文件名(或目录名)重复，则会创建失败。
+
+## CPU 与内存
+CPU ( Central Processing Unit )是一块超大规模的集成电路板，是计算机的核心部件，承载着计算机的主要运算和控制功能，是计算机指令的最终解释模块和执行模块。
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/os-3.png)
+
+
 
 
 ## linux内核map图
@@ -86,3 +72,70 @@ Swap配置对性能的影响
 1. 分配太多的Swap空间会浪费磁盘空间，而Swap空间太少，则系统会发生错误
 2. Swap空间应大于或等于物理内存的大小，最小不应小于64M，通常Swap空间的大小应是物理内存的2-2.5倍
 3. 如果有多个Swap交换区，Swap空间的分配会以轮流的方式操作于所有的Swap，这样会大大均衡IO的负载，加快Swap交换的速度。如果只有一个交换区，所有的交换操作会使交换区变得很忙，使系统大多数时间处于等待状态，效率很低。
+
+
+
+## Linux命令查找出日志文件中访问量最大的10个ip
+linux 命令如下：
+```
+cat  test.log|awk -F" " '{print $2}'|sort|uniq -c|sort -nrk 1 -t' '|awk -F" " '{print $2}'|head -10
+```
+
+问题剖析：
+1. cat  *.log将文本内容打印到屏幕
+2. 使用awk命令可以按照分割符将一行分割为多个列，第一列用$1表示，第二列用$2表示，依次类推awk -F" " '{print $2}     //表示用空格作为分隔符进行分割，打印出第2列
+3. sort 进行排序，默认是按照ascii码进行排序的
+4. uniq -c 统计相邻的行的重复数量，结果是类似 3  127.13.13.13,前面的数字代码重复的行数sort|uniq -c   //统计重复的行数
+5. sort -n是按照数值进行由小到大进行排序， -r是表示逆序，-t是指定分割符，-k是执行按照第几列进行排序
+sort -nrk 1 -t' '
+6. 使用awk命令可以按照分割符将一行分割为多个列，第一列用$1表示，第二列用$2表示，依次类推awk -F" " '{print $2}'    //表示用空格作为分隔符进行分割，打印出第2列
+7. head -n表示取前n个head -10
+
+
+
+## Linux常见命令
+- iftop：linux网络流量查看命令
+- top：查看cpu
+- ps -le：查看所有正在运行的进程；ps aux|grep 筛选条件
+- tail -f：查看日志
+- free：查看内存
+- uptime：查看系统负载
+
+
+
+
+## top详细
+系统负载（三个数分别代表1分钟、5分钟、15分钟的平均值，数值越小负载越低）
+
+序号	列名	含义
+a	PID	进程id
+b	PPID	父进程id
+c	RUSER	Real user name
+d	UID	进程所有者的用户id
+e	USER	进程所有者的用户名
+f	GROUP	进程所有者的组名
+g	TTY	启动进程的终端名。不是从终端启动的进程则显示为 ?
+h	PR	优先级
+i	NI	nice值。负值表示高优先级，正值表示低优先级
+j	P	最后使用的CPU，仅在多CPU环境下有意义
+k	%CPU	上次更新到现在的CPU时间占用百分比
+l	TIME	进程使用的CPU时间总计，单位秒
+m	TIME+	进程使用的CPU时间总计，单位1/100秒
+n	%MEM	进程使用的物理内存百分比
+o	VIRT	进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+p	SWAP	进程使用的虚拟内存中，被换出的大小，单位kb。
+q	RES	进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
+r	CODE	可执行代码占用的物理内存大小，单位kb
+s	DATA	可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb
+t	SHR	共享内存大小，单位kb
+u	nFLT	页面错误次数
+v	nDRT	最后一次写入到现在，被修改过的页面数。
+w	S	进程状态。
+            D=不可中断的睡眠状态
+            R=运行
+            S=睡眠
+            T=跟踪/停止
+            Z=僵尸进程
+x	COMMAND	命令名/命令行
+y	WCHAN	若该进程在睡眠，则显示睡眠中的系统函数名
+z	Flags	任务标志，参考 sched.h

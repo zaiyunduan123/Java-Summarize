@@ -42,6 +42,7 @@
   - [cluster集群](#cluster%E9%9B%86%E7%BE%A4)
   - [loadbalance负载均衡](#loadbalance%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1)
   - [dubbo实现SOA的服务降级](#dubbo%E5%AE%9E%E7%8E%B0soa%E7%9A%84%E6%9C%8D%E5%8A%A1%E9%99%8D%E7%BA%A7)
+  - [Dubbo的限流与降级怎么实现的？](#dubbo%E7%9A%84%E9%99%90%E6%B5%81%E4%B8%8E%E9%99%8D%E7%BA%A7%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84)
 - [9、Dubbo把网络通信的IO异步变同步](#9dubbo%E6%8A%8A%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E7%9A%84io%E5%BC%82%E6%AD%A5%E5%8F%98%E5%90%8C%E6%AD%A5)
   - [1. 异步，无返回值](#1-%E5%BC%82%E6%AD%A5%E6%97%A0%E8%BF%94%E5%9B%9E%E5%80%BC)
   - [2. 异步，有返回值](#2-%E5%BC%82%E6%AD%A5%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC)
@@ -71,6 +72,7 @@
   - [4. 修饰器模式](#4-%E4%BF%AE%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F)
   - [5. 代理模式](#5-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F)
 - [13、Dubbo优雅关机](#13dubbo%E4%BC%98%E9%9B%85%E5%85%B3%E6%9C%BA)
+- [14、扩展：如何自己设计一个类似dubbo的rpc框架？](#14%E6%89%A9%E5%B1%95%E5%A6%82%E4%BD%95%E8%87%AA%E5%B7%B1%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B1%BB%E4%BC%BCdubbo%E7%9A%84rpc%E6%A1%86%E6%9E%B6)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -1315,7 +1317,10 @@ mock=fail:return null
 mock=force:return null
 ```
 
-
+### Dubbo的限流与降级怎么实现的？
+1. dubbo的服务者与消费者 service的配置，最大连接数 与 请求数目配置
+2. dubbo的超时设置 + 配置mock 类。 请求超时后会执行mock，并返回
+3. dubbo可以通过扩展Filter的方式引入Hystrix，具体代码如下：https://github.com/yskgood/dubbo-hystrix-support
 
 ## 9、Dubbo把网络通信的IO异步变同步
 先讲一下单工、全双工 、半双工 区别
@@ -2274,3 +2279,15 @@ public void close(int timeout) {
         }
     }
 ```
+
+## 14、扩展：如何自己设计一个类似dubbo的rpc框架？
+可以从几方面去思考：
+1. 服务订阅发布（注册中心）
+2. 服务路由
+3. 负载均衡（随机、轮询、最少活跃调用数、一致性哈希负载均衡）
+4. 集群容错（失败重试、限流降级）
+5. 服务调用（同步调用、异步调用、参数回调、事件通知）
+6. 多协议
+7. 序列化方式
+8. 统一配置
+9. 动态代理
