@@ -3,6 +3,7 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Java集合类框架图](#java%E9%9B%86%E5%90%88%E7%B1%BB%E6%A1%86%E6%9E%B6%E5%9B%BE)
+  - [Java集合类框架的基本接口有哪些？](#java%E9%9B%86%E5%90%88%E7%B1%BB%E6%A1%86%E6%9E%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A5%E5%8F%A3%E6%9C%89%E5%93%AA%E4%BA%9B)
 - [HashSet和TreeSet区别](#hashset%E5%92%8Ctreeset%E5%8C%BA%E5%88%AB)
 - [讲一下LinkedHashMap](#%E8%AE%B2%E4%B8%80%E4%B8%8Blinkedhashmap)
 - [Java8 中HashMap的优化（引入红黑树的数据结构和扩容的优化）](#java8-%E4%B8%ADhashmap%E7%9A%84%E4%BC%98%E5%8C%96%E5%BC%95%E5%85%A5%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E6%89%A9%E5%AE%B9%E7%9A%84%E4%BC%98%E5%8C%96)
@@ -16,6 +17,7 @@
   - [HashMap的原理，内部数据结构](#hashmap%E7%9A%84%E5%8E%9F%E7%90%86%E5%86%85%E9%83%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
   - [讲一下 HashMap 中 put 方法过程](#%E8%AE%B2%E4%B8%80%E4%B8%8B-hashmap-%E4%B8%AD-put-%E6%96%B9%E6%B3%95%E8%BF%87%E7%A8%8B)
   - [get()方法的工作原理](#get%E6%96%B9%E6%B3%95%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+  - [HashMap的put()方法流程](#hashmap%E7%9A%84put%E6%96%B9%E6%B3%95%E6%B5%81%E7%A8%8B)
   - [HashMap中hash函数怎么是是实现的？还有哪些 hash 的实现方式？](#hashmap%E4%B8%ADhash%E5%87%BD%E6%95%B0%E6%80%8E%E4%B9%88%E6%98%AF%E6%98%AF%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B-hash-%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F)
   - [HashMap 怎样解决冲突？](#hashmap-%E6%80%8E%E6%A0%B7%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81)
     - [扩展问题1：当两个对象的hashcode相同会发生什么？](#%E6%89%A9%E5%B1%95%E9%97%AE%E9%A2%981%E5%BD%93%E4%B8%A4%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84hashcode%E7%9B%B8%E5%90%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88)
@@ -27,12 +29,16 @@
 - [HashMap与HashTable区别](#hashmap%E4%B8%8Ehashtable%E5%8C%BA%E5%88%AB)
   - [区别](#%E5%8C%BA%E5%88%AB)
   - [能否让HashMap同步？](#%E8%83%BD%E5%90%A6%E8%AE%A9hashmap%E5%90%8C%E6%AD%A5)
+- [求两个list的并集、交集、差集？](#%E6%B1%82%E4%B8%A4%E4%B8%AAlist%E7%9A%84%E5%B9%B6%E9%9B%86%E4%BA%A4%E9%9B%86%E5%B7%AE%E9%9B%86)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 ## Java集合类框架图
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-16.png)
+
+### Java集合类框架的基本接口有哪些？
+总共有两大接口：Collection 和Map ，一个元素集合，一个是键值对集合； 其中List和Set接口继承了Collection接口，一个是有序元素集合，一个是无序元素集合； 而ArrayList和 LinkedList 实现了List接口，HashSet实现了Set接口，这几个都比较常用； HashMap 和HashTable实现了Map接口，并且HashTable是线程安全的，但是HashMap性能更好；
 
 ## HashSet和TreeSet区别
 **HashSet**
@@ -230,6 +236,9 @@ HashMap是基于hashing的原理，底层使用哈希表（数组 + 链表）实
 ### get()方法的工作原理
 通过对key的hashCode()进行hashing，并计算下标( n-1 & hash)，从而获得buckets的位置。如果产生碰撞，则利用key.equals()方法去链表中查找对应的节点。
 
+### HashMap的put()方法流程
+
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-23.png)
 ### HashMap中hash函数怎么是是实现的？还有哪些 hash 的实现方式？
 1. 对key的hashCode做hash操作（高16bit不变，低16bit和高16bit做了一个异或）； 
 2. h & (length-1); //通过位操作得到下标index。
@@ -272,7 +281,7 @@ HashMap中处理冲突的方法实际就是链地址法，内部数据结构是�
 　　2.因为获取对象的时候要用到equals()和hashCode()方法，那么键对象正确的重写这两个方法是非常重要的。如果两个不相等的对象返回不同的hashcode的话，那么碰撞的几率就会小些，这样就能提高HashMap的性能。
 
 ## HashMap与HashTable区别
-　　Hashtable可以看做是线程安全版的HashMap，两者几乎“等价”（当然还是有很多不同）。Hashtable几乎在每个方法上都加上synchronized（同步锁），实现线程安全。
+Hashtable可以看做是线程安全版的HashMap，两者几乎“等价”（当然还是有很多不同）。Hashtable几乎在每个方法上都加上synchronized（同步锁），实现线程安全。
 
 ###  区别
 1. HashMap继承于AbstractMap，而Hashtable继承于Dictionary； 
@@ -284,4 +293,9 @@ HashMap中处理冲突的方法实际就是链地址法，内部数据结构是�
 7. 速度。由于Hashtable是线程安全的也是synchronized，所以在单线程环境下它比HashMap要慢。如果你不需要同步，只需要单一线程，那么使用HashMap性能要好过Hashtable。
 
 ### 能否让HashMap同步？
-　　HashMap可以通过下面的语句进行同步：Map m = Collections.synchronizeMap(hashMap);
+HashMap可以通过下面的语句进行同步：Map m = Collections.synchronizeMap(hashMap);
+
+## 求两个list的并集、交集、差集？
+- 并集：list1.addAll(list2);
+- 交集：list1.retainAll(list2);
+- 差集：list1.removeAll(list2);

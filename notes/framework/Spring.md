@@ -2,17 +2,32 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+- [Spring 介绍](#spring-%E4%BB%8B%E7%BB%8D)
+  - [什么是spring?](#%E4%BB%80%E4%B9%88%E6%98%AFspring)
+  - [Spring框架的设计目标，设计理念，和核心是什么？](#spring%E6%A1%86%E6%9E%B6%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5%E5%92%8C%E6%A0%B8%E5%BF%83%E6%98%AF%E4%BB%80%E4%B9%88)
+  - [Spring和SpringMVC的关系](#spring%E5%92%8Cspringmvc%E7%9A%84%E5%85%B3%E7%B3%BB)
+  - [Spring中使用的设计模式](#spring%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
 - [Spring IOC](#spring-ioc)
   - [IOC原理](#ioc%E5%8E%9F%E7%90%86)
   - [Spring单例Bean与单例模式的区别](#spring%E5%8D%95%E4%BE%8Bbean%E4%B8%8E%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [构造器依赖注入和 Setter方法注入的区别](#%E6%9E%84%E9%80%A0%E5%99%A8%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E5%92%8C-setter%E6%96%B9%E6%B3%95%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [Spring AOP](#spring-aop)
   - [实现AOP的技术](#%E5%AE%9E%E7%8E%B0aop%E7%9A%84%E6%8A%80%E6%9C%AF)
   - [Spring实现AOP](#spring%E5%AE%9E%E7%8E%B0aop)
   - [AOP使用场景](#aop%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF)
+  - [过滤器filter、拦截器interceptor、和AOP的区别与联系](#%E8%BF%87%E6%BB%A4%E5%99%A8filter%E6%8B%A6%E6%88%AA%E5%99%A8interceptor%E5%92%8Caop%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB)
+    - [filter过滤器](#filter%E8%BF%87%E6%BB%A4%E5%99%A8)
+    - [Interceptor拦截器](#interceptor%E6%8B%A6%E6%88%AA%E5%99%A8)
+    - [Spring AOP拦截器](#spring-aop%E6%8B%A6%E6%88%AA%E5%99%A8)
 - [Spring Bean生命周期](#spring-bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)
-- [Spring @Transactional工作原理](#spring-transactional%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+- [Spring @Transactional](#spring-transactional)
+  - [工作原理](#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+  - [参数配置](#%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE)
+  - [Spring事务什么情况下回滚？](#spring%E4%BA%8B%E5%8A%A1%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E5%9B%9E%E6%BB%9A)
+  - [Spring事务trycatch会回滚吗？](#spring%E4%BA%8B%E5%8A%A1trycatch%E4%BC%9A%E5%9B%9E%E6%BB%9A%E5%90%97)
 - [SpringMVC的工作原理](#springmvc%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
   - [两种bean的实例化](#%E4%B8%A4%E7%A7%8Dbean%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96)
+  - [Spring与SpringMVC父子容器的区别和联系](#spring%E4%B8%8Espringmvc%E7%88%B6%E5%AD%90%E5%AE%B9%E5%99%A8%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB)
 - [SpringMVC拦截器](#springmvc%E6%8B%A6%E6%88%AA%E5%99%A8)
   - [常见应用场景](#%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
   - [拦截器接口](#%E6%8B%A6%E6%88%AA%E5%99%A8%E6%8E%A5%E5%8F%A3)
@@ -34,12 +49,49 @@
       - [7、寻找依赖](#7%E5%AF%BB%E6%89%BE%E4%BE%9D%E8%B5%96)
       - [8、针对不同的scope进行bean的创建](#8%E9%92%88%E5%AF%B9%E4%B8%8D%E5%90%8C%E7%9A%84scope%E8%BF%9B%E8%A1%8Cbean%E7%9A%84%E5%88%9B%E5%BB%BA)
       - [9、类型转换](#9%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2)
+- [BeanFactory 和 ApplicationContext有什么区别？](#beanfactory-%E5%92%8C-applicationcontext%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB)
+  - [依赖关系](#%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB)
+  - [加载方式](#%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F)
+  - [创建方式](#%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F)
+  - [注册方式](#%E6%B3%A8%E5%86%8C%E6%96%B9%E5%BC%8F)
+- [前后端分离跨域解决](#%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3)
+- [Spring 注解](#spring-%E6%B3%A8%E8%A7%A3)
+  - [@Component, @Controller, @Repository, @Service](#component-controller-repository-service)
+  - [@service和@component的区别](#service%E5%92%8Ccomponent%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [@Autowired和@Resource之间的区别](#autowired%E5%92%8Cresource%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [@Conditional的使用](#conditional%E7%9A%84%E4%BD%BF%E7%94%A8)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+# Spring 介绍
+## 什么是spring?
+Spring是一个轻量级Java开发框架，最早有Rod Johnson创建，目的是为了解决企业级应用开发的业务逻辑层和其他各层的耦合问题。它是一个分层的JavaSE/JavaEE full-stack（一站式）轻量级开源框架，为开发Java应用程序提供全面的基础架构支持。Spring负责基础架构，因此Java开发者可以专注于应用程序的开发。
+
+Spring可以做很多事情，它为企业级开发提供给了丰富的功能，但是这些功能的底层都依赖于它的两个核心特性，也就是依赖注入（dependency injection，DI）和面向切面编程（aspect-oriented programming，AOP）。
+## Spring框架的设计目标，设计理念，和核心是什么？
+Spring设计目标：Spring为开发者提供一个一站式轻量级应用开发平台；
+
+Spring设计理念：在JavaEE开发中，支持POJO和JavaBean开发方式，使应用面向接口开发，充分支持OO（面向对象）设计方法；Spring通过IoC容器实现对象耦合关系的管理，并实现依赖反转，将对象之间的依赖关系交给IoC容器，实现解耦；
+
+Spring框架的核心：IoC容器和AOP模块。通过IoC容器管理POJO对象以及他们之间的耦合关系；通过AOP以动态非侵入的方式增强服务。
+
+IoC让相互协作的组件保持松散的耦合，而AOP编程允许你把遍布于应用各层的功能分离出来形成可重用的功能组件。
 
 
+## Spring和SpringMVC的关系
+Spring是IOC和AOP的容器框架，SpringMVC是基于Spring功能之上添加的Web框架，想用SpringMVC必须先依赖Spring。
 
+Spring可以说是一个管理bean的容器，也可以说是包括很多开源项目的总称，spring mvc是其中一个开源项目
+
+## Spring中使用的设计模式
+- 简单工厂模式：spring中的BeanFactory就是简单工厂模式的体现，根据传入一个唯一的标识来获得bean对象
+- 单例模式：Spring下默认的bean均为singleton，可以通过singleton=“true|false” 或者 scope="?"来指定。
+- 代理模式：AOP
+- 适配器模式：AOP的处理中有Adapter模式，由于Advisor链需要的是MethodInterceptor对象，所以每一个Advisor中的Advice都要适配成对应的MethodInterceptor对象。
+- 包装器模式：
+- 观察者模式：listener的实现。如ApplicationListener
+- 策略模式：spring中在实例化对象的时候用到Strategy模式
+- 模板方法模式：spring中的JdbcTemplate
 # Spring IOC
 java程序中的每个业务逻辑至少需要两个或以上的对象来协作完成。通常，每个对象在使用他的合作对象时，自己均要使用像new object（） 这样的语法来完成合作对象的申请工作。这样对象间的耦合度高了。
 
@@ -67,6 +119,17 @@ IOC:
 
 与此相比，Spring的单例Bean是与其容器（ApplicationContext）密切相关的，所以在一个JVM进程中，如果有多个Spring容器，即使是单例bean，也一定会创建多个实例
 
+
+## 构造器依赖注入和 Setter方法注入的区别
+构造函数注入 | setter 注入 
+-|-
+没有部分注入 | 有部分注入
+不会覆盖 setter 属性	| 会覆盖 setter 属性
+任意修改都会创建一个新实例	| 任意修改不会创建一个新实例
+适用于设置很多属性		| 适用于设置少量属性
+
+
+两种依赖方式都可以使用，构造器注入和Setter方法注入。最好的解决方案是用构造器参数实现强制依赖，setter方法实现可选依赖。
 #  Spring AOP
 1. AOP利用一种称为“横切”的技术，剖解开封装的对象内部，并将那些影响了 多个类的公共行为封装到一个可重用模块，并将其名为“Aspect”，即方面。所谓“方面”，简单地说，就是将那些与业务无关，却为业务模块所共同调用的 逻辑或责任封装起来，比如日志记录，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可操作性和可维护性。
 
@@ -112,6 +175,31 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 11. Synchronization　同步        
 12. Transactions 事务管理  
 
+
+## 过滤器filter、拦截器interceptor、和AOP的区别与联系
+
+### filter过滤器
+> *   **过滤器拦截web访问url地址**。 严格意义上讲，filter只是适用于web中，依赖于Servlet容器，利用**Java的回调机制**进行实现。
+> *   Filter**过滤器**：和框架无关，可以控制最初的http请求，但是更细一点的类和方法控制不了。
+> *   **过滤器可以拦截到方法的请求和响应(ServletRequest request, ServletResponse response)**，并对请求响应做出像响应的过滤操作，
+> *   比如**设置字符编码，鉴权操作**等
+
+### Interceptor拦截器
+
+> *   **拦截器拦截以 .action结尾的url，拦截Action的访问**。 Interfactor是基于**Java的反射机制**（APO思想）进行实现，不依赖Servlet容器。
+> *   **拦截器可以在方法执行之前(preHandle)和方法执行之后(afterCompletion)进行操作，回调操作(postHandle)**，**可以获取执行的方法的名称**，请求(HttpServletRequest)
+> *   Interceptor：**可以控制请求的控制器和方法**，但**控制不了请求方法里的参数(只能获取参数的名称，不能获取到参数的值)**
+> *   **（**用于处理页面提交的请求响应并进行处理，例如做国际化，做主题更换，过滤等）。
+
+### Spring AOP拦截器
+> *   **只能拦截Spring管理Bean的访问（业务层Service）**。 具体AOP详情参照 [Spring AOP：原理、 通知、连接点、切点、切面、表达式](https://blog.csdn.net/fly910905/article/details/84025425)
+> *   实际开发中，AOP常和事务结合：[Spring的事务管理:声明式事务管理(切面)](https://blog.csdn.net/fly910905/article/details/83547744)
+> *   **AOP操作可以对操作进行横向的拦截**，最大的优势在于他可**以获取执行方法的参数( ProceedingJoinPoint.getArgs() )**，对方法进行统一的处理。
+> *   Aspect : 可以自定义切入的点，有方法的参数，**但是拿不到http请求，可以通过其他方式如RequestContextHolder**获得( 
+>     ServletRequestAttributes servletRequestAttributes= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+>     )。
+> *   常见**使用日志，事务，请求参数安全验证
+
 # Spring Bean生命周期
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/spring-4.png)
 - Bean的建立， 由BeanFactory读取Bean定义文件，并生成各个实例
@@ -126,7 +214,8 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 - Bean定义文件中定义destroy-method，在容器关闭时，可以在Bean定义文件中使用“destory-method”定义的方法
 
 
-# Spring @Transactional工作原理
+# Spring @Transactional
+## 工作原理
 1. 当spring遍历容器中所有的切面，查找与当前实例化bean匹配的切面，这里就是获取事务属性切面，查找@Transactional注解及其属性值，然后根据得到的切面进入createProxy方法，创建一个AOP代理。
 2. 默认是使用JDK动态代理创建代理，如果目标类是接口，则使用JDK动态代理，否则使用Cglib。
 3. 获取的是当前目标方法对应的拦截器，里面是根据之前获取到的切面来获取相对应拦截器，这时候会得到TransactionInterceptor实例。如果获取不到拦截器，则不会创建MethodInvocation，直接调用目标方法。
@@ -137,8 +226,56 @@ spring事务其实是一种特殊的aop方式。在spring配置文件中配置�
 1. A类的a1方法没有标注@Transactional，a2方法标注@Transactional，在a1里面调用a2。a1方法是目标类A的原生方法，调用a1的时候即直接进入目标类A进行调用，在目标类A里面只有a2的原生方法，在a1里调用a2，即直接执行a2的原生方法，并不通过创建代理对象进行调用，所以并不会进入TransactionInterceptor的invoke方法，不会开启事务。
 2. 将@Transactional注解标注在非public方法上。内部使用AOP，所以必须是public修饰的方法才可以被代理
 
+## 参数配置
+1. propagation参数，Propagation类型（枚举），默认值为Propogation.REQUIRED，支持的值有REQUIRED、MANDATORY、NESTED、NEVER、NOT_SUPPORTED、REQUIRE_NEW、SUPPORTS。关于这个问题的详细说明将在以后的文章中展开。
+2. isolation参数，Isolation类型（枚举），默认值为Isolation.DEFAULT，支持的值有DEFAULT、READ_COMMITTED、READ_UNCOMMITTED、REPEATABLE_READ、SERIALIZABLE。关于这个问题的详细说明将在以后的文章中展开。
+3. timeout参数，int类型，事务的超时时间，默认值为-1，即不会超时。
+4. readOnly参数，boolean类型，true表示事务为只读，默认值为false。
+5. rollbackFor参数，Class<? extends Throwable>[]类型，默认为空数组。
+6. rollbackForClassName参数，String[]类型，默认为空数组。
+7. noRollbackFor参数，Class<? extends Throwable>[]类型，默认为空数组。
+8. noRollbackForClassName参数，String[]类型，默认为空数组。
 
+最后四个参数都与回滚有关，首先，一般不推荐使用rollbackForClassName和noRollbackForClassName两个参数，而用另外两个参数来代替，从参数的类型上就可以看出区别，使用字符串的缺点在于：如果不是用类的完整路径，就可能导致回滚设置对位于不同包中的同名类都生效；且如果类名写错，也无法得到IDE的动态提示。
 
+但是，如果不配置任何与回滚有关的参数，不代表事务不会进行回滚，如果没有配置这四个选项，那么DefaultTransactionAttribute配置将会生效，具体的行为是，抛掷任何unchecked Exception都会触发回滚，当然包括所有的RuntimeException。
+## Spring事务什么情况下回滚？
+Spring事务回滚机制是这样的：当所拦截的方法有指定异常抛出，事务才会自动进行回滚。
+
+默认配置下，事务只会对Error与RuntimeException及其子类这些UNChecked异常，做出回滚。一般的Exception这些Checked异常不会发生回滚（如果一般Exception想回滚要做出配置）；
+## Spring事务trycatch会回滚吗？
+依赖spring事物时，当service层进行try catch异常捕获时，事物不会产生回滚，代码如下 
+```
+    public void insertMsg(ConversationBean conversationBean){
+        try{
+            for(int i=0;i<100;i++){
+                if(i!=10){
+                    testDao.insert2(i);
+                }else{
+                    testDao.insert1(i);
+                }
+            }
+        }catch(Exception e){
+        }  
+    }
+```
+此时异常被捕获，这种业务方法也就等于脱离了spring事务的管理，因为没有任何异常会从业务方法中抛出，全被捕获，导致spring异常抛出触发事务回滚策略失效。
+
+解决此类问题时，需要在try catch中显示的抛出异常RuntimeException 然后在Controller层捕获异常并编写返回值，代码如下：
+```
+   public void insertMsg(ConversationBean conversationBean){
+        try{
+            for(int i=0;i<100;i++){
+                if(i!=10){
+                    testDao.insert2(i);
+                }else{
+                    testDao.insert1(i);
+                }
+            }
+        }catch(Exception e){
+            throw new RuntimeException();
+        }
+```
 # SpringMVC的工作原理
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-1.jpg)
 SpringMVC流程
@@ -168,6 +305,11 @@ SpringMVC流程
 Spring提供了两种类型的IOC容器实现（两种类型的配置方式是一样）
 1. BeanFactory：是Spring框架的基础设施，面向Spring本身
 2. ApplicationContext： 面向使用 Spring 框架的开发者，几乎所有的应用场合都直接使用 ApplicationContext 而非底层的
+
+## Spring与SpringMVC父子容器的区别和联系
+1. Spring 与SpringMVC 两个都是容器,存在父子关系（包含和被包含的关系） 
+2. Spring容器中存放着mapper代理对象，service对象，SpringMVC存放着Controller对象。**子容器SpringMVC中可以访问父容器中的对象。但父容器Spring不能访问子容器SpringMVC的对象**（存在领域作用域的原因，子容器可以访问父容器中的成员，而子容器的成员则只能被自己使用）。如：Service对象可以在Controller层中注入，反之则不行。
+3. Spring容器导入的properties配置文件，只能在Spring容器中用而在SpringMVC容器中不能读取到。 需要在SpringMVC 的配置文件中重新进行导入properties文件，并且同样在父容器Spring中不能被使用，导入后使用@Value("${key}")在java类中进行读取。
 
 
 # SpringMVC拦截器
@@ -538,3 +680,107 @@ protected <T> T doGetBean(String name, Class<T> requiredType, final Object[] arg
 
 程序到这里返回bean后已经基本结束了，通常对该方法的调用参数requiredType是为空的，但是可能会存在这样的情况，返回的bean其实是个Spring，但是requiredType却传入Integer类型，那么这时候本步骤就会起作用了，它的功能是将返回的bean转换为requiredType所指定的类型，当然，Spring转换为Integer是最简单的一种转换，在Spring中提供了各种各样的转换器，用户也可以自己扩展转换器来满足需求
 
+
+
+# BeanFactory 和 ApplicationContext有什么区别？
+BeanFactory和ApplicationContext是Spring的两大核心接口，都可以当做Spring的容器。其中ApplicationContext是BeanFactory的子接口。
+
+可以从依赖关系、加载方式、创建方式、注册方式这四方面去讲。
+
+## 依赖关系
+BeanFactory：是Spring里面最底层的接口，包含了各种Bean的定义，读取bean配置文档，管理bean的加载、实例化，控制bean的生命周期，维护bean之间的依赖关系。
+
+ApplicationContext接口作为BeanFactory的派生，除了提供BeanFactory所具有的功能外，还提供了更完整的框架功能：
+- 继承MessageSource，因此支持国际化。
+- 统一的资源文件访问方式。
+- 提供在监听器中注册bean的事件。
+- 同时加载多个配置文件。
+
+载入多个（有继承关系）上下文 ，使得每一个上下文都专注于一个特定的层次，比如应用的web层。
+
+## 加载方式
+BeanFactroy采用的是**延迟加载**形式来注入Bean的，即只有在使用到某个Bean时(调用getBean())，才对该Bean进行加载实例化。这样，我们就不能发现一些存在的Spring的配置问题。如果Bean的某一个属性没有注入，BeanFacotry加载后，直至第一次使用调用getBean方法才会抛出异常。
+
+ApplicationContext，它是在容器启动时，**一次性创建了所有的Bean**。这样，在容器启动时，我们就可以发现Spring中存在的配置错误，这样有利于检查所依赖属性是否注入。 ApplicationContext启动后预载入所有的单实例Bean，通过预载入单实例bean ,确保当你需要的时候，你就不用等待，因为它们已经创建好了。
+
+相对于基本的BeanFactory，ApplicationContext 唯一的不足是占用内存空间。当应用程序配置Bean较多时，程序启动较慢。
+
+## 创建方式
+BeanFactory通常以编程的方式被创建，ApplicationContext还能以声明的方式创建，如使用ContextLoader。
+
+## 注册方式
+BeanFactory和ApplicationContext都支持BeanPostProcessor、BeanFactoryPostProcessor的使用，但两者之间的区别是：BeanFactory需要手动注册，而ApplicationContext则是自动注册。
+
+BeanFactory 简单粗暴，可以理解为就是个 HashMap，Key 是 BeanName，Value 是 Bean 实例。通常只提供注册（put），获取（get）这两个功能。我们可以称之为 “低级容器”。
+
+ApplicationContext 可以称之为 “高级容器”。因为他比 BeanFactory 多了更多的功能。他继承了多个接口。因此具备了更多的功能。例如资源的获取，支持多种消息（例如 JSP tag 的支持），对 BeanFactory 多了工具级别的支持等待。所以你看他的名字，已经不是 BeanFactory 之类的工厂了，而是 “应用上下文”， 代表着整个大容器的所有功能。该接口定义了一个 refresh 方法，此方法是所有阅读 Spring 源码的人的最熟悉的方法，用于刷新整个容器，即重新加载/刷新所有的 bean。
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/spring-5.png)
+
+
+# 前后端分离跨域解决
+我们知道一个http请求，先走filter，到达servlet后才进行拦截器的处理，如果我们把cors放在filter里，就可以优先于权限拦截器执行。
+```
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
+    }
+}
+```
+现在可以通过实现WebMvcConfigurer接口然后重写addCorsMappings方法解决跨域问题。
+```
+ @Configuration
+public class CorsConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .maxAge(3600);
+    }
+
+}
+```
+
+
+
+# Spring 注解
+## @Component, @Controller, @Repository, @Service 
+@Component：这将 java 类标记为 bean。它是任何 Spring 管理组件的通用构造型。spring 的组件扫描机制现在可以将其拾取并将其拉入应用程序环境中。
+
+@Controller：这将一个类标记为 Spring Web MVC 控制器。标有它的 Bean 会自动导入到 IoC 容器中。
+
+@Service：此注解是组件注解的特化。它不会对 @Component 注解提供任何其他行为。您可以在服务层类中使用 @Service 而不是 @Component，因为它以更好的方式指定了意图。
+
+@Repository：这个注解是具有类似用途和功能的 @Component 注解的特化。它为 DAO 提供了额外的好处。它将 DAO 导入 IoC 容器，并使未经检查的异常有资格转换为 Spring DataAccessException。
+
+## @service和@component的区别
+**@Component**
+-  Component 用于将所标注的类加载到 Spring 环境中，需要搭配 component-scan 使用
+- 泛指各种组件，就是说当我们的类不属于各种归类的时候（不属于@Controller、@Services等的时候），我们就可以使用@Component来标注这个类。
+
+**@service**
+- @service和@controller引用来了@component注解，而@service是对@component进一步拓展，也就是component注解实现的功能@service都能实现，被@service注解标注的百类会被spring认定是业务逻辑层
+
+## @Autowired和@Resource之间的区别
+@Autowired可用于：构造函数、成员变量、Setter方法
+
+@Autowired和@Resource之间的区别
+- @Autowired默认是按照类型装配注入的，默认情况下它要求依赖对象必须存在（可以设置它required属性为false）。
+- @Resource默认是按照名称来装配注入的，只有当找不到与名称匹配的bean才会按照类型来装配注入。
+
+## @Conditional的使用
+作用：根据条件，决定类是否加载到Spring Ioc容器中，在SpringBoot中有大量的运用
+
+应用场景：在一些需要条件满足才是实例化的类中，使用此注解，我曾经在项目中需要根据不同的场景使用不同的mq中间件的时候使用过，在mq的实例化bean上，加上此注解，根据配置文件的不同，来决定这个bean是否加载至ioc容器中。
