@@ -2,8 +2,25 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+- [JAVA开发六大原则](#java%E5%BC%80%E5%8F%91%E5%85%AD%E5%A4%A7%E5%8E%9F%E5%88%99)
 - [抽象类和接口的对比](#%E6%8A%BD%E8%B1%A1%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AF%B9%E6%AF%94)
+- [如何去设计类和接口（Effective Java）](#%E5%A6%82%E4%BD%95%E5%8E%BB%E8%AE%BE%E8%AE%A1%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3effective-java)
+  - [1、使类和成员的可访问性最小化](#1%E4%BD%BF%E7%B1%BB%E5%92%8C%E6%88%90%E5%91%98%E7%9A%84%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7%E6%9C%80%E5%B0%8F%E5%8C%96)
+  - [2、复合优先于继承](#2%E5%A4%8D%E5%90%88%E4%BC%98%E5%85%88%E4%BA%8E%E7%BB%A7%E6%89%BF)
+  - [3、接口优于抽象类](#3%E6%8E%A5%E5%8F%A3%E4%BC%98%E4%BA%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB)
+  - [4、优先考虑静态成员类](#4%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E7%B1%BB)
+- [三大特性](#%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7)
+  - [多态](#%E5%A4%9A%E6%80%81)
+  - [重载](#%E9%87%8D%E8%BD%BD)
+- [使用final的意义](#%E4%BD%BF%E7%94%A8final%E7%9A%84%E6%84%8F%E4%B9%89)
+- [四大引用](#%E5%9B%9B%E5%A4%A7%E5%BC%95%E7%94%A8)
+- [值传递和引用传递的区别？](#%E5%80%BC%E4%BC%A0%E9%80%92%E5%92%8C%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%E7%9A%84%E5%8C%BA%E5%88%AB)
+  - [值传递](#%E5%80%BC%E4%BC%A0%E9%80%92)
+  - [引用传递](#%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92)
 - [equals()](#equals)
+  - [==和equals的区别？实现equals要注意哪些东西？](#%E5%92%8Cequals%E7%9A%84%E5%8C%BA%E5%88%AB%E5%AE%9E%E7%8E%B0equals%E8%A6%81%E6%B3%A8%E6%84%8F%E5%93%AA%E4%BA%9B%E4%B8%9C%E8%A5%BF)
+  - [equals()与hashCode()之间的关系](#equals%E4%B8%8Ehashcode%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB)
+- [一个字符（英文字母）占多少个字节，一个中文占多少字节？](#%E4%B8%80%E4%B8%AA%E5%AD%97%E7%AC%A6%E8%8B%B1%E6%96%87%E5%AD%97%E6%AF%8D%E5%8D%A0%E5%A4%9A%E5%B0%91%E4%B8%AA%E5%AD%97%E8%8A%82%E4%B8%80%E4%B8%AA%E4%B8%AD%E6%96%87%E5%8D%A0%E5%A4%9A%E5%B0%91%E5%AD%97%E8%8A%82)
 - [java中double和float精度丢失问题及解决方法](#java%E4%B8%ADdouble%E5%92%8Cfloat%E7%B2%BE%E5%BA%A6%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95)
   - [BigDecimal](#bigdecimal)
 - [注解](#%E6%B3%A8%E8%A7%A3)
@@ -15,8 +32,10 @@
 - [创建一个类的几种方法?](#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95)
 - [Redirect和forward](#redirect%E5%92%8Cforward)
 - [Object跟这些标记符代表的java类型有啥区别呢？](#object%E8%B7%9F%E8%BF%99%E4%BA%9B%E6%A0%87%E8%AE%B0%E7%AC%A6%E4%BB%A3%E8%A1%A8%E7%9A%84java%E7%B1%BB%E5%9E%8B%E6%9C%89%E5%95%A5%E5%8C%BA%E5%88%AB%E5%91%A2)
-- [Java 异常的体系结构](#java-%E5%BC%82%E5%B8%B8%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84)
-- [throw和throws区别](#throw%E5%92%8Cthrows%E5%8C%BA%E5%88%AB)
+- [Java 异常](#java-%E5%BC%82%E5%B8%B8)
+  - [throw和throws区别](#throw%E5%92%8Cthrows%E5%8C%BA%E5%88%AB)
+  - [什么情况finally不会执行](#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5finally%E4%B8%8D%E4%BC%9A%E6%89%A7%E8%A1%8C)
+  - [finally方法一定会被执行么？](#finally%E6%96%B9%E6%B3%95%E4%B8%80%E5%AE%9A%E4%BC%9A%E8%A2%AB%E6%89%A7%E8%A1%8C%E4%B9%88)
 - [.class 文件是什么类型文件](#class-%E6%96%87%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88%E7%B1%BB%E5%9E%8B%E6%96%87%E4%BB%B6)
 - [java中序列化之子类继承父类序列化](#java%E4%B8%AD%E5%BA%8F%E5%88%97%E5%8C%96%E4%B9%8B%E5%AD%90%E7%B1%BB%E7%BB%A7%E6%89%BF%E7%88%B6%E7%B1%BB%E5%BA%8F%E5%88%97%E5%8C%96)
 - [标识符](#%E6%A0%87%E8%AF%86%E7%AC%A6)
@@ -26,7 +45,9 @@
 - [Java中wait 和sleep 方法比较](#java%E4%B8%ADwait-%E5%92%8Csleep-%E6%96%B9%E6%B3%95%E6%AF%94%E8%BE%83)
 - [hashCode和equals方法的关系](#hashcode%E5%92%8Cequals%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB)
 - [Object类中有哪些方法](#object%E7%B1%BB%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95)
-- [String s=new String("xyz")究竟创建String Object分为两种情况](#string-snew-stringxyz%E7%A9%B6%E7%AB%9F%E5%88%9B%E5%BB%BAstring-object%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5)
+- [String](#string)
+  - [String s=new String("xyz")究竟创建String Object分为两种情况](#string-snew-stringxyz%E7%A9%B6%E7%AB%9F%E5%88%9B%E5%BB%BAstring-object%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5)
+  - [Java中由substring方法引发的内存泄漏](#java%E4%B8%AD%E7%94%B1substring%E6%96%B9%E6%B3%95%E5%BC%95%E5%8F%91%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F)
 - [什么是值传递和引用传递](#%E4%BB%80%E4%B9%88%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E5%92%8C%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92)
 - [什么是泛型，为什么要使用以及类型擦除](#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4)
 - [什么是序列化？为什么要序列化？](#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BA%8F%E5%88%97%E5%8C%96)
@@ -39,7 +60,15 @@
 
 
 
+## JAVA开发六大原则
+1. 单一原则 : 一个类或一个方法只负责一件事情
+2. 里斯替换原则: 子类不应该重写父类已实现的方法,重载不应该比父类的参数更少
+3. 依赖倒置原则: 面向接口编程.（面向接口更能添加程序的可扩展性）
+4. 接口隔离原则: 接口中的方法应该细分,要合理的隔离开不同的功能到不同的接口中.
+5. 迪米特原则: 高内聚低耦合
+6. 开闭原则: 对修改关闭，对扩展开放
 
+总结: 用抽象构建框架，用实现扩展细节
 
 ## 抽象类和接口的对比
 | 参数        | 抽象类   |  接口  |
@@ -53,6 +82,126 @@
 |多继承	|抽象方法可以继承一个类和实现多个接口	|接口只可以继承一个或多个其它接口|
 |速度|	它比接口速度要快|	接口是稍微有点慢的，因为它需要时间去寻找在类中实现的方法。|
 |添加新方法	|如果你往抽象类中添加新的方法，你可以给它提供默认的实现。因此你不需要改变你现在的代码。|	如果你往接口中添加方法，那么你必须改变实现该接口的类。|
+
+
+## 如何去设计类和接口（Effective Java）
+### 1、使类和成员的可访问性最小化
+尽可能地使每个类或者成员不被外界访问，尽可能最小的访问级别。
+### 2、复合优先于继承
+与方法调用不同的是，继承打破了封装性。超类的实现有可能会随着发行版本的不同而有所变化，如果真的发生了变化，子类可能会遭到破坏，即使它的代码完全没有改变。
+
+建议新的类中增加一个私有域，它引现有类的一个实例。这种设计被称做“复合(composition)
+### 3、接口优于抽象类
+如果你希望让两个类扩展同一个抽象类，就必须把抽象类放到类型层次结构的高处，以便这两个类的一个祖先成为它的子类。遗憾的是这样做会间接到伤害到类层次，迫使这个公共祖先到所有后代类都扩展这个新的抽象类，无论它对于这些后代类是否合适。
+### 4、优先考虑静态成员类
+非静态成员类的每个实例都隐含着与外围类的一个外围实例(enclosing instance)相关联。
+
+## 三大特性
+### 多态
+**好处**
+1. 提高了代码的维护性(继承保证)
+2. 提高了代码的扩展性(由多态保证)
+多态：同一操作作用于不同的对象，可以有不同的解释，产生不同的执行结果。在复运行时，可以通过指向基类的指针，来调用实现派生类中的方法。
+
+**实现原理**
+多态是面向对象编程语言的重要特性，它允许基类的指针或引用指向派生类的对象，而在具体访问时实现方法的动态绑定。
+
+Java 对于方法调用**动态绑定**的实现主要依赖于**方法表**，但通过**类引用调**用(invokevitual)和**接口引用调用**(invokeinterface)的实现则有所不同
+
+### 重载
+在编译器眼里，方法名称+参数类型+参数个数，组成一个唯一键，称为方法签名。返回值并不是方法签名的一部分，会导致编译出错。
+
+**一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在由程序运行期间才能决定。**
+
+## 使用final的意义
+1. 为方法“上锁”，防止任何继承类改变它的本来含义和实现。设计程序时，若希望一个方法的行为在继承期间保持不变，而且不可被覆盖或改写，就可以采取这种做法。
+2. 提高程序执行的效率，将一个方法设成final后，编译器就可以把对那个方法的所有调用都置入“嵌入”调用里（内嵌机制）
+3. 如果一个数据既是static又是final，那么它会拥有一块无法改变的存储空间
+
+
+## 四大引用
+| 引用类型 | 回收时机 | 使用场景 |
+|--|--|--|
+|强引用  |  不回收| 创建对象实例 |
+|软引用  | 内存不足时 | 图片缓存 |
+| 弱引用 | 垃圾回收 | WeakHashMap，维护一种非强制的映射关系 |
+| 虚引用 | Unknow | 跟踪对象垃圾回收的活动 |
+
+## 值传递和引用传递的区别？
+### 值传递
+在方法被调用时，实参通过形参把它的内容副本传入方法内部，此时形参接收到的内容是实参值的一个拷贝，因此在方法内对形参的任何操作，**都仅仅是对这个副本的操作**，不影响原始值的内容。
+```
+ public static void valueCrossTest(int age, float weight){
+        System.out.println("传入的age：" + age);
+        System.out.println("传入的weight：" + weight);
+        age = 33;
+        weight = 89.5f;
+        System.out.println("方法内重新赋值后的age：" + age);
+        System.out.println("方法内重新赋值后的weight：" + weight);
+    }
+
+    public static void main(String[] args) {
+        int a = 25;
+        float w = 77.5f;
+        valueCrossTest(a, w);
+        System.out.println("方法执行后的age：" + a);
+        System.out.println("方法执行后的weight："+w);
+    }
+```
+```
+传入的age：25
+传入的weight：77.5
+方法内重新赋值后的age：33
+方法内重新赋值后的weight：89.5
+方法执行后的age：25
+方法执行后的weight：77.5
+```
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-25.png)
+
+只是改变了当前栈帧（valueCrossTest方法所在栈帧）里的内容，当方法执行结束之后，这些局部变量都会被销毁，mian方法所在栈帧重新回到栈顶，成为当前栈帧，再次输出a和w时，依然是初始化时的内容。
+
+**值传递传递的是真实内容的一个副本，对副本的操作不影响原内容，也就是形参怎么变化，不会影响实参对应的内容。**
+
+
+### 引用传递
+**”引用”也就是指向真实内容的地址值**，在方法调用时，实参的地址通过方法调用被传递给相应的形参，在方法体内，**形参和实参指向通愉快内存地址，对形参的操作会影响的真实内容**。
+```
+ public static void PersonCrossTest(Person person){
+        System.out.println("传入的person的name："+person.getName());
+        person.setName("我是张小龙");
+        System.out.println("方法内重新赋值后的name："+person.getName());
+    }
+
+    public static void main(String[] args) {
+        Person p = new Person();
+        p.setName("我是马化腾");
+        p.setAge(45);
+        PersonCrossTest(p);
+        System.out.println("方法执行后的name："+p.getName());
+    }
+```
+```
+传入的person的name：我是马化腾
+方法内重新赋值后的name：我是张小龙
+方法执行后的name：我是张小龙
+```
+可以看出，person经过personCrossTest()方法的执行之后，内容发生了改变，这印证了上面所说的“引用传递”，对形参的操作，改变了实际对象的内容。
+
+修改一下
+```
+  public static void PersonCrossTest(Person person){
+        System.out.println("传入的person的name："+person.getName());
+        person=new Person();//加多此行代码
+        person.setName("我是张小龙");
+        System.out.println("方法内重新赋值后的name："+person.getName());
+    }
+```
+```
+传入的person的name：我是马化腾
+方法内重新赋值后的name：我是张小龙
+方法执行后的name：我是马化腾
+```
+JVM需要在堆内另外开辟一块内存来存储new Person()，假如地址为“xo3333”，那此时形参person指向了这个地址，假如真的是引用传递，那么由上面讲到：引用传递中形参实参指向同一个对象，形参的操作会改变实参对象的改变。
 
 
 ## equals()
@@ -100,6 +249,19 @@ public boolean equals(Object obj) {
         return false;
     }
 ```
+
+### ==和equals的区别？实现equals要注意哪些东西？
+**==和equals的区别**
+- ==:判断两个字符串在内存中首地址是否相同,即判断两者是否是同一个字符串对象
+- equles():如果没有重写equals()方法比较的是对象的地址,因为对Object来说对象没有什么属性可以比较,只能比较最底层的地址。
+而如果重写equals()方法时,该方法的对象因为是Object的子类,所以调用时会调用子类对象里面的方法.所以只有重写equals()方法后,两者比较的才是内容.或者说重写可以使自己定义比较的规则,不想按照地址去比较.
+
+**实现equals要注意哪些东西？**
+1、自反性：对于任何非空引用x，x.equals(x)应该返回true。
+2、对称性：对于任何引用x和y，如果x.equals(y)返回true，那么y.equals(x)也应该返回true。
+3、传递性：对于任何引用x、y和z，如果x.equals(y)返回true，y.equals(z)返回true，那么x.equals(z)也应该返回true。
+4、一致性：如果x和y引用的对象没有发生变化，那么反复调用x.equals(y)应该返回同样的结果。
+5、非空性：对于任意非空引用x，x.equals(null)应该返回false。
 compareTo()
 ```java
   public int compareTo(Integer anotherInteger) {
@@ -110,6 +272,16 @@ compareTo()
         return (x < y) ? -1 : ((x == y) ? 0 : 1);
    }
 ```
+
+### equals()与hashCode()之间的关系
+- 如果两个对象equals()方法相等则它们的hashCode返回值一定要相同，如果两个对象的hashCode返回值相同，但它们的equals()方法不一定相等。
+- hashCode()的作用是为了提高在散列结构存储中查找的效率
+- Java中重写equals()方法时尽量要重写hashCode()方法的原因：声明相等对象必须具有相等的哈希码，包括 HashMap、HashSet、Hashtable 等
+
+## 一个字符（英文字母）占多少个字节，一个中文占多少字节？
+- 一个字符占1个字节（GBK、ASCII、UTF-8）
+- 一个中文占 2 个字节（GBK、ASCII）
+- 一个中文占 3 个字节（UTF-8）
 
 ## java中double和float精度丢失问题及解决方法
 ```java
@@ -134,6 +306,7 @@ public BigDecimal(double val)
 1. 此构造方法的结果有一定的不可预知性。有人可能认为在 Java 中写入 new BigDecimal(0.1) 所创建的 BigDecimal 正好等于 0.1（非标度值 1，其标度为 1），但是它实际上等于 0.1000000000000000055511151231257827021181583404541015625。这是因为 0.1 无法准确地表示为 double（或者说对于该情况，不能表示为任何有限长度的二进制小数）。这样，传入 到构造方法的值不会正好等于 0.1（虽然表面上等于该值）。
 2. 另一方面，String 构造方法是完全可预知的：写入 new BigDecimal("0.1") 将创建一个 BigDecimal，它正好 等于预期的 0.1。因此，比较而言，通常建议优先使用 String 构造方法。
 3. 当 double 必须用作 BigDecimal 的源时，请注意，此构造方法提供了一个准确转换；它不提供与以下操作相同的结果：先使用 Double.toString(double) 方法，然后使用 BigDecimal(String) 构造方法，将 double 转换为 String。要获取该结果，请使用 static valueOf(double) 方法。
+
 
 ## 注解
 
@@ -265,7 +438,7 @@ Object是所有类的根类，任何类的对象都可以设置给该Object引�
 
 
 
-## Java 异常的体系结构
+## Java 异常
 Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。
 
 在Java API中已经定义了许多异常类，这些异常类分为两大类，错误Error和异常Exception。
@@ -278,7 +451,7 @@ Java异常层次结构图如下图所示：
 Error：Error类对象由 Java 虚拟机生成并抛出，Error表示编译时和系统错误，通常不能预期和恢复，比如硬件故障、JVM崩溃、内存不足等 。例如，Java虚拟机运行错误（Virtual MachineError），当JVM不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java虚拟机（JVM）一般会选择线程终止；还有发生在虚拟机试图执行应用时，如类定义错误（NoClassDefFoundError）、链接错误（LinkageError）。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在Java中，错误通常是使用Error的子类描述。
 
 Exception：在Exception分支中有一个重要的子类RuntimeException（运行时异常），该类型的异常自动为你所编写的程序定义ArrayIndexOutOfBoundsException（数组下标越界）、NullPointerException（空指针异常）、ArithmeticException（算术异常）、MissingResourceException（丢失资源）、ClassNotFoundException（找不到类）等异常，这些异常是不检查异常，程序中可以选择捕获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的，程序应该从逻辑角度尽可能避免这类异常的发生；而RuntimeException之外的异常我们统称为非运行时异常，类型上属于Exception类及其子类，从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。如IOException、SQLException等以及用户自定义的Exception异常，一般情况下不自定义检查异常。
-## throw和throws区别
+### throw和throws区别
 **throw：（针对对象的做法）**
  抛出一个异常，可以是系统定义的，也可以是自己定义的
  
@@ -301,6 +474,57 @@ public void yichang() throws NumberFormatException{
 2. throws表示出现异常的一种可能性，并不一定会发生这些异常；throw则是抛出了异常，执行throw则一定抛出了某种异常。
 3. 两者都是消极处理异常的方式（这里的消极并不是说这种方式不好），只是抛出或者可能抛出异常，但是不会由函数去处理异常，真正的处理异常由函数的上层调用处理。
 
+### 什么情况finally不会执行
+1、没有进入try代码块。
+2、进入try代码块 ， 但是代码运行中出现了死循环或死锁状态。 
+3、进入try代码块， 但是执行了 System.exit()操作。
+
+注意， finally 是在 return 表达式运行后执行的 ， 此时将要 return 的结果 已 经被暂 存起来 ， 待 finally 代码块执行结束后再将之前暂存的结果返回
+
+```
+ private static int test1() {
+        int tmp = 10000;
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+           return ++tmp;
+        } finally {
+           tmp = 99999;
+        }
+    }
+
+```
+
+此方法最终的返回值是 10001 ，而不是 99999。
+
+相对在 finally 代码块中赋值，更加危险的做法是在 finally块中使用 return 操作，这样的代码会使返回值变得非常不可控。
+```
+ private static int test1() {
+ int x = 1;
+ int y = 10;
+ int z = 100;
+        try {
+           return ++x;
+        } catch (Exception e) {
+           return ++y;
+        } finally {
+           return ++z;
+        }
+    }
+
+```
+( 1 )最后 return 的功件是由 finally 代码块巾的 return ++z 完成的，所以为法返 回的结果是 101。
+( 2 )语旬 return ++x 中的++x 被成功执行，所以运行结果是x=2。
+( 3 ) 如果有异常抛出 ，那么运行结果将会是 y =11，而 x=1;
+
+
+finally代码块中使用 return语旬，使返回值的判断变得复杂，所以避免返回值不
+可控，我们不要在 finally代码块中使用 return语句。
+
+### finally方法一定会被执行么？
+java中，如果想要执行try中的代码之后，不允许再执行finally中的代码，有以下两种方式：
+- 使用System.exit(1)来退出虚拟机
+- 把当前执行trycatchfinally代码的线程设置为守护线程
 
 ##  .class 文件是什么类型文件
 class文件是一种8位字节的二进制流文件
@@ -458,10 +682,32 @@ public class Object {
     protected void finalize() throws Throwable { }
 }
 ```
-
-## String s=new String("xyz")究竟创建String Object分为两种情况
+## String
+### String s=new String("xyz")究竟创建String Object分为两种情况
 1. 如果String常理池中，已经创建"xyz"，则不会继续创建，此时只创建了一个对象new String("xyz")；
 2. 如果String常理池中，没有创建"xyz"，则会创建两个对象，一个对象的值是"xyz"，一个对象new String("xyz")。
+
+### Java中由substring方法引发的内存泄漏
+- 内存溢出（out of memory ）：通俗的说就是内存不够用了，比如在一个无限循环中不断创建一个大的对象，很快就会引发内存溢出。
+- 内存泄漏（leak of memory）：是指为一个对象分配内存之后，在对象已经不在使用时未及时的释放，导致一直占据内存单元，使实际可用内存减少，就好像内存泄漏了一样。
+
+substring(int beginIndex, int endndex )是String类的一个方法，但是这个方法在JDK6和JDK7中的实现是完全不同的（虽然它们都达到了同样的效果）。在JDK1.6中不当使用substring会导致严重的内存泄漏问题。
+```
+String str = "abcdefghijklmnopqrst";
+String sub = str.substring(1, 3);
+str = null;
+```
+这段简单的程序有两个字符串变量str、sub。sub字符串是由父字符串str截取得到的，假如上述这段程序在JDK1.6中运行，我们知道数组的内存空间分配是在堆上进行的，那么sub和str的内部char数组value是公用了同一个，也就是上述有字符a~字符t组成的char数组，str和sub唯一的差别就是在数组中其实beginIndex和字符长度count的不同。在第三句，我们使str引用为空，本意是释放str占用的空间，但是这个时候，GC是无法回收这个大的char数组的，因为还在被sub字符串内部引用着，虽然sub只截取这个大数组的一小部分。当str是一个非常大字符串的时候，这种浪费是非常明显的，甚至会带来性能问题，解决这个问题可以是通过以下的方法：
+```
+String str = "abcdefghijklmnopqrst";
+String sub = str.substring(1, 3) + "";
+str = null;
+```
+利用的就是字符串的拼接技术，它会创建一个新的字符串，这个新的字符串会使用一个新的内部char数组存储自己实际需要的字符，这样父数组的char数组就不会被其他引用，令str=null，在下一次GC回收的时候会回收整个str占用的空间。但是这样书写很明显是不好看的，所以在JDK7中，substring 被重新实现了。
+
+在JDK7中改进了substring的实现，它实际是为截取的子字符串在堆中创建了一个新的char数组用于保存子字符串的字符。这样子字符串和父字符串也就没有什么必然的联系了，当父字符串的引用失效的时候，GC就会适时的回收父字符串占用的内存空间。
+
+
 
 
 
@@ -723,6 +969,7 @@ Java 语言真正走向成熟，提供了非常完备的语言特性，如 NIO�
 - 341: Default CDS Archives ：默认生成类数据共享（CDS）存档。
 - 344: Abortable Mixed Collections for G1 ：当 G1 垃圾回收器的回收超过暂停目标，则能中止垃圾回收过程.
 - 346: Promptly Return Unused Committed Memory from G1 ：改进 G1 垃圾回收器，以便在空闲时自动将 Java 堆内存返回给操作系统。
+
 
 
 

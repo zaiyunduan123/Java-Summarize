@@ -8,10 +8,15 @@
   - [线程为什么调用start()而不是直接调用run()](#%E7%BA%BF%E7%A8%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B0%83%E7%94%A8start%E8%80%8C%E4%B8%8D%E6%98%AF%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8run)
   - [阻塞，等待，挂起，休眠的区别](#%E9%98%BB%E5%A1%9E%E7%AD%89%E5%BE%85%E6%8C%82%E8%B5%B7%E4%BC%91%E7%9C%A0%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [多线程上下文切换的影响](#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%E7%9A%84%E5%BD%B1%E5%93%8D)
-- [synchronized 的底层怎么实现](#synchronized-%E7%9A%84%E5%BA%95%E5%B1%82%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0)
+- [synchronized](#synchronized)
+  - [synchronized 的底层怎么实现](#synchronized-%E7%9A%84%E5%BA%95%E5%B1%82%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0)
+  - [为什么notify和wait方法必须在synchronized方法中使用？](#%E4%B8%BA%E4%BB%80%E4%B9%88notify%E5%92%8Cwait%E6%96%B9%E6%B3%95%E5%BF%85%E9%A1%BB%E5%9C%A8synchronized%E6%96%B9%E6%B3%95%E4%B8%AD%E4%BD%BF%E7%94%A8)
+    - [1、依赖锁对象的监视器monitor](#1%E4%BE%9D%E8%B5%96%E9%94%81%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%9B%91%E8%A7%86%E5%99%A8monitor)
+    - [2、避免lost wake up问题](#2%E9%81%BF%E5%85%8Dlost-wake-up%E9%97%AE%E9%A2%98)
   - [jdk1.6以后对synchronized锁做了哪些优化](#jdk16%E4%BB%A5%E5%90%8E%E5%AF%B9synchronized%E9%94%81%E5%81%9A%E4%BA%86%E5%93%AA%E4%BA%9B%E4%BC%98%E5%8C%96)
 - [Java有哪些锁？](#java%E6%9C%89%E5%93%AA%E4%BA%9B%E9%94%81)
-- [讲一下CAS](#%E8%AE%B2%E4%B8%80%E4%B8%8Bcas)
+- [CAS](#cas)
+  - [CAS 介绍](#cas-%E4%BB%8B%E7%BB%8D)
   - [CAS到底最后加没加锁](#cas%E5%88%B0%E5%BA%95%E6%9C%80%E5%90%8E%E5%8A%A0%E6%B2%A1%E5%8A%A0%E9%94%81)
 - [CountDownLatch与CyclicBarrier的比较](#countdownlatch%E4%B8%8Ecyclicbarrier%E7%9A%84%E6%AF%94%E8%BE%83)
   - [源码上的区别](#%E6%BA%90%E7%A0%81%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB)
@@ -39,9 +44,14 @@
   - [写final域的重排序规则](#%E5%86%99final%E5%9F%9F%E7%9A%84%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99)
   - [读final域的重排序规则](#%E8%AF%BBfinal%E5%9F%9F%E7%9A%84%E9%87%8D%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99)
 - [notify和notifyAll的区别](#notify%E5%92%8Cnotifyall%E7%9A%84%E5%8C%BA%E5%88%AB)
-- [ConcurrentHashMap是如何在保证并发安全的同时提高性能](#concurrenthashmap%E6%98%AF%E5%A6%82%E4%BD%95%E5%9C%A8%E4%BF%9D%E8%AF%81%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%8C%E6%97%B6%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD)
-- [为什么java.util.concurrent 包里没有并发的ArrayList实现？](#%E4%B8%BA%E4%BB%80%E4%B9%88javautilconcurrent-%E5%8C%85%E9%87%8C%E6%B2%A1%E6%9C%89%E5%B9%B6%E5%8F%91%E7%9A%84arraylist%E5%AE%9E%E7%8E%B0)
-- [比AtomicLong更高性能的LongAdder](#%E6%AF%94atomiclong%E6%9B%B4%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84longadder)
+- [JUC](#juc)
+  - [ConcurrentHashMap是如何在保证并发安全的同时提高性能](#concurrenthashmap%E6%98%AF%E5%A6%82%E4%BD%95%E5%9C%A8%E4%BF%9D%E8%AF%81%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%8C%E6%97%B6%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD)
+  - [为什么java.util.concurrent 包里没有并发的ArrayList实现？](#%E4%B8%BA%E4%BB%80%E4%B9%88javautilconcurrent-%E5%8C%85%E9%87%8C%E6%B2%A1%E6%9C%89%E5%B9%B6%E5%8F%91%E7%9A%84arraylist%E5%AE%9E%E7%8E%B0)
+  - [ConcurrentModificationException异常出现的原因](#concurrentmodificationexception%E5%BC%82%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E5%8E%9F%E5%9B%A0)
+  - [fail-fast机制](#fail-fast%E6%9C%BA%E5%88%B6)
+    - [1、在单线程环境下的解决办法](#1%E5%9C%A8%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95)
+    - [2、在多线程环境下的解决方法](#2%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95)
+  - [比AtomicLong更高性能的LongAdder](#%E6%AF%94atomiclong%E6%9B%B4%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84longadder)
 - [两个线程同时执行i++100次,结果是多少](#%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8Ci100%E6%AC%A1%E7%BB%93%E6%9E%9C%E6%98%AF%E5%A4%9A%E5%B0%91)
 - [如何排查死锁？](#%E5%A6%82%E4%BD%95%E6%8E%92%E6%9F%A5%E6%AD%BB%E9%94%81)
 - [线程池](#%E7%BA%BF%E7%A8%8B%E6%B1%A0)
@@ -144,8 +154,8 @@ start方法其实是在一个新的操作系统线程上面去调用run方法。
 3. 使用最少线程。避免创建不需要的线程，比如任务很少，但是创建了很多线程来处理，这样会造成大量线程都处于等待状态
 4. 协程。在单线程里实现多任务的调度，并在单线程里维持多个任务间的切换
 
-
-## synchronized 的底层怎么实现
+## synchronized
+### synchronized 的底层怎么实现
 1. **同步代码块**(Synchronization)基于进入和退出管程(Monitor)对象实现。每个对象有一个监视器锁（monitor）。当monitor被占用时就会处于锁定状态，线程执行monitorenter指令时尝试获取monitor的所有权，过程如下：
 
 - 如果monitor的进入数为0，则该线程进入monitor，然后将进入数设置为1，该线程即为monitor的所有者。
@@ -155,6 +165,15 @@ start方法其实是在一个新的操作系统线程上面去调用run方法。
 - 如果其他线程已经占用了monitor，则该线程进入阻塞状态，直到monitor的进入数为0，再重新尝试获取monitor的所有权。
 2. **被 synchronized 修饰的同步方法**并没有通过指令monitorenter和monitorexit来完成（理论上其实也可以通过这两条指令来实现），不过相对于普通方法，其常量池中多了ACC_SYNCHRONIZED标示符。JVM就是根据该标示符来实现方法的同步的：当方法调用时，调用指令将会检查方法的 ACC_SYNCHRONIZED 访问标志是否被设置，如果设置了，执行线程将先获取monitor，获取成功之后才能执行方法体，方法执行完后再释放monitor。在方法执行期间，其他任何线程都无法再获得同一个monitor对象。 其实本质上没有区别，只是方法的同步是一种隐式的方式来实现，无需通过字节码来完成
 
+### 为什么notify和wait方法必须在synchronized方法中使用？
+#### 1、依赖锁对象的监视器monitor
+这是因为调用这三个方法之前必须拿要到当前锁对象的监视器monitor对象，也就是说notify/notifyAll和wait方法依赖于monitor对象，又因为monitor存在于对象头的Mark Word中(存储monitor引用指针)，而synchronized关键字可以获取monitor ，所以，notify/notifyAll和wait方法必须在synchronized代码块或者synchronized方法中调用。
+
+#### 2、避免lost wake up问题
+因为会导致lost wake up问题，说白了就唤不醒消费者
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Java-24.png)
+
+为了避免出现这种lost wake up问题，Java强制我们的wait()/notify()调用必须要在一个同步块中。
 
 
 ### jdk1.6以后对synchronized锁做了哪些优化
@@ -198,9 +217,9 @@ start方法其实是在一个新的操作系统线程上面去调用run方法。
 - 自旋锁
 
 
+## CAS
 
-
-## 讲一下CAS
+### CAS 介绍
 CAS,compare and swap的缩写，中文翻译成比较并交换。乐观锁用到的机制就是CAS，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试。
 
 原理：
@@ -539,7 +558,8 @@ reader() 方法包含三个操作:
 代码块，它会释放掉该对象锁，这时锁池中的线程会继续竞争该对象锁。
 - 尽量使用 notifyAll()，notify()可能会导致死锁
 
-## ConcurrentHashMap是如何在保证并发安全的同时提高性能
+## JUC
+### ConcurrentHashMap是如何在保证并发安全的同时提高性能
 其实就是要控制锁的粒度，尽量避免锁的发生
 
 ConcurrentHashMap使用了一些技巧来获取高的并发性能，同时避免了锁。这些技巧包括：
@@ -547,9 +567,7 @@ ConcurrentHashMap使用了一些技巧来获取高的并发性能，同时避免
 2. spread二次哈希进行segment分段。
 3. stream提高并行处理能力。
 
-
-
-## 为什么java.util.concurrent 包里没有并发的ArrayList实现？
+### 为什么java.util.concurrent 包里没有并发的ArrayList实现？
 
 我认为在java.util.concurrent包中没有加入并发的ArrayList实现的主要原因是：**很难去开发一个通用并且没有并发瓶颈的线程安全的List。**
 
@@ -561,8 +579,22 @@ ConcurrentHashMap使用了一些技巧来获取高的并发性能，同时避免
 
 CopyOnWriteArrayList是一个有趣的例子，它规避了只读操作（如get/contains）并发的瓶颈，但是它为了做到这点，在修改操作中做了很多工作和修改可见性规则。 此外，修改操作还会锁住整个List，因此这也是一个并发瓶颈。所以从理论上来说，CopyOnWriteArrayList并不算是一个通用的并发List。
 
+### ConcurrentModificationException异常出现的原因
+原因：如果modCount不等于expectedModCount，则抛出ConcurrentModificationException异常。
+关键点就在于：调用list.remove()方法导致modCount和expectedModCount的值不一致。
 
-## 比AtomicLong更高性能的LongAdder
+### fail-fast机制
+这种机制经常出现在多线程环境下 ， 当前线程会维护一个计数比较器， 即 expectedModCount， 记录已经修改的次数。在进入遍历前， 会把实时修改次数 modCount 赋值给 expectedModCount，如果这两个数据不相等 ， 则抛出异常。 
+
+Iterator、COW（Copy-on-write）是 fail-safe机制的
+
+#### 1、在单线程环境下的解决办法
+使用iterator删除，并且调用iterator的remove方法，不是list的remove方法
+#### 2、在多线程环境下的解决方法
+1、在使用iterator迭代的时候使用synchronized或者Lock进行同步；
+2、使用并发容器CopyOnWriteArrayList代替ArrayList和Vector。
+
+### 比AtomicLong更高性能的LongAdder
 LongAdder在高并发的场景下会比它的前辈————AtomicLong 具有更好的性能，代价是消耗更多的内存空间
 
 AtomicLong在并发量较低的环境下，线程冲突的概率比较小，自旋的次数不会很多。但是，高并发环境下，N个线程同时进行自旋操作，会出现大量失败并不断自旋的情况。

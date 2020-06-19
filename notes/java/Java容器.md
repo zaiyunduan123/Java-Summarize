@@ -5,6 +5,7 @@
 - [Java集合类框架图](#java%E9%9B%86%E5%90%88%E7%B1%BB%E6%A1%86%E6%9E%B6%E5%9B%BE)
   - [Java集合类框架的基本接口有哪些？](#java%E9%9B%86%E5%90%88%E7%B1%BB%E6%A1%86%E6%9E%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%8E%A5%E5%8F%A3%E6%9C%89%E5%93%AA%E4%BA%9B)
 - [HashSet和TreeSet区别](#hashset%E5%92%8Ctreeset%E5%8C%BA%E5%88%AB)
+- [ArrayList和LinkedList的区别](#arraylist%E5%92%8Clinkedlist%E7%9A%84%E5%8C%BA%E5%88%AB)
 - [讲一下LinkedHashMap](#%E8%AE%B2%E4%B8%80%E4%B8%8Blinkedhashmap)
 - [Java8 中HashMap的优化（引入红黑树的数据结构和扩容的优化）](#java8-%E4%B8%ADhashmap%E7%9A%84%E4%BC%98%E5%8C%96%E5%BC%95%E5%85%A5%E7%BA%A2%E9%BB%91%E6%A0%91%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E6%89%A9%E5%AE%B9%E7%9A%84%E4%BC%98%E5%8C%96)
 - [Map遍历的keySet()和entrySet()性能差异原因](#map%E9%81%8D%E5%8E%86%E7%9A%84keyset%E5%92%8Centryset%E6%80%A7%E8%83%BD%E5%B7%AE%E5%BC%82%E5%8E%9F%E5%9B%A0)
@@ -15,10 +16,12 @@
 - [HashMap原理](#hashmap%E5%8E%9F%E7%90%86)
   - [HashMap特性](#hashmap%E7%89%B9%E6%80%A7)
   - [HashMap的原理，内部数据结构](#hashmap%E7%9A%84%E5%8E%9F%E7%90%86%E5%86%85%E9%83%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
+  - [HashMap的hash函数原理](#hashmap%E7%9A%84hash%E5%87%BD%E6%95%B0%E5%8E%9F%E7%90%86)
   - [讲一下 HashMap 中 put 方法过程](#%E8%AE%B2%E4%B8%80%E4%B8%8B-hashmap-%E4%B8%AD-put-%E6%96%B9%E6%B3%95%E8%BF%87%E7%A8%8B)
   - [get()方法的工作原理](#get%E6%96%B9%E6%B3%95%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
   - [HashMap的put()方法流程](#hashmap%E7%9A%84put%E6%96%B9%E6%B3%95%E6%B5%81%E7%A8%8B)
   - [HashMap中hash函数怎么是是实现的？还有哪些 hash 的实现方式？](#hashmap%E4%B8%ADhash%E5%87%BD%E6%95%B0%E6%80%8E%E4%B9%88%E6%98%AF%E6%98%AF%E5%AE%9E%E7%8E%B0%E7%9A%84%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B-hash-%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F)
+  - [Java8 HashMap扩容时为什么不需要重新hash？](#java8-hashmap%E6%89%A9%E5%AE%B9%E6%97%B6%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0hash)
   - [HashMap 怎样解决冲突？](#hashmap-%E6%80%8E%E6%A0%B7%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81)
     - [扩展问题1：当两个对象的hashcode相同会发生什么？](#%E6%89%A9%E5%B1%95%E9%97%AE%E9%A2%981%E5%BD%93%E4%B8%A4%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84hashcode%E7%9B%B8%E5%90%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88)
     - [扩展问题2：抛开 HashMap，hash 冲突有那些解决办法？](#%E6%89%A9%E5%B1%95%E9%97%AE%E9%A2%982%E6%8A%9B%E5%BC%80-hashmaphash-%E5%86%B2%E7%AA%81%E6%9C%89%E9%82%A3%E4%BA%9B%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95)
@@ -52,6 +55,12 @@
 
 1. TreeSet是SortedSet接口的唯一实现类
 2. TreeSet可以确保集合元素处于排序状态。TreeSet支持两种排序方式，自然排序 和定制排序，其中自然排序为默认的排序方式。向TreeSet中加入的应该是同一个类的对象
+
+## ArrayList和LinkedList的区别
+- **底层实现**：ArrayList是实现了基于动态数组的数据结构，而LinkedList是基于链表的数据结构，ArrayList需要扩容、LinkedList不需要
+- **时间复杂度**：对于随机访问get和set，ArrayList要优于LinkedList，因为LinkedList要移动指针
+- **使用场景**：LinkedList是个双向链表，它同样可以被当作栈、队列或双端队列来使用。
+
 
 
 
@@ -226,6 +235,17 @@ HashMap是基于hashing的原理，底层使用哈希表（数组 + 链表）实
 
 存储对象时，我们将K/V传给put方法时，它调用hashCode计算hash从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量(超过Load Facotr则resize为原来的2倍)。获取对象时，我们将K传给get，它调用hashCode计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。如果发生碰撞的时候，Hashmap通过链表将产生碰撞冲突的元素组织起来，在Java 8中，如果一个bucket中碰撞冲突的元素超过某个限制(默认是8)，则使用红黑树来替换链表，从而提高速度。
 
+### HashMap的hash函数原理
+```
+static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+```
+Java 8中这一步做了优化，只做一次16位右位移异或混合，而不是四次，但原理是不变的。
+
+优化了高位运算的算法，**通过hashCode()的高16位异或低16位实现的**，主要是从速度、功效、质量来考虑的
+
 ### 讲一下 HashMap 中 put 方法过程
 1. 对key的hashCode做hash操作，然后再计算在bucket中的index（1.5 HashMap的哈希函数）； 
 2. 如果没碰撞直接放到bucket里； 
@@ -244,6 +264,41 @@ HashMap是基于hashing的原理，底层使用哈希表（数组 + 链表）实
 2. h & (length-1); //通过位操作得到下标index。
 
 还有数字分析法、平方取中法、分段叠加法、 除留余数法、 伪随机数法。
+### Java8 HashMap扩容时为什么不需要重新hash？
+```
+  if ((e.hash & oldCap) == 0) { 
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+
+```
+可以看到它是通过将数据的hash与扩容前的长度进行与操作，根据`e.hash & oldCap`的结果来判断，如果是0，说明位置没有发生变化，如果不为0，说明位置发生了变化，而且新的位置=老的位置+老的数组长度。
+
+
+比如数据B它经过hash之后的值为 1111，在扩容之前数组长度是8，数据B的位置是：
+```
+(n-1)&hash = (8-1) & 1111 = 111 & 1111 = 0111
+```
+扩容之后，数组长度是16，重新计算hash位置是：
+```
+(n-1)&hash = (16-1) & 1111 = 1111 & 1111 = 1111
+```
+可见数据B的位置发生了变化，同时新的位置和原来的位置关系是：
+**新的位置（1111）= 1000+原来的位置（0111）=原来的长度（8）+原来的位置（0111）**
+继续看一下e.hash & oldCap的结果
+```
+e.hash & oldCap = 1111 & 8 = 1111 & 1000 = 1000 (!=0)
+```
 
 ### HashMap 怎样解决冲突？
 HashMap中处理冲突的方法实际就是链地址法，内部数据结构是数组+单链表。
