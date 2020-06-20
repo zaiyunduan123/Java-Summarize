@@ -18,6 +18,7 @@
   - [临时节点](#%E4%B8%B4%E6%97%B6%E8%8A%82%E7%82%B9)
   - [持久顺序节点](#%E6%8C%81%E4%B9%85%E9%A1%BA%E5%BA%8F%E8%8A%82%E7%82%B9)
   - [临时顺序节点](#%E4%B8%B4%E6%97%B6%E9%A1%BA%E5%BA%8F%E8%8A%82%E7%82%B9)
+- [Zookeeper 的典型应用场景](#zookeeper-%E7%9A%84%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
 - [Zookeeper的通知机制](#zookeeper%E7%9A%84%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6)
 - [Zookeeper的分布式锁实现方式](#zookeeper%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F)
 - [Zookeeper 采用的哪种分布式一致性协议? 还有哪些分布式一致性协议](#zookeeper-%E9%87%87%E7%94%A8%E7%9A%84%E5%93%AA%E7%A7%8D%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE-%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E5%8D%8F%E8%AE%AE)

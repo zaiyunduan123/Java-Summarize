@@ -54,7 +54,9 @@
 (https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/MyBatis.md) |[Solr](https://github
 .com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md) |  [Dubbo](https://github
 .com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Dubbo.md) |  [Netty](https://github
-.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)|[Kafka]()|[Zookeeper](https://github
+.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)|[Kafka](https://github
+.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Kafka.md)|[Zookeeper](https://github
 .com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Zookpeer.md)|[Nginx](https://github
-.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Nginx.md)|[Tomcat]()|
+.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Nginx.md)|[Tomcat](https://github
+.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Tomcat.md)|
 
