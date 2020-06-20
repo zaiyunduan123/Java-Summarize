@@ -561,4 +561,4 @@ Redis客户端使用TCP协议与服务端进行交互，通信协议采用的是
 
 
 ## Redis事务和MySQL事务有什么区别？
-![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/redis-5.png)
+![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Redis-5.png)
