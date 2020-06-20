@@ -22,8 +22,6 @@
 ### 数据库
 -  [MySQL](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/MySQL.md)
 
--  [Redis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/Redis.md)
-
 -  [MySQL数据库开发规范](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/DataBaseDesign.md)
 
 ### 计算机网络
@@ -48,7 +46,7 @@
 -  [系统设计](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/scene/Scene-Design.md)
 
 ### 框架原理
-| 🧐 | 🥇 | 🏄 | 🌈 | ⛱ |️ 🚀 | 🎯 | 🍻 | 🦄|
-| :--------: | :---------: | :---------: | :---------: | :---------: | :---------:| :---------: | :-------: | :-------: | 
-|  [Spring](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Spring.md) | [MyBatis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/MyBatis.md) |[Solr](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md) |  [Dubbo](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Dubbo.md) |  [Netty](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)|[Kafka](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Kafka.md)|[Zookeeper](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Zookeeper.md)|[Nginx](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Nginx.md)|[Tomcat](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Tomcat.md)|
+| 🧐 | 🥇 | 🏄 | 🌈 | ⛱ |️ 🚀 | 🎯 | 🍻 | 🦄| 🏖 |
+| :--------: | :---------: | :---------: | :---------: | :---------: | :---------:| :---------: | :-------: | :-------: | :-------: | 
+|  [Spring](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Spring.md) | [MyBatis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/MyBatis.md) |[Solr](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Solr.md) |  [Dubbo](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Dubbo.md) |  [Netty](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/netty.md)|[Kafka](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Kafka.md)|[Zookeeper](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Zookeeper.md)|[Nginx](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Nginx.md)|[Tomcat](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/framework/Tomcat.md)| [Redis](https://github.com/zaiyunduan123/Java-Interview/blob/master/notes/database/Redis.md)|
 

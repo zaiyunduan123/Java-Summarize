@@ -46,17 +46,17 @@
 
 
 
-## Kafka介绍
+# Kafka介绍
 Kafka是最初由Linkedin公司开发，是一个分布式、支持分区的（partition）、多副本的（replica），基于zookeeper协调的分布式消息系统，它的最大的特性就是可以实时的处理大量数据以满足各种需求场景：比如基于hadoop的批处理系统、低延迟的实时系统、storm/Spark流式处理引擎，web/nginx日志、访问日志，消息服务等等，用scala语言编写，Linkedin于2010年贡献给了Apache基金会并成为顶级开源项目。
 
-## Kafka特性
+# Kafka特性
 - 高吞吐量、低延迟：kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒，每个topic可以分多个partition, consumer group 对partition进行consume操作。
 - 可扩展性：kafka集群支持热扩展
 - 持久性、可靠性：消息被持久化到本地磁盘，并且支持数据备份防止数据丢失
 - 容错性：允许集群中节点失败（若副本数量为n,则允许n-1个节点失败）
 - 高并发：支持数千个客户端同时读写
 
-## Kafka使用场景
+# Kafka使用场景
 - 日志收集：一个公司可以用Kafka可以收集各种服务的log，通过kafka以统一接口服务的方式开放给各种consumer，例如hadoop、Hbase、Solr等。
 - 消息系统：解耦和生产者和消费者、缓存消息等。
 - 用户活动跟踪：Kafka经常被用来记录web用户或者app用户的各种活动，如浏览网页、搜索、点击等活动，这些活动信息被各个服务器发布到kafka的topic中，然后订阅者通过订阅这些topic来做实时的监控分析，或者装载到hadoop、数据仓库中做离线分析和挖掘。
@@ -64,7 +64,7 @@ Kafka是最初由Linkedin公司开发，是一个分布式、支持分区的（p
 - 流式处理：比如spark streaming和storm
 - 事件源
 
-## Kafka术语
+# Kafka术语
 - 消息：Record。Kafka 是消息引擎嘛，这里的消息就是指 Kafka 处理的主要对象。
 - 主题：Topic。主题是承载消息的逻辑容器，在实际使用中多用来区分具体的业务。
 - 分区：Partition。一个有序不变的消息序列。每个主题下可以有多个分区。
