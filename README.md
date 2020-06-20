@@ -1,18 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
-- [Java](#java)
-- [数据库](#%E6%95%B0%E6%8D%AE%E5%BA%93)
-- [计算机网络](#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C)
-- [算法](#%E7%AE%97%E6%B3%95)
-- [操作系统](#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F)
-- [设计模式](#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
-- [系统设计](#%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1)
-- [框架原理](#%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 > ## 目录结构
 
 
