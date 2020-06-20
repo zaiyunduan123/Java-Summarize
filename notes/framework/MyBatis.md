@@ -112,6 +112,7 @@ public class MyMapperProxy implements InvocationHandler{
 ## 一级缓存和二级缓存
 
 MyBatis提供查询缓存，用于减轻数据库压力，提高性能。MyBatis提供了一级缓存和二级缓存。
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/frame-3.jpg)
 
 1. 一级缓存是SqlSession级别的缓存，每个SqlSession对象都有一个哈希表用于缓存数据，不同SqlSession对象之间缓存不共享。同一个SqlSession对象对象执行2遍相同的SQL查询，在第一次查询执行完毕后将结果缓存起来，这样第二遍查询就不用向数据库查询了，直接返回缓存结果即可。一级缓存是MyBatis内部实现的一个特性，用户不能配置，默认情况下自动支持的缓存，用户没有定制它的权利

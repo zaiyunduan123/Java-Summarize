@@ -180,7 +180,9 @@ Kafka 是有主题概念的，而每个主题又进一步划分成若干个分�
 最常见的解决方案就是采用基于领导者（Leader-based）的副本机制。Apache Kafka 就是这样的设计。
 
 基于领导者的副本机制的工作原理如下图所示
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Kafka-4.png)
+
 1. 在 Kafka 中，副本分成两类：领导者副本（Leader Replica）和追随者副本（Follower Replica）。每个分区在创建时都要选举一个副本，称为领导者副本，其余的副本自动称为追随者副本。
 2. Kafka 的副本机制比其他分布式系统要更严格一些。在 Kafka 中，追随者副本是不对外提供服务的。这就是说，任何一个追随者副本都不能响应消费者和生产者的读写请求。所有的请求都必须由领导者副本来处理，或者说，所有的读写请求都必须发往领导者副本所在的 Broker，由该 Broker 负责处理。追随者副本不处理客户端请求，它唯一的任务就是从领导者副本异步拉取消息，并写入到自己的提交日志中，从而实现与领导者副本的同步。
 3. 当领导者副本挂掉了，或者说领导者副本所在的 Broker 宕机时，Kafka 依托于 ZooKeeper 提供的监控功能能够实时感知到，并立即开启新一轮的领导者选举，从追随者副本中选一个作为新的领导者。老 Leader 副本重启回来后，只能作为追随者副本加入到集群中。
@@ -203,7 +205,9 @@ Producer 永远要使用带有回调通知的发送 API，也就是说不要使�
 
 ### 消费者程序丢失数据
 Consumer 端丢失数据主要体现在 Consumer 端要消费的消息不见了。Consumer 程序有个“位移”的概念，表示的是这个 Consumer 当前消费到的 Topic 分区的位置。下面这张图来自于官网，它清晰地展示了 Consumer 端的位移数据。
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Kafka-2.png)
+
 比如对于 Consumer A 而言，它当前的位移值就是 9；Consumer B 的位移值是 11。
 
 要对抗这种消息丢失，办法很简单：维持先消费消息，再更新位移的顺序即可。
@@ -254,7 +258,9 @@ Rebalance 的触发条件:
 
 #### 重平衡全流程
 消费者组状态机的各个状态流转
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Kafka-5.png)
+
 一个消费者组最开始是 Empty 状态，当重平衡过程开启后，它会被置于 PreparingRebalance 状态等待成员加入，之后变更到 CompletingRebalance 状态等待分配方案，最后流转到 Stable 状态完成重平衡。
 
 当有新成员加入或已有成员退出时，消费者组的状态从 Stable 直接跳到 PreparingRebalance 状态，此时，所有现存成员就必须重新申请加入组。当所有成员都退出组后，消费者组状态变更为 Empty。Kafka 定期自动删除过期位移的条件就是，组要处于 Empty 状态。因此，如果你的消费者组停掉了很长时间（超过 7 天），那么 Kafka 很可能就把该组的位移数据删除了。
@@ -265,6 +271,7 @@ Rebalance 的触发条件:
 
 ##### JoinGroup 请求的处理过程
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Kafka-6.png)
+
 ##### SyncGroup 请求的处理流程
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Kafka-7.png)
 
@@ -274,7 +281,9 @@ Consumer 需要向 Kafka 汇报自己的位移数据，这个汇报过程被称�
 位移提交的语义保障是由你来负责的，Kafka 只会“无脑”地接受你提交的位移。你对位移提交的管理直接影响了你的 Consumer 所能提供的消息语义保障。
 
 从用户的角度来说，位移提交分为自动提交和手动提交；从 Consumer 端的角度来说，位移提交分为同步提交和异步提交。
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Kafka-3.jpeg)
+
 我们先来说说自动提交和手动提交。所谓自动提交，就是指 Kafka Consumer 在后台默默地为你提交位移，作为用户的你完全不必操心这些事；自动提交位移的一个问题在于，它可能会出现重复消费。而手动提交，则是指你要自己提交位移，Kafka Consumer 压根不管。
 
 反观手动提交位移，它的好处就在于更加灵活，你完全能够把控位移提交的时机和频率。但是，它也有一个缺陷，就是在调用 commitSync() 时，Consumer 程序会处于阻塞状态，直到远端的 Broker 返回提交结果，这个状态才会结束。

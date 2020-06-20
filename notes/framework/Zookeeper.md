@@ -53,13 +53,16 @@ Zookeeper 保证了如下分布式一致性特性：
 ## ZooKeeper 设计目标
 ### 简单的数据模型
 ZooKeeper 允许分布式进程通过共享的层次结构命名空间进行相互协调，这与标准文件系统类似。 名称空间由 ZooKeeper 中的数据寄存器组成 - 称为znode，这些类似于文件和目录。 与为存储设计的典型文件系统不同，ZooKeeper数据保存在内存中，这意味着ZooKeeper可以实现高吞吐量和低延迟。
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Zookeeper-1.png)
 
 ### 可构建集群
 为了保证高可用，最好是以集群形态来部署 ZooKeeper，这样只要集群中大部分机器是可用的（能够容忍一定的机器故障），那么zookeeper本身仍然是可用的。 客户端在使用 ZooKeeper 时，需要知道集群机器列表，通过与集群中的某一台机器建立 TCP 连接来使用服务，客户端使用这个TCP链接来发送请求、获取结果、获取监听事件以及发送心跳包。如果这个连接异常断开了，客户端可以连接到另外的机器上。
 
 ZooKeeper 官方提供的架构图：
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Zookeeper-2.png)
+
 上图中每一个Server代表一个安装Zookeeper服务的服务器。组成 ZooKeeper 服务的服务器都会在内存中维护当前的服务器状态，并且每台服务器之间都互相保持着通信。集群间通过 Zab 协议（Zookeeper Atomic Broadcast）来保持数据的一致性。
 
 ### 顺序访问
@@ -204,7 +207,9 @@ Zookeeper的核心是原子广播，这个机制保证了各个Server之间的�
 下面以一个简单的例子来说明整个选举的过程：
 
 假设有五台服务器组成的Zookeeper集群，它们的id从1-5，同时它们都是最新启动的，也就是没有历史数据，在存放数据量这一点上，都是一样的。
+
 ![](https://github.com/zaiyunduan123/Java-Interview/blob/master/image/Zookeeper-2.png)
+
 假设这些服务器从id1-5，依序启动：
 
 因为一共5台服务器，只有超过半数以上，即最少启动3台服务器，集群才能正常工作。
